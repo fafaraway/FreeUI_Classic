@@ -3,7 +3,7 @@
 ## Notes: Minimalistic user interface.
 ## Author: Haleth, Solor
 ## Version: 1.0
-## OptionalDeps: FreeUI_Options, WeakAuras, !ClassColors
+## OptionalDeps: FreeUI_Options
 ## SavedVariables: FreeUIGlobalConfig
 ## SavedVariablesPerCharacter: FreeUIConfig
 
