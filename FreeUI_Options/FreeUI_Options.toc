@@ -1,0 +1,15 @@
+## Interface: 11302
+## Title: |cffffffffFree|r|cffb2b2b2UI|r |cffffa500Options|r
+## Notes: Options GUI for FreeUI.
+## Author: Haleth, Solor
+## Version: 1.0
+## SavedVariables: FreeUIOptionsGlobal, FreeUIOptions
+## SavedVariablesPerCharacter: FreeUIOptionsPerChar
+
+
+freeui_options.lua
+localization\english.lua
+localization\chinese.lua
+frames.lua
+
+

@@ -1,0 +1,8 @@
+<Ui xmlns='http://www.blizzard.com/wow/ui/'>
+	<Script file='core.lua'/>
+	<Script file='worldmap.lua'/>
+	<Script file='mapreveal.lua'/>
+	<Script file='minimap.lua'/>
+	<Script file='micromenu.lua'/>
+	<Script file='exprepbar.lua'/>
+</Ui>
