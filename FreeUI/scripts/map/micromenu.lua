@@ -3,7 +3,7 @@ local MAP = F:GetModule('Map')
 
 
 -- basee on ClickMenu by 10leej
-local menuFrame = CreateFrame('Frame', 'MinimapRightClickMenu', UIParent, 'UIDropDownMenuTemplate')
+local menuFrame = CreateFrame('Frame', 'MinimapMicroMenu', UIParent, 'UIDropDownMenuTemplate')
 local menuList = {
 	{
 		text = MAINMENU_BUTTON,
@@ -32,7 +32,7 @@ local menuList = {
 		notCheckable = true,
 	},
 	{
-		text = TALENTS_BUTTON,
+		text = TALENTS,
 		icon = 'Interface\\MINIMAP\\TRACKING\\Ammunition',
 		func = function() 
 			if (not PlayerTalentFrame) then
@@ -43,21 +43,39 @@ local menuList = {
 		notCheckable = true,
 	},
 	{
+		text = QUESTLOG_BUTTON,
+		icon = 'Interface\\GossipFrame\\ActiveQuestIcon',
+		func = function()
+			securecall(ToggleFrame, QuestLogFrame)
+		end,
+		notCheckable = true,
+	},
+	{
+		text = WORLD_MAP,
+		icon = 'Interface\\WorldMap\\UI-World-Icon',
+		func = function() 
+			securecall(ToggleFrame, WorldMapFrame)
+			MaximizeUIPanel(WorldMapFrame)
+		end,
+		notCheckable = true,
+	},
+	{
 		text = SOCIAL_BUTTON,
-		icon = 'Interface\\FriendsFrame\\PlusManz-BattleNet',
+		icon = 'Interface\\FriendsFrame\\UI-Toast-ChatInviteIcon',
 		func = function() 
 			securecall(ToggleFriendsFrame, 1) 
 		end,
 		notCheckable = true,
 	},
 	{
-		text = BLIZZARD_STORE,
-		icon = 'Interface\\MINIMAP\\TRACKING\\Auctioneer',
-		func = function()
-			if (not StoreFrame) then
-				LoadAddOn('Blizzard_StoreUI')
+		text = GUILD,
+		icon = 'Interface\\GossipFrame\\TabardGossipIcon',
+		arg1 = IsInGuild('player'),
+		func = function() 
+			if (not GuildFrame) then
+				LoadAddOn('Blizzard_GuildUI')
 			end
-			securecall(ToggleStoreUI)
+			securecall(ToggleFriendsFrame, 3)
 		end,
 		notCheckable = true,
 	},
@@ -76,6 +94,22 @@ local menuList = {
 		icon = 'Interface\\MINIMAP\\TRACKING\\Banker',
 		func = function()
 			securecall(ToggleAllBags)
+		end,
+		notCheckable = true,
+	},
+	{
+		text = PLAYER_V_PLAYER,
+		icon = 'Interface\\MINIMAP\\TRACKING\\BattleMaster',
+		func = function() 
+			securecall(ToggleCharacter, 'HonorFrame')
+		end,
+		notCheckable = true,
+	},
+	{
+		text = RAID,
+		icon = 'Interface\\Buttons\\UI-GuildButton-PublicNote-Up',
+		func = function() 
+			securecall(ToggleFriendsFrame, 4)
 		end,
 		notCheckable = true,
 	},
