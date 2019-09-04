@@ -11,6 +11,7 @@ C.Version = GetAddOnMetadata('FreeUI', 'Version')
 C.Title = GetAddOnMetadata('FreeUI', 'Title')
 C.Support = GetAddOnMetadata('FreeUI', 'X-Support')
 C.wowBuild = select(2, GetBuildInfo()); C.wowBuild = tonumber(C.wowBuild)
+C.isClassic = select(4, GetBuildInfo()) < 20000
 
 C.ClassColors = {}
 C.ClassList = {}

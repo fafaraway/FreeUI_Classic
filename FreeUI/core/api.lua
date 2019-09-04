@@ -653,14 +653,19 @@ function F:SetBD(x, y, x2, y2)
 	return bg
 end
 
-function F:ReskinPortraitFrame()
+function F:ReskinPortraitFrame(x, y, x2, y2)
 	F.StripTextures(self)
-	local bg = F.SetBD(self)
+	local bg = F.SetBD(self, x, y, x2, y2)
 	local frameName = self.GetName and self:GetName()
 	local portrait = self.portrait or _G[frameName..'Portrait']
-	portrait:SetAlpha(0)
+	if portrait then portrait:SetAlpha(0) end
 	local closeButton = self.CloseButton or _G[frameName..'CloseButton']
-	F.ReskinClose(closeButton)
+	if closeButton then
+		F.ReskinClose(closeButton)
+		closeButton:ClearAllPoints()
+		closeButton:SetPoint('TOPRIGHT', bg, -5, -5)
+	end
+
 	return bg
 end
 
@@ -1243,7 +1248,7 @@ function F:InspectItemTextures(clean, grabTextures)
 	wipe(essencesDB)
 
 	for i = 1, 5 do
-		local tex = _G[tip:GetName().."Texture"..i]
+		local tex = _G[tip:GetName()..'Texture'..i]
 		local texture = tex and tex:GetTexture()
 		if not texture then break end
 
