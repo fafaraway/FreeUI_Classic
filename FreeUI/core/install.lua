@@ -83,6 +83,7 @@ local function ForceDefaultSettings()
 	SetCVar('nameplateShowEnemies', 1)
 	SetCVar('nameplateShowAll', 1)
 	SetCVar('nameplateMotion', 1)
+	SetCVar('nameplateMaxDistance', '4e1')
 
 	SetCVar('alwaysShowActionBars', 1)
 	SetCVar('lockActionBars', 1)
