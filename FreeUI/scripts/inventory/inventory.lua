@@ -311,8 +311,8 @@ function INVENTORY:OnLogin()
 		self.Count:SetPoint('BOTTOMRIGHT', 2, 2)
 		F.SetFS(self.Count, 'pixel')
 
-		self.BG = F.CreateBDFrame(self)
-		self.BG:SetBackdropBorderColor(0, 0, 0, 1)
+		self.BG = F.CreateBG(self)
+		self.BG:SetVertexColor(0, 0, 0, .5)
 
 		--[[self.junkIcon = self:CreateTexture(nil, 'ARTWORK')
 		self.junkIcon:SetAtlas('bags-junkcoin')
@@ -407,12 +407,12 @@ function INVENTORY:OnLogin()
 		end]]
 
 		if item.isQuestItem then
-			self.BG:SetBackdropBorderColor(.8, .8, 0)
+			self.BG:SetVertexColor(.8, .8, 0)
 		elseif item.rarity and item.rarity > -1 then
-			local color = BAG_ITEM_QUALITY_COLORS[item.rarity]
-			--self.BG:SetBackdropBorderColor(color.r, color.g, color.b)
+			local color = ITEM_QUALITY_COLORS[item.rarity]
+			self.BG:SetVertexColor(color.r, color.g, color.b, 1)
 		else
-			self.BG:SetBackdropBorderColor(0, 0, 0)
+			self.BG:SetVertexColor(0, 0, 0, .5)
 		end
 	end
 
@@ -507,17 +507,17 @@ function INVENTORY:OnLogin()
 		self.Icon:SetTexCoord(unpack(C.TexCoord))
 	end
 
-	--[[function BagButton:OnUpdate()
+	function BagButton:OnUpdate()
 		local id = GetInventoryItemID('player', (self.GetInventorySlot and self:GetInventorySlot()) or self.invID)
 		local quality = id and select(3, GetItemInfo(id)) or 0
 		if quality == 1 then quality = 0 end
-		local color = BAG_ITEM_QUALITY_COLORS[quality]
+		local color = ITEM_QUALITY_COLORS[quality]
 		if not self.hidden and not self.notBought then
-			--self.BG:SetBackdropBorderColor(color.r, color.g, color.b)
+			self.BG:SetVertexColor(color.r, color.g, color.b, 1)
 		else
-			self.BG:SetBackdropBorderColor(0, 0, 0)
+			self.BG:SetVertexColor(0, 0, 0, .5)
 		end
-	end--]]
+	end
 
 	-- Fixes
 	ToggleAllBags()
