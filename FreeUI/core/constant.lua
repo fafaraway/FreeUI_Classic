@@ -29,6 +29,10 @@ for class in pairs(colors) do
 end
 C.r, C.g, C.b = C.ClassColors[C.Class].r, C.ClassColors[C.Class].g, C.ClassColors[C.Class].b
 
+RAID_CLASS_COLORS["SHAMAN"].r = 0
+RAID_CLASS_COLORS["SHAMAN"].g = .44
+RAID_CLASS_COLORS["SHAMAN"].b = .87
+RAID_CLASS_COLORS["SHAMAN"].colorStr = "ff0070dd"
 
 C.MyColor = format('|cff%02x%02x%02x', C.r*255, C.g*255, C.b*255)
 C.InfoColor = '|cffe9c55d'
