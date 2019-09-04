@@ -25,18 +25,9 @@ local function SetChatLinkIcon(Hyperlink)
 end
 
 local function isItemHasLevel(link)
-	local name, _, rarity, level, _, class, subclass, _, equipSlot, _, _, classID = GetItemInfo(link)
+	local name, _, rarity, level, _, _, _, _, _, _, _, classID = GetItemInfo(link)
 	if name and level and rarity > 1 and (classID == LE_ITEM_CLASS_WEAPON or classID == LE_ITEM_CLASS_ARMOR) then
 		local itemLevel = F.GetItemLevel(link)
-
-		if (equipSlot and string.find(equipSlot, 'INVTYPE_')) then
-			itemLevel = format('%s %s', itemLevel, _G[equipSlot] or equipSlot)
-		elseif (class == ARMOR) then
-			itemLevel = format('%s %s', itemLevel, class)
-		elseif (subclass and string.find(subclass, RELICSLOT)) then
-			itemLevel = format('%s %s', itemLevel, RELICSLOT)
-		end
-
 		return name, itemLevel
 	end
 end
