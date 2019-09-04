@@ -7,68 +7,87 @@ local tostring, tonumber, pairs, select, random, strsplit, strmatch = tostring, 
 
 
 function MISC:OnLogin()
+	self:HelmCloak()
+	self:EnhancedMenu()
+
 	self:ItemLevel()
-	self:Durability()
-	self:FullStats()
-
-
-	self:CommandBar()
-
-
 
 	self:AlertFrame()
 	self:ErrorFrame()
-	self:BuffFrame()
+
 	self:UIWidgetFrame()
 	self:ColorPicker()
 
-	self:FasterLoot()
+	--self:FasterLoot()
 	self:FasterDelete()
 
-	self:Whistle()
+
 	self:ReadyCheck()
 	self:Marker()
-	self:Focuser()
 
-	self:GetNaked()
 
-	self:ColletMail()
+	self:NakedButton()
 
-	self:GuildBest()
+	self:MailButton()
+
+
 	
 	self:CombatText()
 
 
-	self:PetFilter()
 
 
-	self:PVPMessage()
+
+
 	self:PVPSound()
 	
-	self:Reputation()
+	--self:Reputation()
 	self:TradeTargetInfo()
 	self:TicketStatusFrame()
-	self:VehicleIndicator()
-	self:HideBossBanner()
+	--self:VehicleIndicator()
+	--self:HideBossBanner()
 
-	self:HideNewTalentAlert()
-	self:SkipAzeriteAnimation()
 
-	self:QuickJoin()
-	self:Cooldown()
 
-	CharacterMicroButtonAlert:EnableMouse(false)
-	F.HideOption(CharacterMicroButtonAlert)
+
+
+
+
 end
 
 
--- Enhance PVP message
-function MISC:PVPMessage(_, msg)
-	local _, instanceType = IsInInstance()
-	if instanceType == 'pvp' or instanceType == 'arena' then
-		RaidNotice_AddMessage(RaidBossEmoteFrame, msg, ChatTypeInfo['RAID_BOSS_EMOTE']);
-	end
+
+-- Easily hide helm and cloak
+function MISC:HelmCloak()
+	local helm = CreateFrame("CheckButton", "FreeUI_HelmCheckBox", PaperDollFrame, "OptionsCheckButtonTemplate")
+	helm:SetSize(22, 22)
+	helm:SetPoint("LEFT", CharacterModelFrame, "BOTTOMLEFT", 0, 44)
+	helm:SetScript("OnClick", function() ShowHelm(not ShowingHelm()) end)
+	helm:SetScript("OnEvent", function() helm:SetChecked(ShowingHelm()) end)
+	helm:RegisterEvent("UNIT_MODEL_CHANGED")
+	helm:SetToplevel(true)
+	helm.text = F.CreateFS(helm, (C.isCNClient and {C.font.normal, 11}) or 'pixel', L['MISC_HIDE_HELM'], nil, true, 'LEFT', 22, 0)
+
+	local cloak = CreateFrame("CheckButton", "FreeUI_CloakCheckBox", PaperDollFrame, "OptionsCheckButtonTemplate")
+	cloak:SetSize(22, 22)
+	cloak:SetPoint("LEFT", CharacterModelFrame, "BOTTOMLEFT", 0, 24)
+	cloak:SetScript("OnClick", function() ShowCloak(not ShowingCloak()) end)
+	cloak:SetScript("OnEvent", function() cloak:SetChecked(ShowingCloak()) end)
+	cloak:RegisterEvent("UNIT_MODEL_CHANGED")
+	cloak:SetToplevel(true)
+	cloak.text = F.CreateFS(cloak, (C.isCNClient and {C.font.normal, 11}) or 'pixel', L['MISC_HIDE_CLOAK'], nil, true, 'LEFT', 22, 0)
+
+	helm:SetChecked(ShowingHelm())
+	cloak:SetChecked(ShowingCloak())
+	helm:SetFrameLevel(31)
+	cloak:SetFrameLevel(31)
+
+	F.ReskinCheck(helm)
+	F.ReskinCheck(cloak)
 end
+
+
+
 
 -- Instant delete
 function MISC:FasterDelete()
@@ -99,46 +118,13 @@ function MISC:FasterLoot()
 	end
 end
 
--- Plays a soundbite from Whistle - Flo Rida after Flight Master's Whistle
-function MISC:Whistle()
-	local whistleSound = C.AssetsPath..'sound\\whistle.ogg'
-	local whistle_SpellID1 = 227334;
-	-- for some reason the whistle is two spells which results in dirty events being called
-	-- where spellID2 fires SUCCEEDED on spell cast start and spellID1 comes in later as the real SUCCEEDED
-	local whistle_SpellID2 = 253937;
 
-	local casting = false;
-
-	local f = CreateFrame('frame')
-	f:SetScript('OnEvent', function(self, event, ...) self[event](self, ...) end);
-
-	function f:UNIT_SPELLCAST_SUCCEEDED(unit,lineID,spellID)
-		if (unit == 'player' and (spellID == whistle_SpellID1 or spellID == whistle_SpellID2)) then
-			if casting then
-				casting = false
-				return
-			end
-
-			PlaySoundFile(whistleSound)
-			casting = false
-		end
-	end
-
-	function f:UNIT_SPELLCAST_START(event, castGUID, spellID)
-		if spellID == whistle_SpellID1 then
-			casting = true
-		end
-	end
-	f:RegisterEvent('UNIT_SPELLCAST_SUCCEEDED')
-	f:RegisterEvent('UNIT_SPELLCAST_START')
-end
 
 -- Ready check in master sound
 function MISC:ReadyCheck()
 	local f = CreateFrame('Frame')
 	f:RegisterEvent('UPDATE_BATTLEFIELD_STATUS')
-	f:RegisterEvent('PET_BATTLE_QUEUE_PROPOSE_MATCH')
-	f:RegisterEvent('LFG_PROPOSAL_SHOW')
+
 	f:RegisterEvent('RESURRECT_REQUEST')
 	f:RegisterEvent('READY_CHECK')
 	f:SetScript('OnEvent', function(self, event)
@@ -166,8 +152,8 @@ end
 
 
 -- Get Naked
-function MISC:GetNaked()
-	if not C.general.getNaked then return end
+function MISC:NakedButton()
+	if not C.general.nakedButton then return end
 
 	local nakedButton = CreateFrame('Button', nil, CharacterFrameInsetRight)
 	nakedButton:SetSize(31, 33)
@@ -234,92 +220,9 @@ end
 
 
 
--- Restyle orderhall command bar
-function MISC:CommandBar()
-	if not C.general.vignette then return end
 
-	local f = CreateFrame('Frame')
-	f:SetScript('OnEvent', function(self, event, arg1)
-		if event == 'ADDON_LOADED' and arg1 == 'Blizzard_OrderHallUI' then
-			f:RegisterEvent('DISPLAY_SIZE_CHANGED')
-			f:RegisterEvent('UI_SCALE_CHANGED')
-			f:RegisterEvent('GARRISON_FOLLOWER_CATEGORIES_UPDATED')
-			f:RegisterEvent('GARRISON_FOLLOWER_ADDED')
-			f:RegisterEvent('GARRISON_FOLLOWER_REMOVED')
 
-			local bar = OrderHallCommandBar
 
-			bar:HookScript('OnShow', function()
-				if not bar.styled then
-					bar:EnableMouse(false)
-					bar.Background:SetAtlas(nil)
-
-					bar.ClassIcon:ClearAllPoints()
-					bar.ClassIcon:SetPoint('TOPLEFT', 30, -30)
-					bar.ClassIcon:SetSize(40,20)
-					bar.ClassIcon:SetAlpha(1)
-					local bg = F.CreateBDFrame(bar.ClassIcon)
-					F.CreateSD(bg)
-
-					bar.AreaName:ClearAllPoints()
-					bar.AreaName:SetPoint('LEFT', bar.ClassIcon, 'RIGHT', 5, 0)
-					bar.AreaName:SetFont(C.font.normal, 14, 'OUTLINE')
-					bar.AreaName:SetTextColor(1, 1, 1)
-					bar.AreaName:SetShadowOffset(0, 0)
-
-					bar.CurrencyIcon:ClearAllPoints()
-					bar.CurrencyIcon:SetPoint('LEFT', bar.AreaName, 'RIGHT', 5, 0)
-					bar.Currency:ClearAllPoints()
-					bar.Currency:SetPoint('LEFT', bar.CurrencyIcon, 'RIGHT', 5, 0)
-					bar.Currency:SetFont(C.font.normal, 14, 'OUTLINE')
-					bar.Currency:SetTextColor(1, 1, 1)
-					bar.Currency:SetShadowOffset(0, 0)
-
-					bar.WorldMapButton:Hide()
-
-					bar.styled = true
-				end
-			end)
-		elseif event ~= 'ADDON_LOADED' then
-			local index = 1
-			C_Timer.After(0.1, function()
-				for i, child in ipairs({bar:GetChildren()}) do
-					if child.Icon and child.Count and child.TroopPortraitCover then
-						child:SetPoint('TOPLEFT', bar.ClassIcon, 'BOTTOMLEFT', -5, -index*25+20)
-						child.TroopPortraitCover:Hide()
-
-						child.Icon:SetSize(40,20)
-						local bg = F.CreateBDFrame(child.Icon)
-						F.CreateSD(bg)
-
-						child.Count:SetFont(C.font.normal, 14, 'OUTLINE')
-						child.Count:SetTextColor(1, 1, 1)
-						child.Count:SetShadowOffset(0, 0)
-
-						index = index + 1
-					end
-				end
-			end)
-		end
-	end)
-
-	f:RegisterEvent('ADDON_LOADED')
-end
-
--- Reanchor vehicle indicator
-function MISC:VehicleIndicator()
-	local frame = CreateFrame('Frame', 'FreeUIVehicleIndicatorMover', UIParent)
-	frame:SetSize(125, 125)
-	F.Mover(frame, L['MOVER_VEHICLE_INDICATOR'], 'VehicleIndicator', {'BOTTOMRIGHT', Minimap, 'TOPRIGHT', 0, 0})
-
-	hooksecurefunc(VehicleSeatIndicator, 'SetPoint', function(self, _, parent)
-		if parent == 'MinimapCluster' or parent == MinimapCluster then
-			self:ClearAllPoints()
-			self:SetPoint('TOPLEFT', frame)
-			self:SetScale(.7)
-		end
-	end)
-end
 
 -- Reanchor TicketStatusFrame
 function MISC:TicketStatusFrame()
@@ -352,30 +255,9 @@ function MISC:UIWidgetFrame()
 end
 
 
-function MISC:SkipAzeriteAnimation()
-	if not (IsAddOnLoaded('Blizzard_AzeriteUI')) then
-		UIParentLoadAddOn('Blizzard_AzeriteUI')
-	end
-	hooksecurefunc(AzeriteEmpoweredItemUI,'OnItemSet',function(self)
-		local itemLocation = self.azeriteItemDataSource:GetItemLocation()
-		if self:IsAnyTierRevealing() then
-			C_Timer.After(0.7,function() 
-				OpenAzeriteEmpoweredItemUIFromItemLocation(itemLocation)
-			end)
-		end
-	end)
-end
 
 
-function MISC:HideNewTalentAlert()
-	if PlayerTalentFrame then
-		PlayerTalentFrame:UnregisterEvent('ACTIVE_TALENT_GROUP_CHANGED')
-	else
-		hooksecurefunc('TalentFrame_LoadUI', function()
-			PlayerTalentFrame:UnregisterEvent('ACTIVE_TALENT_GROUP_CHANGED')
-		end)
-	end
-end
+
 
 -- Select target when click on raid units
 do
@@ -494,147 +376,11 @@ do
 	F:RegisterEvent('ADDON_LOADED', setupMisc)
 end
 
--- Archaeology counts
-do
-	local function CalculateArches()
-		print('|cff0080ff[FreeUI]'..'|c0000FF00'..L['MISC_ARCHAEOLOGY_COUNT']..':')
-		local total = 0
-		for i = 1, GetNumArchaeologyRaces() do
-			local numArtifacts = GetNumArtifactsByRace(i)
-			local count = 0
-			for j = 1, numArtifacts do
-				local completionCount = select(10, GetArtifactInfoByRace(i, j))
-				count = count + completionCount
-			end
-			local name = GetArchaeologyRaceInfo(i)
-			if numArtifacts > 1 then
-				print('     - |cfffed100'..name..': '..'|cff70C0F5'..count)
-				total = total + count
-			end
-		end
-		print('     - |c0000ff00'..TOTAL..': '..'|cffff0000'..total)
-		print(C.GreyColor..'------------------------')
-	end
 
-	local function AddCalculateIcon()
-		local bu = CreateFrame('Button', nil, ArchaeologyFrameCompletedPage)
-		bu:SetPoint('TOPRIGHT', -45, -45)
-		bu:SetSize(35, 35)
-		F.PixelIcon(bu, 'Interface\\ICONS\\Ability_Iyyokuk_Calculate', true)
-		F.AddTooltip(bu, 'ANCHOR_RIGHT', L['MISC_ARCHAEOLOGY_COUNT'], 'system')
-		bu:SetScript('OnMouseUp', CalculateArches)
-	end
 
-	local function setupMisc(event, addon)
-		if addon == 'Blizzard_ArchaeologyUI' then
-			AddCalculateIcon()
 
-			local frame = ArcheologyDigsiteProgressBar
-			local bar = frame.FillBar
 
-			frame.Shadow:Hide()
-			frame.BarBackground:Hide()
-			frame.BarBorderAndOverlay:Hide()
 
-			F.SetFS(frame.BarTitle, C.isCNClient)
-
-			frame.BarTitle:SetPoint('CENTER', frame)
-
-			bar:SetSize(200, 20)
-			frame.Flash:SetWidth(bar:GetWidth() + 20)
-
-			bar:SetStatusBarTexture(C.media.sbTex)
-			bar:SetStatusBarColor(221/255, 197/255, 162/255)
-
-			bar.bg = F.CreateBDFrame(bar)
-			F.CreateSD(bar.bg)
-
-			ArcheologyDigsiteProgressBar.ignoreFramePositionManager = true
-			ArcheologyDigsiteProgressBar:SetPoint('TOP', UIParent, 'TOP', 0, -50)
-
-			F.CreateMF(ArcheologyDigsiteProgressBar)
-
-			F:UnregisterEvent(event, setupMisc)
-		end
-	end
-
-	F:RegisterEvent('ADDON_LOADED', setupMisc)
-end
-
--- Temporary taint fix
-do
-	InterfaceOptionsFrameCancel:SetScript('OnClick', function()
-		InterfaceOptionsFrameOkay:Click()
-	end)
-
-	-- https://www.townlong-yak.com/bugs/Kjq4hm-DisplayModeCommunitiesTaint
-	if (UIDROPDOWNMENU_OPEN_PATCH_VERSION or 0) < 1 then
-		UIDROPDOWNMENU_OPEN_PATCH_VERSION = 1
-		hooksecurefunc('UIDropDownMenu_InitializeHelper', function(frame)
-			if UIDROPDOWNMENU_OPEN_PATCH_VERSION ~= 1 then return end
-
-			if UIDROPDOWNMENU_OPEN_MENU and UIDROPDOWNMENU_OPEN_MENU ~= frame and not issecurevariable(UIDROPDOWNMENU_OPEN_MENU, 'displayMode') then
-				UIDROPDOWNMENU_OPEN_MENU = nil
-				local t, f, prefix, i = _G, issecurevariable, ' \0', 1
-				repeat
-					i, t[prefix .. i] = i+1
-				until f('UIDROPDOWNMENU_OPEN_MENU')
-			end
-		end)
-	end
-
-	-- https://www.townlong-yak.com/bugs/YhgQma-SetValueRefreshTaint
-	if (COMMUNITY_UIDD_REFRESH_PATCH_VERSION or 0) < 1 then
-		COMMUNITY_UIDD_REFRESH_PATCH_VERSION = 1
-		local function CleanDropdowns()
-			if COMMUNITY_UIDD_REFRESH_PATCH_VERSION ~= 1 then
-				return
-			end
-			local f, f2 = FriendsFrame, FriendsTabHeader
-			local s = f:IsShown()
-			f:Hide()
-			f:Show()
-			if not f2:IsShown() then
-				f2:Show()
-				f2:Hide()
-			end
-			if not s then
-				f:Hide()
-			end
-		end
-		hooksecurefunc('Communities_LoadUI', CleanDropdowns)
-		hooksecurefunc('SetCVar', function(n)
-			if n == 'lastSelectedClubId' then
-				CleanDropdowns()
-			end
-		end)
-	end
-end
-
--- Fix Drag Collections taint
-do
-	local done
-	local function fixBlizz(event, addon)
-		if event == 'ADDON_LOADED' and addon == 'Blizzard_Collections' then
-			CollectionsJournal:HookScript('OnShow', function()
-				if not done then
-					if InCombatLockdown() then
-						F:RegisterEvent('PLAYER_REGEN_ENABLED', fixBlizz)
-					else
-						F.CreateMF(CollectionsJournal)
-					end
-					done = true
-				end
-			end)
-			F:UnregisterEvent(event, fixBlizz)
-		elseif event == 'PLAYER_REGEN_ENABLED' then
-			F.CreateMF(CollectionsJournal)
-			F:UnregisterEvent(event, fixBlizz)
-		end
-	end
-
-	F:RegisterEvent('ADDON_LOADED', fixBlizz)
-end
 
 -- Fix trade skill search
 hooksecurefunc('ChatEdit_InsertLink', function(text) -- shift-clicked
@@ -708,4 +454,60 @@ do
 
 	F:RegisterEvent('ADDON_LOADED', fixGuildNews)
 	F:RegisterEvent('ADDON_LOADED', fixCommunitiesNews)
+end
+
+
+
+-- Add friend and guild invite on target menu
+function MISC:MenuButton_OnClick(info)
+	local name, server = UnitName(info.unit)
+	if server and server ~= "" then name = name.."-"..server end
+
+	if info.value == "name" then
+		if MailFrame:IsShown() then
+			MailFrameTab_OnClick(nil, 2)
+			SendMailNameEditBox:SetText(name)
+			SendMailNameEditBox:HighlightText()
+		else
+			local editBox = ChatEdit_ChooseBoxForSend()
+			local hasText = (editBox:GetText() ~= "")
+			ChatEdit_ActivateChat(editBox)
+			editBox:Insert(name)
+			if not hasText then editBox:HighlightText() end
+		end
+	elseif info.value == "guild" then
+		GuildInvite(name)
+	end
+end
+
+function MISC:MenuButton_Show(_, unit)
+	if UIDROPDOWNMENU_MENU_LEVEL > 1 then return end
+
+	if unit and (unit == "target" or string.find(unit, "party") or string.find(unit, "raid")) then
+		local info = UIDropDownMenu_CreateInfo()
+		info.text = MISC.MenuButtonList["name"]
+		info.arg1 = {value = "name", unit = unit}
+		info.func = MISC.MenuButton_OnClick
+		info.notCheckable = true
+		UIDropDownMenu_AddButton(info)
+
+		if IsInGuild() and UnitIsPlayer(unit) and not UnitCanAttack("player", unit) and not UnitIsUnit("player", unit) then
+			info = UIDropDownMenu_CreateInfo()
+			info.text = MISC.MenuButtonList["guild"]
+			info.arg1 = {value = "guild", unit = unit}
+			info.func = MISC.MenuButton_OnClick
+			info.notCheckable = true
+			UIDropDownMenu_AddButton(info)
+		end
+	end
+end
+
+function MISC:EnhancedMenu()
+	if not C.general.enhancedMenu then return end
+
+	MISC.MenuButtonList = {
+		["name"] = COPY_NAME,
+		["guild"] = gsub(CHAT_GUILD_INVITE_SEND, HEADER_COLON, ""),
+	}
+	hooksecurefunc("UnitPopup_ShowMenu", MISC.MenuButton_Show)
 end

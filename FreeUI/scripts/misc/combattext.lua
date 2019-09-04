@@ -154,8 +154,8 @@ end
 
 local f, role = CreateFrame('Frame'), nil
 f:RegisterEvent('PLAYER_LOGIN')
-f:RegisterEvent('PLAYER_SPECIALIZATION_CHANGED')
-f:SetScript('OnEvent', function() role = GetSpecializationRole(GetSpecialization()) end)
+--f:RegisterEvent('PLAYER_SPECIALIZATION_CHANGED')
+--f:SetScript('OnEvent', function() role = GetSpecializationRole(GetSpecialization()) end)
 
 
 local MY_PET_FLAGS = bit.bor(COMBATLOG_OBJECT_AFFILIATION_MINE, COMBATLOG_OBJECT_REACTION_FRIENDLY, COMBATLOG_OBJECT_CONTROL_PLAYER, COMBATLOG_OBJECT_TYPE_PET)

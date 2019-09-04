@@ -3,7 +3,7 @@ local MISC = F:GetModule('Misc')
 
 
 local mailButton = CreateFrame('Button', 'FreeUIMailButton', InboxFrame, 'UIPanelButtonTemplate')
-local text = F.CreateFS(mailButton, 'pixel', '', nil, nil, true, 'CENTER', 0, 0)
+local text = F.CreateFS(mailButton, 'pixel', '', nil, true, 'CENTER', 0, 0)
 
 local processing = false
 
@@ -57,8 +57,8 @@ local function OnHide()
 end
 
 
-function MISC:ColletMail()
-	if not C.general.colletMail then return end
+function MISC:MailButton()
+	if not C.general.mailButton then return end
 
 	OpenAllMail:Hide()
 	OpenAllMail:UnregisterAllEvents()

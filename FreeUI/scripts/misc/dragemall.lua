@@ -102,6 +102,7 @@ local lodFrames = {
 	Blizzard_TradeSkillUI		= { ['TradeSkillFrame'] = false },
 	Blizzard_TrainerUI			= { ['ClassTrainerFrame'] = false },
 	Blizzard_VoidStorageUI		= { ['VoidStorageFrame'] = false, ['VoidStorageBorderFrameMouseBlockFrame'] = 'VoidStorageFrame' },
+	Blizzard_CraftUI			= { ["CraftFrame"] = false },
 }
 
 local parentFrame, hooked = {}, {}
