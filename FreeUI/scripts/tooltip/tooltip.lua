@@ -14,7 +14,7 @@ local InCombatLockdown, IsShiftKeyDown, GetMouseFocus, GetItemInfo = InCombatLoc
 local GetCreatureDifficultyColor, UnitCreatureType, UnitClassification = GetCreatureDifficultyColor, UnitCreatureType, UnitClassification
 local UnitIsWildBattlePet, UnitIsBattlePetCompanion, UnitBattlePetLevel = UnitIsWildBattlePet, UnitIsBattlePetCompanion, UnitBattlePetLevel
 local UnitIsPlayer, UnitName, UnitPVPName, UnitClass, UnitRace, UnitLevel = UnitIsPlayer, UnitName, UnitPVPName, UnitClass, UnitRace, UnitLevel
-local GetRaidTargetIndex, UnitGroupRolesAssigned, GetGuildInfo, IsInGuild = GetRaidTargetIndex, UnitGroupRolesAssigned, GetGuildInfo, IsInGuild
+local GetRaidTargetIndex, GetGuildInfo, IsInGuild = GetRaidTargetIndex, GetGuildInfo, IsInGuild
 
 local classification = {
 	elite = ' |cffcc8800'..ELITE..'|r',
@@ -79,7 +79,8 @@ function TOOLTIP:OnTooltipSetUnit()
 	local isShiftKeyDown = IsShiftKeyDown()
 	if UnitExists(unit) then
 		self.ttUnit = unit
-		local hexColor = F.HexRGB(F.UnitColor(unit))
+		local r, g, b = F.UnitColor(unit)
+		local hexColor = F.HexRGB(r, g, b)
 		local ricon = GetRaidTargetIndex(unit)
 		if ricon and ricon > 8 then ricon = nil end
 		if ricon and text then
@@ -146,11 +147,16 @@ function TOOLTIP:OnTooltipSetUnit()
 			local diff = GetCreatureDifficultyColor(level)
 			local classify = UnitClassification(unit)
 			local textLevel = format('%s%s%s|r', F.HexRGB(diff), boss or format('%d', level), classification[classify] or '')
+			
+			local pvpFlag = isPlayer and UnitIsPVP(unit) and format(' |cffff0000%s|r', PVP) or ''
+			local unitClass = isPlayer and format('%s %s', UnitRace(unit) or '', hexColor..(UnitClass(unit) or '')..'|r') or UnitCreatureType(unit) or ''
+			local levelString = format(('%s%s %s %s'), textLevel, pvpFlag, unitClass, (not alive and '|cffCCCCCC'..DEAD..'|r' or ''))
+
 			local tiptextLevel = TOOLTIP.GetLevelLine(self)
 			if tiptextLevel then
-				local pvpFlag = isPlayer and UnitIsPVP(unit) and format(' |cffff0000%s|r', PVP) or ''
-				local unitClass = isPlayer and format('%s %s', UnitRace(unit) or '', hexColor..(UnitClass(unit) or '')..'|r') or UnitCreatureType(unit) or ''
-				tiptextLevel:SetFormattedText(('%s%s %s %s'), textLevel, pvpFlag, unitClass, (not alive and '|cffCCCCCC'..DEAD..'|r' or ''))
+				tiptextLevel:SetText(levelString)
+			else
+				GameTooltip:AddLine(levelString)
 			end
 		end
 
