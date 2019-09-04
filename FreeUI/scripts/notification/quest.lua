@@ -73,23 +73,21 @@ function NOTIFICATION:FindQuestProgress(_, msg)
 end
 
 function NOTIFICATION:FindQuestAccept(questLogIndex, questID)
-	local link = GetQuestLink(questID)
-	local frequency = select(7, GetQuestLogTitle(questLogIndex))
-	if link then
+	local name, _, _, _, _, _, frequency = GetQuestLogTitle(questLogIndex)
+	if name then
 		local tagID, _, worldQuestType = GetQuestTagInfo(questID)
 		if tagID == 109 or worldQuestType == LE_QUEST_TAG_TYPE_PROFESSION then return end
-		sendQuestMsg(acceptText(link, frequency == LE_QUEST_FREQUENCY_DAILY))
+		sendQuestMsg(acceptText(name, frequency == LE_QUEST_FREQUENCY_DAILY))
 	end
 end
 
 function NOTIFICATION:FindQuestComplete()
 	for i = 1, GetNumQuestLogEntries() do
-		local _, _, _, _, _, isComplete, _, questID = GetQuestLogTitle(i)
-		local link = GetQuestLink(questID)
+		local name, _, _, _, _, isComplete, _, questID = GetQuestLogTitle(i)
 		local worldQuest = select(3, GetQuestTagInfo(questID))
-		if link and isComplete and not completedQuest[questID] and not worldQuest then
+		if name and isComplete and not completedQuest[questID] and not worldQuest then
 			if initComplete then
-				sendQuestMsg(completeText(link))
+				sendQuestMsg(completeText(name))
 			else
 				initComplete = true
 			end
