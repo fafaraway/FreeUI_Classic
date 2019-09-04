@@ -24,9 +24,23 @@ function QUEST:Tracker()
 		end
 	end)
 
+	local header = CreateFrame('Frame', nil, frame)
+	header:SetAllPoints(frame)
+	header:Hide()
+	header.text = F.CreateFS(header, {C.font.header, 14}, QUEST_LOG, 'yellow', true, 'TOPLEFT', 0, 15)
+
+	local bg = header:CreateTexture(nil, 'ARTWORK')
+	bg:SetTexture('Interface\\LFGFrame\\UI-LFG-SEPARATOR')
+	bg:SetTexCoord(0, .66, 0, .31)
+	bg:SetVertexColor(C.r, C.g, C.b, .8)
+	bg:SetPoint('TOPLEFT', 0, 20)
+	bg:SetSize(120, 30)
+
 	-- Show quest color and level
 	local function Showlevel(self)
-		local numEntries = GetNumQuestLogEntries()
+		local numEntries, numQuests = GetNumQuestLogEntries()
+
+		header.text:SetText(QUEST_LOG..' '..numQuests..'/'..MAX_QUESTLOG_QUESTS)
 
 		for i = 1, QUESTS_DISPLAYED, 1 do
 			local questIndex = i + FauxScrollFrame_GetOffset(QuestLogListScrollFrame)
@@ -52,17 +66,15 @@ function QUEST:Tracker()
 	end
 	hooksecurefunc('QuestLog_Update', Showlevel)
 
-	local header = CreateFrame('Frame', nil, frame)
-	header:SetAllPoints(frame)
-	header:Hide()
-	F.CreateFS(header, {C.font.header, 14}, QUEST_LOG, 'yellow', true, 'TOPLEFT', 0, 15)
 
-	local bg = header:CreateTexture(nil, 'ARTWORK')
-	bg:SetTexture('Interface\\LFGFrame\\UI-LFG-SEPARATOR')
-	bg:SetTexCoord(0, .66, 0, .31)
-	bg:SetVertexColor(C.r, C.g, C.b, .8)
-	bg:SetPoint('TOPLEFT', 0, 20)
-	bg:SetSize(120, 30)
+	
+
+	for i = 1, 30 do
+		local Line = _G["QuestWatchLine"..i]
+
+		F.SetFS(Line, {C.font.normal, 14}, nil, nil, {0, 0, 0, 1, 2, -2})
+		Line:SetHeight(16)
+	end
 
 	-- ModernQuestWatch, Ketho
 	local function onMouseUp(self)
@@ -136,7 +148,7 @@ function QUEST:Tracker()
 				local numObjectives = GetNumQuestLeaderBoards(questIndex)
 				if numObjectives > 0 then
 					local headerText = _G['QuestWatchLine'..watchTextIndex]
-					F.SetFS(headerText, {C.font.normal, 14}, nil, nil, nil, true)
+					--F.SetFS(headerText, {C.font.normal, 14}, nil, nil, nil, true)
 					if watchTextIndex > 1 then
 						headerText:SetPoint('TOPLEFT', 'QuestWatchLine'..(watchTextIndex - 1), 'BOTTOMLEFT', 0, -10)
 					end
