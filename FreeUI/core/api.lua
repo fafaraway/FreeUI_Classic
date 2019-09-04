@@ -178,7 +178,7 @@ function F:CreateBDFrame(a)
 	bg:SetPoint('TOPLEFT', self, -C.Mult, C.Mult)
 	bg:SetPoint('BOTTOMRIGHT', self, C.Mult, -C.Mult)
 	bg:SetFrameLevel(lvl == 0 and 1 or lvl - 1)
-	F.CreateBD(bg, a)
+	F.CreateBD(bg, a or C.appearance.backdropAlpha)
 
 	return bg
 end
@@ -321,6 +321,7 @@ local function scrollOnEnter(self)
 	bu.bg:SetBackdropColor(r, g, b, .25)
 	bu.bg:SetBackdropBorderColor(r, g, b)
 end
+
 local function scrollOnLeave(self)
 	local bu = (self.ThumbTexture or self.thumbTexture) or _G[self:GetName()..'ThumbTexture']
 	if not bu then return end
@@ -724,30 +725,6 @@ function F:ReskinNavBar()
 	overflowButton:HookScript('OnLeave', textureOnLeave)
 
 	self.navBarStyled = true
-end
-
-function F:ReskinGarrisonPortrait()
-	self.Portrait:ClearAllPoints()
-	self.Portrait:SetPoint('TOPLEFT', 4, -4)
-	self.PortraitRing:Hide()
-	self.PortraitRingQuality:SetTexture('')
-	if self.Highlight then self.Highlight:Hide() end
-
-	self.LevelBorder:SetScale(.0001)
-	self.Level:ClearAllPoints()
-	self.Level:SetPoint('BOTTOM', self, 0, 12)
-
-	self.squareBG = F.CreateBDFrame(self.Portrait, 1)
-	
-	if self.PortraitRingCover then
-		self.PortraitRingCover:SetColorTexture(0, 0, 0)
-		self.PortraitRingCover:SetAllPoints(self.squareBG)
-	end
-
-	if self.Empty then
-		self.Empty:SetColorTexture(0, 0, 0)
-		self.Empty:SetAllPoints(self.Portrait)
-	end
 end
 
 function F:ReskinIcon()
@@ -1287,9 +1264,12 @@ function F.GetItemLevel(link, arg1, arg2, fullScan)
 		gems, essences = F:InspectItemTextures(nil, true)
 
 		for i = 1, tip:NumLines() do
-			local text = _G[tip:GetName()..'TextLeft'..i]:GetText() or ''
-			iLvl, enchantText = F:InspectItemInfo(text, iLvl, enchantText)
-			if enchantText then break end
+			local line = _G[tip:GetName()..'TextLeft'..i]
+			if line then
+				local text = line:GetText() or ''
+				iLvl, enchantText = F:InspectItemInfo(text, iLvl, enchantText)
+				if enchantText then break end
+			end
 		end
 
 		return iLvl, enchantText, gems, essences
@@ -1306,12 +1286,15 @@ function F.GetItemLevel(link, arg1, arg2, fullScan)
 		end
 
 		for i = 2, 5 do
-			local text = _G[tip:GetName()..'TextLeft'..i]:GetText() or ''
-			local found = strfind(text, itemLevelString)
-			if found then
-				local level = strmatch(text, '(%d+)%)?$')
-				iLvlDB[link] = tonumber(level)
-				break
+			local line = _G[tip:GetName()..'TextLeft'..i]
+			if line then
+				local text = line:GetText() or ''
+				local found = strfind(text, itemLevelString)
+				if found then
+					local level = strmatch(text, '(%d+)%)?$')
+					iLvlDB[link] = tonumber(level)
+					break
+				end
 			end
 		end
 
@@ -1319,80 +1302,11 @@ function F.GetItemLevel(link, arg1, arg2, fullScan)
 	end
 end
 
--- mythic affixes
-function F:AffixesSetup()
-	for _, frame in ipairs(self.Affixes) do
-		frame.Border:SetTexture(nil)
-		frame.Portrait:SetTexture(nil)
-		if not frame.bg then
-			frame.bg = F.ReskinIcon(frame.Portrait)
-		end
-		if frame.info then
-			frame.Portrait:SetTexture(CHALLENGE_MODE_EXTRA_AFFIX_INFO[frame.info.key].texture)
-		elseif frame.affixID then
-			local _, _, filedataid = C_ChallengeMode.GetAffixInfo(frame.affixID)
-			frame.Portrait:SetTexture(filedataid)
-		end
-	end
-end
-
-function F:GetRoleTexCoord()
-	if self == 'TANK' then
-		return .32/9.03, 2.04/9.03, 2.65/9.03, 4.3/9.03
-	elseif self == 'DPS' or self == 'DAMAGER' then
-		return 2.68/9.03, 4.4/9.03, 2.65/9.03, 4.34/9.03
-	elseif self == 'HEALER' then
-		return 2.68/9.03, 4.4/9.03, .28/9.03, 1.98/9.03
-	elseif self == 'LEADER' then
-		return .32/9.03, 2.04/9.03, .28/9.03, 1.98/9.03
-	elseif self == 'READY' then
-		return 5.1/9.03, 6.76/9.03, .28/9.03, 1.98/9.03
-	elseif self == 'PENDING' then
-		return 5.1/9.03, 6.76/9.03, 2.65/9.03, 4.34/9.03
-	elseif self == 'REFUSE' then
-		return 2.68/9.03, 4.4/9.03, 5.02/9.03, 6.7/9.03
-	end
-end
-
-function F:ReskinRole(role)
-	if self.background then self.background:SetTexture('') end
-	local cover = self.cover or self.Cover
-	if cover then cover:SetTexture('') end
-	local texture = self.GetNormalTexture and self:GetNormalTexture() or self.texture or self.Texture or (self.SetTexture and self) or self.Icon
-	if texture then
-		texture:SetTexture(C.media.roleIcons)
-		texture:SetTexCoord(F.GetRoleTexCoord(role))
-	end
-	self.bg = F.CreateBDFrame(self)
-
-	local checkButton = self.checkButton or self.CheckButton or self.CheckBox
-	if checkButton then
-		checkButton:SetFrameLevel(self:GetFrameLevel() + 2)
-		checkButton:SetPoint('BOTTOMLEFT', -2, -2)
-		F.ReskinCheck(checkButton)
-	end
-
-	local shortageBorder = self.shortageBorder
-	if shortageBorder then
-		shortageBorder:SetTexture('')
-		local icon = self.incentiveIcon
-		icon:SetPoint('BOTTOMRIGHT')
-		icon:SetSize(14, 14)
-		icon.texture:SetSize(14, 14)
-		F.ReskinIcon(icon.texture)
-		icon.border:SetTexture('')
-	end
-end
-
-
-
-
+-- NPC id
 function F.GetNPCID(guid)
 	local id = tonumber((guid or ''):match('%-(%d-)%-%x-$'))
 	return id
 end
-
-
 
 -- Chat channel check
 F.CheckChat = function(warning)

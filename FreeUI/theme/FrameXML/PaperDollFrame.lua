@@ -8,6 +8,9 @@ tinsert(C.themes["FreeUI"], function()
 	local bg = F.CreateBDFrame(CharacterAttributesFrame, .25)
 	bg:SetPoint("BOTTOMRIGHT", 0, -8)
 
+	CharacterModelFrameRotateLeftButton:Hide()
+	CharacterModelFrameRotateRightButton:Hide()
+
 	CharacterModelFrame:DisableDrawLayer("BACKGROUND")
 	CharacterModelFrame:DisableDrawLayer("BORDER")
 	CharacterModelFrame:DisableDrawLayer("OVERLAY")

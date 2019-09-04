@@ -21,7 +21,6 @@ C.themes["Blizzard_AuctionUI"] = function()
 	for i = 1, 4 do
 		select(i, AuctionProgressFrame:GetRegions()):Hide()
 	end
-	AuctionProgressBar.Border:Hide()
 	BrowseFilterScrollFrame:GetRegions():Hide()
 	select(2, BrowseFilterScrollFrame:GetRegions()):Hide()
 	BrowseScrollFrame:GetRegions():Hide()
@@ -67,9 +66,14 @@ C.themes["Blizzard_AuctionUI"] = function()
 		end
 	end)
 
-	local abuttons = {"BrowseBidButton", "BrowseBuyoutButton", "BrowseCloseButton", "BrowseSearchButton", "BrowseResetButton", "BidBidButton", "BidBuyoutButton", "BidCloseButton", "AuctionsCloseButton", "AuctionsCancelAuctionButton", "AuctionsCreateAuctionButton", "AuctionsNumStacksMaxButton", "AuctionsStackSizeMaxButton"}
+	local abuttons = {"BrowseBidButton", "BrowseBuyoutButton", "BrowseCloseButton", "BrowseSearchButton", "BidBidButton", "BidBuyoutButton", "BidCloseButton", "AuctionsCloseButton", "AuctionsCancelAuctionButton", "AuctionsCreateAuctionButton", "AuctionsNumStacksMaxButton", "AuctionsStackSizeMaxButton"}
 	for i = 1, #abuttons do
-		F.Reskin(_G[abuttons[i]])
+		local bu = _G[abuttons[i]]
+		if not bu then
+			print(abuttons[i])
+		else
+			F.Reskin(_G[abuttons[i]])
+		end
 	end
 
 	BrowseCloseButton:ClearAllPoints()
@@ -86,7 +90,7 @@ C.themes["Blizzard_AuctionUI"] = function()
 	AuctionsCancelAuctionButton:SetPoint("RIGHT", AuctionsCloseButton, "LEFT", -1, 0)
 
 	-- Blizz needs to be more consistent
-
+--[[
 	BrowseBidPriceSilver:SetPoint("LEFT", BrowseBidPriceGold, "RIGHT", 1, 0)
 	BrowseBidPriceCopper:SetPoint("LEFT", BrowseBidPriceSilver, "RIGHT", 1, 0)
 	BidBidPriceSilver:SetPoint("LEFT", BidBidPriceGold, "RIGHT", 1, 0)
@@ -94,13 +98,12 @@ C.themes["Blizzard_AuctionUI"] = function()
 	StartPriceSilver:SetPoint("LEFT", StartPriceGold, "RIGHT", 1, 0)
 	StartPriceCopper:SetPoint("LEFT", StartPriceSilver, "RIGHT", 1, 0)
 	BuyoutPriceSilver:SetPoint("LEFT", BuyoutPriceGold, "RIGHT", 1, 0)
-	BuyoutPriceCopper:SetPoint("LEFT", BuyoutPriceSilver, "RIGHT", 1, 0)
+	BuyoutPriceCopper:SetPoint("LEFT", BuyoutPriceSilver, "RIGHT", 1, 0)]]
 
 	local function reskinAuctionButtons(button, i)
 		local bu = _G[button..i]
 		local it = _G[button..i.."Item"]
 		local ic = _G[button..i.."ItemIconTexture"]
-		local co = _G[button..i.."ItemCount"]
 
 		if bu and it then
 			it:SetNormalTexture("")
@@ -120,9 +123,6 @@ C.themes["Blizzard_AuctionUI"] = function()
 			hl:ClearAllPoints()
 			hl:SetPoint("TOPLEFT", 0, -1)
 			hl:SetPoint("BOTTOMRIGHT", -1, 6)
-
-			co:SetPoint("BOTTOMRIGHT", 2, 2)
-			F.SetFS(co)
 		end
 	end
 
@@ -143,7 +143,7 @@ C.themes["Blizzard_AuctionUI"] = function()
 	auctionhandler:SetScript("OnEvent", function()
 		local AuctionsItemButtonIconTexture = AuctionsItemButton:GetNormalTexture()
 		if AuctionsItemButtonIconTexture then
-			AuctionsItemButtonIconTexture:SetTexCoord(unpack(C.TexCoord))
+			AuctionsItemButtonIconTexture:SetTexCoord(.08, .92, .08, .92)
 			AuctionsItemButtonIconTexture:SetPoint("TOPLEFT", C.Mult, -C.Mult)
 			AuctionsItemButtonIconTexture:SetPoint("BOTTOMRIGHT", -C.Mult, C.Mult)
 		end
@@ -163,17 +163,14 @@ C.themes["Blizzard_AuctionUI"] = function()
 	F.ReskinScroll(AuctionsScrollFrameScrollBar)
 	F.ReskinScroll(BrowseFilterScrollFrameScrollBar)
 	F.ReskinDropDown(PriceDropDown)
-	F.ReskinDropDown(DurationDropDown)
 	F.ReskinInput(BrowseName)
 	F.ReskinArrow(BrowsePrevPageButton, "left")
 	F.ReskinArrow(BrowseNextPageButton, "right")
-	F.ReskinCheck(ExactMatchCheckButton)
 	F.ReskinCheck(IsUsableCheckButton)
 	F.ReskinCheck(ShowOnPlayerCheckButton)
-
-	BrowsePrevPageButton:SetPoint("TOPLEFT", 660, -60)
-	BrowseNextPageButton:SetPoint("TOPRIGHT", 67, -60)
-	BrowsePrevPageButton:GetRegions():SetPoint("LEFT", BrowsePrevPageButton, "RIGHT", 2, 0)
+	F.ReskinRadio(AuctionsShortAuctionButton)
+	F.ReskinRadio(AuctionsMediumAuctionButton)
+	F.ReskinRadio(AuctionsLongAuctionButton)
 
 	BrowseDropDownLeft:SetAlpha(0)
 	BrowseDropDownMiddle:SetAlpha(0)
@@ -231,6 +228,6 @@ C.themes["Blizzard_AuctionUI"] = function()
 		iconBorder:SetDrawLayer("BACKGROUND")
 		iconBorder:SetPoint("TOPLEFT", icon, -C.Mult, C.Mult)
 		iconBorder:SetPoint("BOTTOMRIGHT", icon, C.Mult, -C.Mult)
-		icon:SetTexCoord(unpack(C.TexCoord))
+		icon:SetTexCoord(.08, .92, .08, .92)
 	end
 end

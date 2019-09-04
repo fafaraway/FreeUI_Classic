@@ -14,7 +14,7 @@ tinsert(C.themes["FreeUI"], function()
 		end
 		F.CreateBD(InterfaceOptionsFrame)
 		F.CreateSD(InterfaceOptionsFrame)
-		InterfaceOptionsFrame.Border:Hide()
+		--InterfaceOptionsFrame.Border:Hide()
 
 		InterfaceOptionsFrameHeader:SetTexture("")
 		InterfaceOptionsFrameHeader:ClearAllPoints()

@@ -28,11 +28,13 @@
 	<Include file='scripts\loot\loot.xml'/>
 	<Include file='scripts\map\map.xml'/>
 	<Include file='scripts\misc\misc.xml'/>
-	<!-- <Include file='scripts\notification\notification.xml'/> -->
+	<Include file='scripts\notification\notification.xml'/>
 	<Include file='scripts\quest\quest.xml'/>
-	<Include file='scripts\theme\theme.xml'/>
+	
 	<Include file='scripts\tooltip\tooltip.xml'/>
 	<Include file='scripts\unitframe\unitframe.xml'/>
+
+	<Include file='theme\theme.xml'/>
 	
 	<Script file='core\dev.lua'/>
 </Ui>
