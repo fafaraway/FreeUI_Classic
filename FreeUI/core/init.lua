@@ -24,7 +24,8 @@ local defaultSettings = {
 
 local accountSettings = {
 	totalGold = {},
-	keystoneInfo = {},
+	repairType = 0,
+	autoSellJunk = true,
 }
 
 local function InitialSettings(source, target)
