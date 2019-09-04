@@ -34,7 +34,7 @@ StaticPopupDialogs['RESETGOLD'] = {
 	button1 = YES,
 	button2 = NO,
 	OnAccept = function()
-		wipe(FreeUIGlobalConfig["totalGold"][myRealm])
+		wipe(FreeUIGlobalConfig['totalGold'][myRealm])
 		FreeUIGlobalConfig['totalGold'][myRealm][myName] = {GetMoney(), C.Class}
 	end,
 	timeout = 0,
@@ -43,18 +43,72 @@ StaticPopupDialogs['RESETGOLD'] = {
 	preferredIndex = 5,
 }
 
+
+local sellCount, stop, cache = 0, true, {}
+local errorText = _G.ERR_VENDOR_DOESNT_BUY
+
+local function stopSelling(tell)
+	stop = true
+	if sellCount > 0 and tell then
+		--print(format('|cff99CCFF%s|r%s', L['INFOBAR_AUTO_SELL_JUNK'], INFOBAR:GetMoneyString(sellCount, true)))
+
+		print(C.GreenColor..L['INFOBAR_AUTO_SELL_JUNK']..'|r: '..GetMoneyString(sellCount))
+		if C.notification.enableBanner then
+			F.Notification(L['NOTIFICATION_SELL'], C.GreenColor..L['INFOBAR_AUTO_SELL_JUNK']..'|r: '..GetMoneyString(sellCount), 'Interface\\Icons\\INV_Hammer_20')
+		end
+	end
+
+
+
+
+
+	sellCount = 0
+end
+
+local function startSelling()
+	if stop then return end
+	for bag = 0, 4 do
+		for slot = 1, GetContainerNumSlots(bag) do
+			if stop then return end
+			local link = GetContainerItemLink(bag, slot)
+			if link then
+				local price = select(11, GetItemInfo(link))
+				local _, count, _, quality = GetContainerItemInfo(bag, slot)
+				if quality == 0 and price > 0 and not cache['b'..bag..'s'..slot] then
+					sellCount = sellCount + price*count
+					cache['b'..bag..'s'..slot] = true
+					UseContainerItem(bag, slot)
+					C_Timer_After(.2, startSelling)
+					return
+				end
+			end
+		end
+	end
+end
+
+local function updateSelling(event, ...)
+	if not FreeUIGlobalConfig['autoSellJunk'] then return end
+
+	local _, arg = ...
+	if event == 'MERCHANT_SHOW' then
+		if IsShiftKeyDown() then return end
+		stop = false
+		wipe(cache)
+		startSelling()
+		F:RegisterEvent('UI_ERROR_MESSAGE', updateSelling)
+	elseif event == 'UI_ERROR_MESSAGE' and arg == errorText then
+		stopSelling(false)
+	elseif event == 'MERCHANT_CLOSED' then
+		stopSelling(true)
+	end
+end
+
+
 function INFOBAR:Currencies()
 	if not C.infobar.enable then return end
 	if not C.infobar.currencies then return end
 
-	FreeUIMoneyButton = INFOBAR:addButton('', INFOBAR.POSITION_RIGHT, 120, function(self, button)
-		if button == 'RightButton' then
-			StaticPopup_Show('RESETGOLD')
-		else
-			if InCombatLockdown() then UIErrorsFrame:AddMessage(C.InfoColor..ERR_NOT_IN_COMBAT) return end
-			ToggleCharacter('TokenFrame')
-		end
-	end)
+	FreeUIMoneyButton = INFOBAR:addButton('', INFOBAR.POSITION_RIGHT, 120)
 
 	FreeUIMoneyButton:RegisterEvent('PLAYER_ENTERING_WORLD')
 	FreeUIMoneyButton:RegisterEvent('PLAYER_MONEY')
@@ -84,7 +138,8 @@ function INFOBAR:Currencies()
 		oldMoney = newMoney
 	end)
 
-	FreeUIMoneyButton:HookScript('OnEnter', function(self)
+
+	FreeUIMoneyButton.onEnter = function(self)
 		GameTooltip:SetOwner(self, 'ANCHOR_BOTTOM', 0, -15)
 
 		GameTooltip:ClearLines()
@@ -114,15 +169,26 @@ function INFOBAR:Currencies()
 		GameTooltip:AddDoubleLine(TOTAL, getGoldString(totalGold), .6,.8,1, 1, 1, 1)
 
 		GameTooltip:AddDoubleLine(' ', C.LineString)
-		GameTooltip:AddDoubleLine(' ', C.LeftButton..L['INFOBAR_OPEN_CURRENCY_PANEL'], 1,1,1, .9, .8, .6)
+		GameTooltip:AddDoubleLine(' ', C.LeftButton..L['INFOBAR_AUTO_SELL_JUNK']..': '..(FreeUIGlobalConfig['autoSellJunk'] and '|cff55ff55'..VIDEO_OPTIONS_ENABLED or '|cffff5555'..VIDEO_OPTIONS_DISABLED)..' ', 1,1,1, .9, .8, .6)
 		GameTooltip:AddDoubleLine(' ', C.RightButton..L['INFOBAR_RESET_GOLD_COUNT'], 1,1,1, .9, .8, .6)
 		GameTooltip:Show()
-	end)
+	end
+	FreeUIMoneyButton:HookScript('OnEnter', FreeUIMoneyButton.onEnter)
+
+	FreeUIMoneyButton.onMouseUp = function(self, btn)
+		if btn == 'RightButton' then
+			StaticPopup_Show('RESETGOLD')
+		elseif btn == 'LeftButton' then
+			FreeUIGlobalConfig['autoSellJunk'] = not FreeUIGlobalConfig['autoSellJunk']
+			self:onEnter()
+		end
+	end
+	FreeUIMoneyButton:HookScript('OnMouseUp', FreeUIMoneyButton.onMouseUp)
 
 	FreeUIMoneyButton:HookScript('OnLeave', function()
 		GameTooltip:Hide()
 	end)
+
+	F:RegisterEvent('MERCHANT_SHOW', updateSelling)
+	F:RegisterEvent('MERCHANT_CLOSED', updateSelling)
 end
-
-
-

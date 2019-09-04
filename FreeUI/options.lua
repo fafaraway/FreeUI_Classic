@@ -5,29 +5,25 @@ C['general'] = {
 	['uiScale'] = 1,
 	['uiScaleAuto'] = true,
 
-	['hideBossBanner'] = true,
-	['hideTalkingHead'] = true,
+	['enhancedMenu'] = true,
 
-	['colletMail'] = true, 				
+	['mailButton'] = true, 				
 	['alreadyKnown'] = true,
 	['tradeTabs'] = true,
-	['getNaked'] = true,
+	['nakedButton'] = true,
 	
-	['commandBar'] = true,
+
 	
 	['fasterLoot'] = true,
 	['PVPSound'] = true,
 
 	['marker'] = true,
-	['focuser'] = true,
+
 
 	['extraQuestButton'] = true,
 	
 	['itemLevel'] = true,
-	['durability'] = true,
-	['fullStats'] = true,
 
-	['petFilter'] = true,
 
 
 	['combatText'] = true,
@@ -199,6 +195,7 @@ C['infobar'] = {
 		['friends'] = true,
 		['currencies'] = true,
 		['durability'] = true,
+		['talent'] = true,
 }
 
 C['tooltip'] = {

@@ -2,11 +2,7 @@ local F, C, L = unpack(select(2, ...))
 
 if (GetLocale() ~= 'zhCN' and GetLocale() ~= 'zhTW') then return end
 
--- automation
-L['AUTOMATION_GUILD_REPAIR_COST'] = '使用公会修理'
-L['AUTOMATION_REPAIR_COST'] = '自动修理花费'
-L['AUTOMATION_REPAIR_FAILED'] = '没有足够的钱进行修理！'
-L['AUTOMATION_SELL_JUNK'] = '自动出售垃圾'
+
 
 
 -- misc
@@ -32,6 +28,8 @@ L['MISC_DISBAND_GROUP_CHECK'] = '你确定要解散队伍?'
 L['MISC_NUMBER_CAP_1'] = '万'
 L['MISC_NUMBER_CAP_2'] = '亿'
 L['MISC_NUMBER_CAP_3'] = '兆'
+L['MISC_HIDE_HELM'] = '隐藏头盔'
+L['MISC_HIDE_CLOAK'] = '隐藏披风'
 
 
 -- notification
@@ -101,6 +99,13 @@ L['INFOBAR_FEET'] = '脚部'
 L['INFOBAR_OPEN_CHARACTER_PANEL'] = '打开角色面板'
 
 L['INFOBAR_INFO'] = '信息'
+
+L['INFOBAR_AUTO_SELL_JUNK'] = '自动出售垃圾获得'
+L['INFOBAR_AUTO_REPAIR'] = '自动修理装备花费'
+
+L['INFOBAR_GUILD_REPAIR_COST'] = '公会修理'
+L['INFOBAR_REPAIR_COST'] = '自动修理'
+L['INFOBAR_REPAIR_FAILED'] = '没有足够的金钱完成装备修理！'
 
 
 -- inventory
@@ -177,12 +182,12 @@ L['INSTALL_HEADER_SECOND'] = '界面缩放'
 L['INSTALL_HEADER_THIRD'] = '聊天设置'
 L['INSTALL_HEADER_FOURTH'] = '插件设置'
 L['INSTALL_HEADER_FIFTH'] = '安装成功！'
-L['INSTALL_BODY_WELCOME'] = "欢迎使用 FreeUI 经典版！\n\n在开始使用前需要调整一些设定来更好的搭配 FreeUI 工作。\n\n如果你是 FreeUI 的新用户，你也可以点击下方的教程按钮来熟悉各项功能。\n\n点击安装按钮将直接进入安装步骤。"
-L['INSTALL_BODY_FIRST'] = "这些安装步骤将为 FreeUI 调整各类合适的设定。\n\n第一步将会调整一些 CVars 设定。\n\n点击下方的继续按钮将应用设定，或者点击跳过按钮如果你想跳过这些设定。"
+L['INSTALL_BODY_WELCOME'] = '欢迎使用 FreeUI 经典版！\n\n在开始使用前需要调整一些设定来更好的搭配 FreeUI 工作。\n\n如果你是 FreeUI 的新用户，你也可以点击下方的教程按钮来熟悉各项功能。\n\n点击安装按钮将直接进入安装步骤。'
+L['INSTALL_BODY_FIRST'] = '这些安装步骤将为 FreeUI 调整各类合适的设定。\n\n第一步将会调整一些 CVars 设定。\n\n点击下方的继续按钮将应用设定，或者点击跳过按钮如果你想跳过这些设定。'
 L['INSTALL_BODY_SECOND'] = '这个步骤将会为游戏界面设定合适的缩放值。'
 L['INSTALL_BODY_THIRD'] = '这个步骤将会调整一些聊天栏相关的设定。'
-L['INSTALL_BODY_FOURTH'] = "这个步骤将自动配置 Bigwigs 和 Skada 的设定并使其配合 FreeUI 的界面风格与布局。"
-L['INSTALL_BODY_FIFTH'] = "安装已经成功完成。\n\n请点击下方完成按钮重载界面。"
+L['INSTALL_BODY_FOURTH'] = '这个步骤将自动配置 Bigwigs 和 Skada 的设定并使其配合 FreeUI 的界面风格与布局。'
+L['INSTALL_BODY_FIFTH'] = '安装已经成功完成。\n\n请点击下方完成按钮重载界面。'
 
 L['INSTALL_BUTTON_TUTORIAL'] = '教程'
 L['INSTALL_BUTTON_INSTALL'] = '安装'

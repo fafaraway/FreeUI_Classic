@@ -4,10 +4,8 @@ local INFOBAR = F:GetModule('Infobar')
 
 local format, gsub, sort, floor, modf, select = string.format, string.gsub, table.sort, math.floor, math.modf, select
 local GetInventoryItemLink, GetInventoryItemDurability, GetInventoryItemTexture = GetInventoryItemLink, GetInventoryItemDurability, GetInventoryItemTexture
-local GetMoneyString, GetMoney, GetRepairAllCost, RepairAllItems, CanMerchantRepair = GetMoneyString, GetMoney, GetRepairAllCost, RepairAllItems, CanMerchantRepair
-local GetAverageItemLevel, IsInGuild, CanGuildBankRepair, GetGuildBankWithdrawMoney = GetAverageItemLevel, IsInGuild, CanGuildBankRepair, GetGuildBankWithdrawMoney
+local GetMoney, GetRepairAllCost, RepairAllItems, CanMerchantRepair = GetMoney, GetRepairAllCost, RepairAllItems, CanMerchantRepair
 local C_Timer_After, IsShiftKeyDown, InCombatLockdown, CanMerchantRepair = C_Timer.After, IsShiftKeyDown, InCombatLockdown, CanMerchantRepair
-
 local FreeUIDurabilityButton = INFOBAR.FreeUIDurabilityButton
 
 local localSlots = {
@@ -21,6 +19,12 @@ local localSlots = {
 	[8] = {8, L['INFOBAR_FEET'], 1000},
 	[9] = {16, INVTYPE_WEAPONMAINHAND, 1000},
 	[10] = {17, INVTYPE_WEAPONOFFHAND, 1000}
+}
+
+local repairlist = {
+	[0] = '|cffff5555'..VIDEO_OPTIONS_DISABLED,
+	[1] = '|cff55ff55'..VIDEO_OPTIONS_ENABLED,
+	[2] = '|cffffff55'..'NFG',
 }
 
 local function getItemDurability()
@@ -58,14 +62,92 @@ local function gradientColor(perc)
 end
 
 
+function INFOBAR:ReanchorDurabilityFrame()
+	hooksecurefunc(DurabilityFrame, 'SetPoint', function(self, _, parent)
+		if parent == 'MinimapCluster' or parent == MinimapCluster then
+			self:SetScale(1)
+			self:ClearAllPoints()
+			self:SetClampedToScreen(true)
+			self:SetPoint('TOP', UIParent, 'TOP', 0, -200)
+		end
+	end)
+end
+
+
+local isShown, isBankEmpty, autoRepair, repairAllCost, canRepair
+
+local function delayFunc()
+	if isBankEmpty then
+		autoRepair(true)
+	else
+		print(format(C.RedColor..'%s:|r %s', L['INFOBAR_GUILD_REPAIR_COST'], GetMoneyString(repairAllCost)))
+
+		if C.notification.enableBanner then
+			F.Notification(L['NOTIFICATION_REPAIR'], format(C.RedColor..'%s:|r %s', L['INFOBAR_GUILD_REPAIR_COST'], GetMoneyString(repairAllCost)), 'Interface\\Icons\\INV_Hammer_20')
+		end
+	end
+end
+
+function autoRepair(override)
+	if isShown and not override then return end
+	isShown = true
+	isBankEmpty = false
+
+	local myMoney = GetMoney()
+	repairAllCost, canRepair = GetRepairAllCost()
+
+	if canRepair and repairAllCost > 0 then
+		if (not override) and FreeUIGlobalConfig['repairType'] == 1 and not C.isClassic then
+			RepairAllItems(true)
+		else
+			if myMoney > repairAllCost then
+				RepairAllItems()
+
+				print(format(C.RedColor..'%s:|r'..' %s', L['INFOBAR_REPAIR_COST'], GetMoneyString(repairAllCost)))
+
+				if (C.notification.enableBanner and C.notification.autoRepairCost) then
+					F.Notification(L['NOTIFICATION_REPAIR'], format(C.RedColor..'%s:|r'..' %s', L['INFOBAR_REPAIR_COST'], GetMoneyString(repairAllCost)), 'Interface\\Icons\\INV_Hammer_20')
+				end
+				return
+			else
+				print(C.InfoColor..L['INFOBAR_REPAIR_FAILED'])
+
+				if (C.notification.enableBanner and C.notification.autoRepairCost) then
+					F.Notification(L['NOTIFICATION_REPAIR'], C.InfoColor..L['INFOBAR_REPAIR_FAILED'], 'Interface\\Icons\\INV_Hammer_20')
+				end
+				return
+			end
+		end
+
+		C_Timer_After(.5, delayFunc)
+	end
+end
+
+local function checkBankFund(_, msgType)
+	if msgType == LE_GAME_ERR_GUILD_NOT_ENOUGH_MONEY then
+		isBankEmpty = true
+	end
+end
+
+local function merchantClose()
+	isShown = false
+	F:UnregisterEvent('UI_ERROR_MESSAGE', checkBankFund)
+	F:UnregisterEvent('MERCHANT_CLOSED', merchantClose)
+end
+
+local function merchantShow()
+	if IsShiftKeyDown() or FreeUIGlobalConfig['repairType'] == 0 or not CanMerchantRepair() then return end
+	autoRepair()
+	F:RegisterEvent('UI_ERROR_MESSAGE', checkBankFund)
+	F:RegisterEvent('MERCHANT_CLOSED', merchantClose)
+end
+
+
 function INFOBAR:Durability()
 	if not C.infobar.enable then return end
 	if not C.infobar.durability then return end
 
-	FreeUIDurabilityButton = INFOBAR:addButton('', INFOBAR.POSITION_RIGHT, 120, function(self, button)
-		if InCombatLockdown() then UIErrorsFrame:AddMessage(C.InfoColor..ERR_NOT_IN_COMBAT) return end
-		ToggleCharacter('PaperDollFrame')
-	end)
+	FreeUIDurabilityButton = INFOBAR:addButton('', INFOBAR.POSITION_RIGHT, 120)
 
 	FreeUIDurabilityButton:RegisterEvent('UPDATE_INVENTORY_DURABILITY')
 	FreeUIDurabilityButton:RegisterEvent('PLAYER_ENTERING_WORLD')
@@ -86,7 +168,7 @@ function INFOBAR:Durability()
 		end
 	end)
 
-	FreeUIDurabilityButton:HookScript('OnEnter', function(self)
+	FreeUIDurabilityButton.onEnter = function(self)
 		GameTooltip:SetOwner(self, 'ANCHOR_BOTTOM', 0, -15)
 		GameTooltip:ClearLines()
 		GameTooltip:AddLine(DURABILITY, .9, .8, .6)
@@ -102,11 +184,24 @@ function INFOBAR:Durability()
 		end
 
 		GameTooltip:AddDoubleLine(' ', C.LineString)
-		GameTooltip:AddDoubleLine(' ', C.LeftButton..L['INFOBAR_OPEN_CHARACTER_PANEL']..' ', 1,1,1, .9, .8, .6)
+		GameTooltip:AddDoubleLine(' ', C.LeftButton..L['INFOBAR_AUTO_REPAIR']..': '..repairlist[FreeUIGlobalConfig['repairType']], 1,1,1, .9, .8, .6)
 		GameTooltip:Show()
-	end)
+	end
+	FreeUIDurabilityButton:HookScript('OnEnter', FreeUIDurabilityButton.onEnter)
+
+	FreeUIDurabilityButton.onMouseUp = function(self, btn)
+		if btn == 'LeftButton' then
+			FreeUIGlobalConfig['repairType'] = mod(FreeUIGlobalConfig['repairType'] + 1, 2)
+			self:onEnter()
+		end
+	end
+	FreeUIDurabilityButton:HookScript('OnMouseUp', FreeUIDurabilityButton.onMouseUp)
 
 	FreeUIDurabilityButton:HookScript('OnLeave', function(self)
 		GameTooltip:Hide()
 	end)
+
+	self:ReanchorDurabilityFrame()
+
+	F:RegisterEvent('MERCHANT_SHOW', merchantShow)
 end

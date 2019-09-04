@@ -173,6 +173,7 @@ function INFOBAR:OnLogin()
 	self:Stats()
 	self:SkadaHelper()
 	self:Durability()
+	self:Talent()
 	self:Friends()
 	self:Currencies()
 end

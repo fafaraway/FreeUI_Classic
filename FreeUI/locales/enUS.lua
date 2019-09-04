@@ -2,11 +2,7 @@ local F, C, L = unpack(select(2, ...))
 
 
 
--- automation
-L['AUTOMATION_GUILD_REPAIR_COST'] = 'Repair cost covered by Guild Bank'
-L['AUTOMATION_REPAIR_COST'] = 'Repair cost'
-L['AUTOMATION_REPAIR_FAILED'] = 'You have insufficient funds to repair your equipment!'
-L['AUTOMATION_SELL_JUNK'] = 'Vendor trash sold'
+
 
 
 -- misc
@@ -32,6 +28,9 @@ L['MISC_DISBAND_GROUP_CHECK'] = 'Are you sure you want to disband the group?'
 L['MISC_NUMBER_CAP_1'] = ''
 L['MISC_NUMBER_CAP_2'] = ''
 L['MISC_NUMBER_CAP_3'] = ''
+
+L['MISC_HIDE_HELM'] = 'Hide helm'
+L['MISC_HIDE_CLOAK'] = 'Hide cloak'
 
 
 -- notification
@@ -101,6 +100,13 @@ L['INFOBAR_FEET'] = 'Feet'
 L['INFOBAR_OPEN_CHARACTER_PANEL'] = 'Open character panel'
 
 L['INFOBAR_INFO'] = 'Information'
+
+L['INFOBAR_AUTO_SELL_JUNK'] = 'Auto sell junk'
+L['INFOBAR_AUTO_REPAIR'] = 'Auto repair cost'
+
+L['INFOBAR_GUILD_REPAIR_COST'] = 'Guild repair'
+L['INFOBAR_REPAIR_COST'] = 'Repair cost'
+L['INFOBAR_REPAIR_FAILED'] = 'You have insufficient funds to repair your equipment!'
 
 
 -- inventory
