@@ -29,8 +29,8 @@ L['MISC_NUMBER_CAP_1'] = ''
 L['MISC_NUMBER_CAP_2'] = ''
 L['MISC_NUMBER_CAP_3'] = ''
 
-L['MISC_HIDE_HELM'] = 'Hide helm'
-L['MISC_HIDE_CLOAK'] = 'Hide cloak'
+L['MISC_SHOW_HELM'] = 'Show helm'
+L['MISC_SHOW_CLOAK'] = 'Show cloak'
 
 
 -- notification

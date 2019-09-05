@@ -28,8 +28,8 @@ L['MISC_DISBAND_GROUP_CHECK'] = '你确定要解散队伍?'
 L['MISC_NUMBER_CAP_1'] = '万'
 L['MISC_NUMBER_CAP_2'] = '亿'
 L['MISC_NUMBER_CAP_3'] = '兆'
-L['MISC_HIDE_HELM'] = '隐藏头盔'
-L['MISC_HIDE_CLOAK'] = '隐藏披风'
+L['MISC_SHOW_HELM'] = '显示头盔'
+L['MISC_SHOW_CLOAK'] = '显示披风'
 
 
 -- notification
