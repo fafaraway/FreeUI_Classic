@@ -5,24 +5,26 @@ C.themes["Blizzard_Communities"] = function()
 	local CommunitiesFrame = CommunitiesFrame
 
 	F.ReskinPortraitFrame(CommunitiesFrame)
-	CommunitiesFrame.NineSlice:Hide()
 	CommunitiesFrame.PortraitOverlay:SetAlpha(0)
 	F.ReskinDropDown(CommunitiesFrame.StreamDropDownMenu)
+	F.StripTextures(CommunitiesFrame.MaximizeMinimizeFrame)
 	F.ReskinMinMax(CommunitiesFrame.MaximizeMinimizeFrame)
 	F.ReskinArrow(CommunitiesFrame.AddToChatButton, "down")
 	F.ReskinDropDown(CommunitiesFrame.CommunitiesListDropDownMenu)
 
-	for _, name in next, {"GuildFinderFrame", "InvitationFrame", "TicketFrame"} do
+	for i = 1, 5 do
+		F.ReskinTab(_G["CommunitiesFrameTab"..i])
+	end
+
+	for _, name in next, {"InvitationFrame", "TicketFrame"} do
 		local frame = CommunitiesFrame[name]
 		F.StripTextures(frame)
 		F.CreateBD(frame, .25)
 		frame.InsetFrame:Hide()
-
 		if frame.CircleMask then
 			frame.CircleMask:Hide()
 			F.ReskinIcon(frame.Icon)
 		end
-		
 		if frame.FindAGuildButton then F.Reskin(frame.FindAGuildButton) end
 		if frame.AcceptButton then F.Reskin(frame.AcceptButton) end
 		if frame.DeclineButton then F.Reskin(frame.DeclineButton) end
@@ -72,7 +74,7 @@ C.themes["Blizzard_Communities"] = function()
 		end
 	end)
 
-	for _, name in next, {"ChatTab", "RosterTab", "GuildBenefitsTab", "GuildInfoTab"} do
+	for _, name in next, {"ChatTab", "RosterTab"} do
 		local tab = CommunitiesFrame[name]
 		tab:GetRegions():Hide()
 		F.ReskinIcon(tab.Icon)
@@ -188,28 +190,14 @@ C.themes["Blizzard_Communities"] = function()
 	CommunitiesFrame.MemberList.InsetFrame:Hide()
 	F.CreateBDFrame(CommunitiesFrame.MemberList.ListScrollFrame, .25)
 	F.StripTextures(CommunitiesFrame.MemberList.ColumnDisplay)
-	F.ReskinDropDown(CommunitiesFrame.GuildMemberListDropDownMenu)
+	--F.ReskinDropDown(CommunitiesFrame.GuildMemberListDropDownMenu)
 	F.ReskinScroll(CommunitiesFrame.MemberList.ListScrollFrame.scrollBar)
 	CommunitiesFrame.MemberList.ListScrollFrame.scrollBar.Background:Hide()
 	F.ReskinCheck(CommunitiesFrame.MemberList.ShowOfflineButton)
 	CommunitiesFrame.MemberList.ShowOfflineButton:SetSize(25, 25)
-	F.Reskin(CommunitiesFrame.CommunitiesControlFrame.GuildControlButton)
-	F.Reskin(CommunitiesFrame.CommunitiesControlFrame.GuildRecruitmentButton)
+	--F.Reskin(CommunitiesFrame.CommunitiesControlFrame.GuildControlButton)
+	--F.Reskin(CommunitiesFrame.CommunitiesControlFrame.GuildRecruitmentButton)
 	F.Reskin(CommunitiesFrame.CommunitiesControlFrame.CommunitiesSettingsButton)
-
-	local detailFrame = CommunitiesFrame.GuildMemberDetailFrame
-	F.StripTextures(detailFrame)
-	F.SetBD(detailFrame)
-	F.ReskinClose(detailFrame.CloseButton)
-	F.Reskin(detailFrame.RemoveButton)
-	F.Reskin(detailFrame.GroupInviteButton)
-	F.ReskinDropDown(detailFrame.RankDropdown)
-	F.StripTextures(detailFrame.NoteBackground)
-	F.CreateBDFrame(detailFrame.NoteBackground, .25)
-	F.StripTextures(detailFrame.OfficerNoteBackground)
-	F.CreateBDFrame(detailFrame.OfficerNoteBackground, .25)
-	detailFrame:ClearAllPoints()
-	detailFrame:SetPoint("TOPLEFT", CommunitiesFrame, "TOPRIGHT", 34, 0)
 
 	do
 		local dialog = CommunitiesSettingsDialog
@@ -294,7 +282,7 @@ C.themes["Blizzard_Communities"] = function()
 						select(i, header:GetRegions()):Hide()
 					end
 					F.CreateBDFrame(header, .45)
-					header:SetHighlightTexture(C.media.bdTex)
+					header:SetHighlightTexture(C.media.backdrop)
 					header:GetHighlightTexture():SetVertexColor(r, g, b, .25)
 					F.CreateBDFrame(header.Icon)
 				end
@@ -306,103 +294,4 @@ C.themes["Blizzard_Communities"] = function()
 			end
 		end
 	end)
-
-	-- Benefits
-	CommunitiesFrame.GuildBenefitsFrame.Perks:GetRegions():SetAlpha(0)
-
-	CommunitiesFrame.GuildBenefitsFrame.Rewards.Bg:SetAlpha(0)
-	F.StripTextures(CommunitiesFrame.GuildBenefitsFrame)
-	F.ReskinScroll(CommunitiesFrameRewards.scrollBar)
-
-	local factionFrameBar = CommunitiesFrame.GuildBenefitsFrame.FactionFrame.Bar
-	F.StripTextures(factionFrameBar)
-	F.CreateBDFrame(factionFrameBar, .25)
-	factionFrameBar.Progress:SetTexture(C.media.bdTex)
-	factionFrameBar.Progress:SetAllPoints()
-
-	hooksecurefunc("CommunitiesGuildPerks_Update", function(self)
-		local buttons = self.Container.buttons
-		for i = 1, #buttons do
-			local button = buttons[i]
-			if button and button:IsShown() and not button.bg then
-				F.ReskinIcon(button.Icon)
-				for i = 1, 4 do
-					select(i, button:GetRegions()):SetAlpha(0)
-				end
-				button.bg = F.CreateBDFrame(button, .25)
-				button.bg:SetPoint("TOPLEFT", button.Icon)
-				button.bg:SetPoint("BOTTOMRIGHT", button.Right)
-			end
-		end
-	end)
-
-	hooksecurefunc("CommunitiesGuildRewards_Update", function(self)
-		local buttons = self.RewardsContainer.buttons
-		for i = 1, #buttons do
-			local button = buttons[i]
-			if button then
-				if not button.bg then
-					F.ReskinIcon(button.Icon)
-					select(6, button:GetRegions()):SetAlpha(0)
-					select(7, button:GetRegions()):SetAlpha(0)
-
-					button.bg = F.CreateBDFrame(button, .25)
-					button.bg:SetPoint("TOPLEFT", button.Icon, -5, 5)
-					button.bg:SetPoint("BOTTOMRIGHT", 0, 10)
-				end
-				button.DisabledBG:Hide()
-			end
-		end
-	end)
-
-	-- Guild Info
-	F.Reskin(CommunitiesFrame.GuildLogButton)
-	F.StripTextures(CommunitiesFrameGuildDetailsFrameInfo)
-	F.StripTextures(CommunitiesFrameGuildDetailsFrameNews)
-	F.ReskinScroll(CommunitiesFrameGuildDetailsFrameInfoMOTDScrollFrameScrollBar)
-	local bg3 = F.CreateBDFrame(CommunitiesFrameGuildDetailsFrameInfoMOTDScrollFrame, .25)
-	bg3:SetPoint("TOPLEFT", 0, 3)
-	bg3:SetPoint("BOTTOMRIGHT", -5, -4)
-
-	F.StripTextures(CommunitiesGuildTextEditFrame)
-	F.SetBD(CommunitiesGuildTextEditFrame)
-	CommunitiesGuildTextEditFrameBg:Hide()
-	F.StripTextures(CommunitiesGuildTextEditFrame.Container)
-	F.CreateBDFrame(CommunitiesGuildTextEditFrame.Container, .25)
-	F.ReskinScroll(CommunitiesGuildTextEditFrameScrollBar)
-	F.ReskinClose(CommunitiesGuildTextEditFrameCloseButton)
-	F.Reskin(CommunitiesGuildTextEditFrameAcceptButton)
-	local closeButton = select(4, CommunitiesGuildTextEditFrame:GetChildren())
-	F.Reskin(closeButton)
-
-	F.ReskinScroll(CommunitiesFrameGuildDetailsFrameInfoScrollBar)
-	F.CreateBDFrame(CommunitiesFrameGuildDetailsFrameInfo.DetailsFrame, .25)
-	F.ReskinScroll(CommunitiesFrameGuildDetailsFrameNewsContainer.ScrollBar)
-
-	F.StripTextures(CommunitiesFrameGuildDetailsFrame)
-
-	hooksecurefunc("GuildNewsButton_SetNews", function(button)
-		if button.header:IsShown() then
-			button.header:SetAlpha(0)
-		end
-	end)
-
-	F.StripTextures(CommunitiesGuildNewsFiltersFrame)
-	CommunitiesGuildNewsFiltersFrameBg:Hide()
-	F.SetBD(CommunitiesGuildNewsFiltersFrame)
-	F.ReskinClose(CommunitiesGuildNewsFiltersFrame.CloseButton)
-	for _, name in next, {"GuildAchievement", "Achievement", "DungeonEncounter", "EpicItemLooted", "EpicItemPurchased", "EpicItemCrafted", "LegendaryItemLooted"} do
-		local filter = CommunitiesGuildNewsFiltersFrame[name]
-		F.ReskinCheck(filter)
-	end
-
-	F.StripTextures(CommunitiesGuildLogFrame)
-	CommunitiesGuildLogFrameBg:Hide()
-	F.SetBD(CommunitiesGuildLogFrame)
-	F.ReskinClose(CommunitiesGuildLogFrameCloseButton)
-	F.ReskinScroll(CommunitiesGuildLogFrameScrollBar)
-	F.StripTextures(CommunitiesGuildLogFrame.Container)
-	F.CreateBDFrame(CommunitiesGuildLogFrame.Container, .25)
-	local closeButton = select(3, CommunitiesGuildLogFrame:GetChildren())
-	F.Reskin(closeButton)
 end
