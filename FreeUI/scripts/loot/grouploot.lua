@@ -85,15 +85,13 @@ end
 local lootRoll = CreateFrame("Frame", "FreeUILootRoll", UIParent)
 lootRoll:RegisterEvent("START_LOOT_ROLL")
 lootRoll:SetScript("OnEvent", OnEvent)
-lootRoll:SetPoint("RIGHT", -50, 0)
+lootRoll:SetPoint("CENTER", 0, 100)
 lootRoll:SetWidth(width)
-lootRoll:SetHeight(24)
+lootRoll:SetHeight(32)
 
 function lootRoll:UpdateGroupLoot()
 	sort(grouplootlist, SortFunc)
 	for index, value in next, grouplootframes do value:Hide() end
-
-	lootRoll:SetPoint("CENTER", 0, 100)
 
 	local frame
 	for index, value in next, grouplootlist do
@@ -102,8 +100,8 @@ function lootRoll:UpdateGroupLoot()
 			frame = CreateFrame("Frame", "FreeUILootRollFrame"..index, UIParent)
 			frame:EnableMouse(true)
 			frame:SetWidth(220)
-			frame:SetHeight(24)
-			frame:SetPoint("TOP", lootRoll, 0, -((index-1)*(iconsize+3)))
+			frame:SetHeight(32)
+			frame:SetPoint("TOP", lootRoll, 0, -((index-1)*(iconsize+5)))
 			frame:RegisterEvent("CANCEL_LOOT_ROLL")
 			frame:SetScript("OnEvent", FrameOnEvent)
 			frame:SetScript("OnMouseUp", FrameOnClick)
@@ -155,7 +153,8 @@ function lootRoll:UpdateGroupLoot()
 			frame.need:SetPoint("RIGHT", frame.disenchant, "LEFT", -1, 0)
 			frame.need:SetScript("OnClick", ButtonOnClick)
 
-			frame.text = F.CreateFS(frame, C.FONT_SIZE_NORMAL, "LEFT")
+			frame.text = F.CreateFS(frame, {C.font.normal, 11}, nil, nil, true)
+			frame.text:SetJustifyH('LEFT')
 			frame.text:SetPoint("LEFT")
 			frame.text:SetPoint("RIGHT", frame.need, "LEFT")
 
