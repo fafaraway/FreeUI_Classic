@@ -231,8 +231,5 @@ function NOTIFICATION:OnLogin()
 	self:VitalSpells()
 	self:Resurrect()
 	self:Sapped()
-	--self:Rare()
-	self:QuestNotifier()
 	self:Emergency()
-	--self:Buff()
 end
