@@ -12,19 +12,12 @@ C['general'] = {
 	['tradeTabs'] = true,
 	['nakedButton'] = true,
 	
-
-	
 	['fasterLoot'] = true,
 	['PVPSound'] = true,
 
 	['marker'] = true,
 
-
-	['extraQuestButton'] = true,
-	
 	['itemLevel'] = true,
-
-
 
 	['combatText'] = true,
 		['combatText_info'] = true,
@@ -34,28 +27,12 @@ C['general'] = {
 	['clickCast'] = true,
 		['clickCast_filter'] = false,
 
-	['cooldown'] = true,
-		['cooldown_decimal'] = false,
-		['cooldown_overrideWA'] = false,
-	['cooldownPulse'] = true,
-		['cooldownPulse_ignoredSpells'] = {
-			--GetSpellInfo(6807),	-- Maul
-			--GetSpellInfo(35395),	-- Crusader Strike
-		},
-
-
 	['camera'] = true,
 		['cameraZoomSpeed'] = 5,
 		['actionCam'] = false,
 		['actionCam_full'] = false,
 
-
-
 	['numberFormat'] = 1, -- 2 for Chinse number format (万/亿/兆)
-
-
-
-	
 }
 
 C['appearance'] = {
@@ -368,6 +345,7 @@ C['quest'] = {
 
 C['cooldown'] = {
 	['cdEnhanced'] = true,
+		['cdFont'] = {'interface\\addons\\FreeUI\\assets\\font\\supereffective.ttf', 16, 'OUTLINEMONOCHROME'},
 	['cdPulse'] = true,
 		['ignoredSpells'] = {
 			--GetSpellInfo(6807),	-- Maul
