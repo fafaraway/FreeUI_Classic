@@ -115,77 +115,29 @@ do
 	local basic = ns.addSubCategory(general, ns.localization.general_subCategory_basic)
 	basic:SetPoint('TOPLEFT', general.subText, 'BOTTOMLEFT', 0, -8)
 
-	local hideTalkingHead = ns.CreateCheckBox(general, 'hideTalkingHead')
-	hideTalkingHead:SetPoint('TOPLEFT', basic, 'BOTTOMLEFT', 0, -8)
+	local fasterLoot = ns.CreateCheckBox(general, 'fasterLoot')
+	fasterLoot:SetPoint('TOPLEFT', basic, 'BOTTOMLEFT', 0, -8)
 
-	local hideBossBanner = ns.CreateCheckBox(general, 'hideBossBanner')
-	hideBossBanner:SetPoint('LEFT', hideTalkingHead, 'RIGHT', 160, 0)
+	local enhancedMenu = ns.CreateCheckBox(general, 'enhancedMenu')
+	enhancedMenu:SetPoint('LEFT', fasterLoot, 'RIGHT', 160, 0)
 
-	local itemLevel = ns.CreateCheckBox(general, 'itemLevel')
-	itemLevel:SetPoint('TOPLEFT', hideTalkingHead, 'BOTTOMLEFT', 0, -8)
+	local mailButton = ns.CreateCheckBox(general, 'mailButton')
+	mailButton:SetPoint('TOPLEFT', fasterLoot, 'BOTTOMLEFT', 0, -8)
 
-	local durability = ns.CreateCheckBox(general, 'durability')
-	durability:SetPoint('LEFT', itemLevel, 'RIGHT', 160, 0)
-
-	local fullStats = ns.CreateCheckBox(general, 'fullStats')
-	fullStats:SetPoint('TOPLEFT', itemLevel, 'BOTTOMLEFT', 0, -8)
-
-	local clickCast = ns.CreateCheckBox(general, 'clickCast')
-	clickCast:SetPoint('LEFT', fullStats, 'RIGHT', 160, 0)
+	local alreadyKnown = ns.CreateCheckBox(general, 'alreadyKnown')
+	alreadyKnown:SetPoint('LEFT', mailButton, 'RIGHT', 160, 0)
 
 	local marker = ns.CreateCheckBox(general, 'marker')
-	marker:SetPoint('TOPLEFT', fullStats, 'BOTTOMLEFT', 0, -8)
+	marker:SetPoint('TOPLEFT', mailButton, 'BOTTOMLEFT', 0, -8)
 
-	local focuser = ns.CreateCheckBox(general, 'focuser')
-	focuser:SetPoint('LEFT', marker, 'RIGHT', 160, 0)
-
-	local fasterLoot = ns.CreateCheckBox(general, 'fasterLoot')
-	fasterLoot:SetPoint('TOPLEFT', marker, 'BOTTOMLEFT', 0, -8)
+	local helmCloak = ns.CreateCheckBox(general, 'helmCloak')
+	helmCloak:SetPoint('LEFT', marker, 'RIGHT', 160, 0)
 
 	local PVPSound = ns.CreateCheckBox(general, 'PVPSound')
-	PVPSound:SetPoint('LEFT', fasterLoot, 'RIGHT', 160, 0)
-
-	local actionCam = ns.CreateCheckBox(general, 'actionCam')
-	actionCam:SetPoint('TOPLEFT', fasterLoot, 'BOTTOMLEFT', 0, -8)
-
-	local actionCam_full = ns.CreateCheckBox(general, 'actionCam_full')
-	actionCam_full:SetPoint('TOPLEFT', actionCam, 'BOTTOMLEFT', 16, -8)
-
-	actionCam.children = {actionCam_full}
-
-	local fct = ns.addSubCategory(general, ns.localization.general_subCategory_fct)
-	fct:SetPoint('TOPLEFT', actionCam_full, 'BOTTOMLEFT', -16, -16)
-
-	local combatText = ns.CreateCheckBox(general, 'combatText')
-	combatText:SetPoint('TOPLEFT', fct, 'BOTTOMLEFT', 0, -8)
-
-	local combatText_info = ns.CreateCheckBox(general, 'combatText_info')
-	combatText_info:SetPoint('TOPLEFT', combatText, 'BOTTOMLEFT', 16, -8)
-
-	local combatText_incoming = ns.CreateCheckBox(general, 'combatText_incoming')
-	combatText_incoming:SetPoint('TOPLEFT', combatText_info, 'BOTTOMLEFT', 0, -8)
-
-	local combatText_outgoing = ns.CreateCheckBox(general, 'combatText_outgoing')
-	combatText_outgoing:SetPoint('TOPLEFT', combatText_incoming, 'BOTTOMLEFT', 0, -8)
-
-	combatText.children = {combatText_info, combatText_incoming, combatText_outgoing}
-
-	local cd = ns.addSubCategory(general, ns.localization.general_subCategory_cooldown)
-	cd:SetPoint('TOPLEFT', combatText_outgoing, 'BOTTOMLEFT', -16, -16)
-
-	local cooldown = ns.CreateCheckBox(general, 'cooldown')
-	cooldown:SetPoint('TOPLEFT', cd, 'BOTTOMLEFT', 0, -8)
-
-	local cooldown_decimal = ns.CreateCheckBox(general, 'cooldown_decimal')
-	cooldown_decimal:SetPoint('TOPLEFT', cooldown, 'BOTTOMLEFT', 16, -4)
-
-	cooldown.children = {cooldown_decimal}
-
-	local cooldownPulse = ns.CreateCheckBox(general, 'cooldownPulse')
-	cooldownPulse:SetPoint('LEFT', cooldown, 'RIGHT', 160, 0)
+	PVPSound:SetPoint('TOPLEFT', marker, 'BOTTOMLEFT', 0, -8)
 
 	local uiscalesub = ns.addSubCategory(general, ns.localization.general_subCategory_uiscale)
-	uiscalesub:SetPoint('TOPLEFT', cooldown_decimal, 'BOTTOMLEFT', -16, -16)
+	uiscalesub:SetPoint('TOPLEFT', PVPSound, 'BOTTOMLEFT', 0, -16)
 
 	local uiScaleAuto = ns.CreateCheckBox(general, 'uiScaleAuto')
 	uiScaleAuto:SetPoint('TOPLEFT', uiscalesub, 'BOTTOMLEFT', 0, -8)
