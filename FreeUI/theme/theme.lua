@@ -94,5 +94,5 @@ end
 function APPEARANCE:OnLogin()
 	self:FlashCursor()
 	self:Vignette()
-	self:ReskinQuestLogEx()
+	self:ExtraQuestSkin()
 end
