@@ -15,10 +15,10 @@ function MISC:OnLogin()
 	self:AlertFrame()
 	self:ErrorFrame()
 
-	self:UIWidgetFrame()
+
 	self:ColorPicker()
 
-	--self:FasterLoot()
+	self:FasterLoot()
 	self:FasterDelete()
 
 
@@ -28,21 +28,12 @@ function MISC:OnLogin()
 	self:MailButton()
 
 
-	
-	self:CombatText()
-
-
-
-
-
-
 	self:PVPSound()
 	
-	--self:Reputation()
+
 	self:TradeTargetInfo()
 	self:TicketStatusFrame()
-	--self:VehicleIndicator()
-	--self:HideBossBanner()
+
 
 
 
@@ -57,6 +48,8 @@ end
 
 -- Easily hide helm and cloak
 function MISC:HelmCloak()
+	if not C.general.helmCloak then return end
+
 	local helm = CreateFrame("CheckButton", "FreeUI_HelmCheckBox", PaperDollFrame, "OptionsCheckButtonTemplate")
 	helm:SetSize(22, 22)
 	helm:SetPoint("LEFT", CharacterModelFrame, "BOTTOMLEFT", 0, 44)
@@ -187,25 +180,9 @@ function MISC:TicketStatusFrame()
 	end)
 end
 
--- Remove Boss Banner
-function MISC:HideBossBanner()
-	if C.general.hideBossBanner then
-		BossBanner:UnregisterAllEvents()
-	end
-end
 
--- Reanchor UIWidgetBelowMinimapContainerFrame
-function MISC:UIWidgetFrame()
-	UIWidgetTopCenterContainerFrame:ClearAllPoints()
-	UIWidgetTopCenterContainerFrame:SetPoint('TOP', 0, -30)
 
-	hooksecurefunc(UIWidgetBelowMinimapContainerFrame, 'SetPoint', function(self, _, parent)
-		if parent == 'MinimapCluster' or parent == MinimapCluster then
-			self:ClearAllPoints()
-			self:SetPoint('TOP', UIParent, 0, -120)
-		end
-	end)
-end
+
 
 
 
