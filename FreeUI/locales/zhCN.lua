@@ -3,6 +3,13 @@ local F, C, L = unpack(select(2, ...))
 if (GetLocale() ~= 'zhCN' and GetLocale() ~= 'zhTW') then return end
 
 
+-- Actionbar
+L['ACTIONBAR_LEAVE_VEHICLE'] = '离开载具按钮'
+
+
+-- Quest
+L['QUEST_ACCEPT_QUEST'] = '接受任务：'
+L['QUEST_QUICK_QUEST'] = '自动交接任务'
 
 
 -- misc

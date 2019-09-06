@@ -3,6 +3,13 @@ local F, C, L = unpack(select(2, ...))
 
 
 
+-- Actionbar
+L['ACTIONBAR_LEAVE_VEHICLE'] = 'Leave vehicle button'
+
+
+-- Quest
+L['QUEST_ACCEPT_QUEST'] = 'Accept quest: '
+L['QUEST_QUICK_QUEST'] = 'Auto quest'
 
 
 -- misc
