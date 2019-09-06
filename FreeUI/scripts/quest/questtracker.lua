@@ -5,7 +5,7 @@ local QUEST = F:GetModule('Quest')
 local pairs = pairs
 local LE_QUEST_FREQUENCY_DAILY = LE_QUEST_FREQUENCY_DAILY or 2
 
-function QUEST:Tracker()
+function QUEST:QuestTracker()
 	-- Mover for quest tracker
 	local frame = CreateFrame('Frame', 'FreeUIQuestTrackerMover', UIParent)
 	frame:SetSize(240, 50)

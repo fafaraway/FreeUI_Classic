@@ -82,6 +82,7 @@ C['appearance'] = {
 	['WeakAuras'] = true,
 	['PremadeGroupsFilter'] = true,
 	['Skada'] = true,
+	['QuestLogEx'] = true,
 }
 
 C['actionbar'] = {
@@ -175,7 +176,7 @@ C['inventory'] = {
 		['bagColumns'] = 10,
 		['bankColumns'] = 10,
 		['reverseSort'] = true,
-		['itemLevel'] = true,
+		['itemLevel'] = false,
 		['newitemFlash'] = true,
 		['deleteButton'] = true,
 		['useCategory'] = true,
@@ -357,5 +358,11 @@ C['unitframe'] = {
 }
 
 
-
+C['quest'] = {
+	['questTracker'] = true,
+	['quickQuest'] = true,
+	['questNotifier'] = true,
+		['questProgress'] = true,
+		['onlyCompleteRing'] = false,
+}
 
