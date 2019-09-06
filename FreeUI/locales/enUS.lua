@@ -109,7 +109,7 @@ L['INFOBAR_OPEN_CHARACTER_PANEL'] = 'Open character panel'
 L['INFOBAR_INFO'] = 'Information'
 
 L['INFOBAR_AUTO_SELL_JUNK'] = 'Auto sell junk'
-L['INFOBAR_AUTO_REPAIR'] = 'Auto repair cost'
+L['INFOBAR_AUTO_REPAIR'] = 'Auto repair'
 
 L['INFOBAR_GUILD_REPAIR_COST'] = 'Guild repair'
 L['INFOBAR_REPAIR_COST'] = 'Repair cost'

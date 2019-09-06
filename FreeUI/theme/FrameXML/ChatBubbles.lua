@@ -32,7 +32,7 @@ tinsert(C.themes["FreeUI"], function()
 		})
 
 		frame:SetClampedToScreen(false)
-		frame:SetBackdropColor(0, 0, 0, .5)
+		frame:SetBackdropColor(0, 0, 0, C.appearance.backdropAlpha)
 		frame:SetBackdropBorderColor(0, 0, 0)
 
 		frame:SetScale(_G.UIParent:GetScale())

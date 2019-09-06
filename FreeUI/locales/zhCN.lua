@@ -107,8 +107,8 @@ L['INFOBAR_OPEN_CHARACTER_PANEL'] = '打开角色面板'
 
 L['INFOBAR_INFO'] = '信息'
 
-L['INFOBAR_AUTO_SELL_JUNK'] = '自动出售垃圾获得'
-L['INFOBAR_AUTO_REPAIR'] = '自动修理装备花费'
+L['INFOBAR_AUTO_SELL_JUNK'] = '自动出售垃圾'
+L['INFOBAR_AUTO_REPAIR'] = '自动修理装备'
 
 L['INFOBAR_GUILD_REPAIR_COST'] = '公会修理'
 L['INFOBAR_REPAIR_COST'] = '自动修理'

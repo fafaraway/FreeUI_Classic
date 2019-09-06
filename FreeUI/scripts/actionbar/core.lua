@@ -159,8 +159,8 @@ end
 
 function ACTIONBAR:CreateBar4()
 	local frame = CreateFrame('Frame', 'FreeUI_ActionBar4', UIParent, 'SecureHandlerStateTemplate')
-	frame:SetWidth(buttonSizeNormal + 2*padding)
-	frame:SetHeight(numNormal*buttonSizeNormal + (numNormal-1)*margin + 2*padding)
+	frame:SetWidth(buttonSizeSmall + 2*padding)
+	frame:SetHeight(numNormal*buttonSizeSmall + (numNormal-1)*margin + 2*padding)
 	frame:SetPoint('RIGHT', UIParent, 'RIGHT', -4, 0)
 
 	MultiBarRight:SetParent(frame)
@@ -172,7 +172,7 @@ function ACTIONBAR:CreateBar4()
 	for i = 1, numNormal do
 		local button = _G['MultiBarRightButton'..i]
 		table.insert(buttonList, button)
-		button:SetSize(buttonSizeNormal, buttonSizeNormal)
+		button:SetSize(buttonSizeSmall, buttonSizeSmall)
 		button:ClearAllPoints()
 
 		if i == 1 then
@@ -198,8 +198,8 @@ end
 
 function ACTIONBAR:CreateBar5()
 	local frame = CreateFrame('Frame', 'FreeUI_ActionBar5', UIParent, 'SecureHandlerStateTemplate')
-	frame:SetWidth(buttonSizeNormal + 2*padding)
-	frame:SetHeight(numNormal*buttonSizeNormal + (numNormal-1)*margin + 2*padding)
+	frame:SetWidth(buttonSizeSmall + 2*padding)
+	frame:SetHeight(numNormal*buttonSizeSmall + (numNormal-1)*margin + 2*padding)
 	frame:SetPoint('RIGHT', 'FreeUI_ActionBar4', 'LEFT', 0, 0)
 
 	MultiBarLeft:SetParent(frame)
@@ -211,7 +211,7 @@ function ACTIONBAR:CreateBar5()
 	for i = 1, numNormal do
 		local button = _G['MultiBarLeftButton'..i]
 		table.insert(buttonList, button)
-		button:SetSize(buttonSizeNormal, buttonSizeNormal)
+		button:SetSize(buttonSizeSmall, buttonSizeSmall)
 		button:ClearAllPoints()
 		if i == 1 then
 			button:SetPoint('TOPRIGHT', frame, -padding, -padding)

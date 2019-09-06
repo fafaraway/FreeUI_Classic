@@ -59,8 +59,9 @@ do
 		bar:SetStatusBarColor(r, g, b)
 		bar:SetScript('OnUpdate', OnUpdate)
 
-		bar.text = F.CreateFS(bar, {C.font.normal, 12}, '', 'CENTER', nil, {0, 0, 0, 1, 2, -2}, 'CENTER', 0, 0)
-
+		bar.text = F.CreateFS(bar, {C.font.normal, 12}, '', nil, {0, 0, 0, 1, 2, -2}, 'CENTER', 0, 0)
+		bar.text:SetJustifyH('CENTER')
+		
 		bar.bg = F.CreateBDFrame(bar)
 		bar.glow = F.CreateSD(bar.bg)
 		

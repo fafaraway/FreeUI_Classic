@@ -16,7 +16,6 @@ C.themes["Blizzard_BindingUI"] = function()
 
 	F.CreateBD(KeyBindingFrame)
 	F.CreateSD(KeyBindingFrame)
-	KeyBindingFrame.BG:Hide()
 	F.Reskin(KeyBindingFrame.defaultsButton)
 	F.Reskin(KeyBindingFrame.unbindButton)
 	F.Reskin(KeyBindingFrame.okayButton)
@@ -39,6 +38,7 @@ C.themes["Blizzard_BindingUI"] = function()
 			selected:SetPoint("BOTTOMRIGHT", -C.Mult, C.Mult)
 			selected:SetColorTexture(r, g, b, .25)
 			F.Reskin(button)
+
 			button.styled = true
 		end
 	end)

@@ -7,27 +7,27 @@ local QUEST = F:GetModule('Quest')
 local created
 local function setupCheckButton()
 	if created then return end
-	local mono = CreateFrame("CheckButton", nil, WorldMapFrame, "OptionsCheckButtonTemplate")
-	mono:SetPoint("TOPRIGHT", -140, -2)
-	mono:SetSize(26, 26)
-	F.CreateCB(mono, .25)
-	mono.text = F.CreateFS(mono, {C.font.normal, 11}, L['QUEST_QUICK_QUEST'], 'yellow', true, 'LEFT', 25, 0)
-	mono:SetChecked(C.quest.quickQuest)
-	mono:SetScript("OnClick", function(self)
+	local bu = CreateFrame('CheckButton', nil, WorldMapFrame, 'OptionsCheckButtonTemplate')
+	bu:SetPoint('TOPRIGHT', -140, -2)
+	bu:SetSize(26, 26)
+	F.CreateCB(bu, .25)
+	bu.text = F.CreateFS(bu, {C.font.normal, 11}, L['QUEST_QUICK_QUEST'], 'yellow', true, 'LEFT', 25, 0)
+	bu:SetChecked(C.quest.quickQuest)
+	bu:SetScript('OnClick', function(self)
 		C.quest.quickQuest = self:GetChecked()
 	end)
 
 	created = true
 end
-WorldMapFrame:HookScript("OnShow", setupCheckButton)
+WorldMapFrame:HookScript('OnShow', setupCheckButton)
 
 -- Function
 local strmatch = string.match
 local tonumber, next = tonumber, next
 
 local quests, choiceQueue = {}
-local QuickQuest = CreateFrame("Frame")
-QuickQuest:SetScript("OnEvent", function(self, event, ...) self[event](...) end)
+local QuickQuest = CreateFrame('Frame')
+QuickQuest:SetScript('OnEvent', function(self, event, ...) self[event](...) end)
 
 function QuickQuest:Register(event, func)
 	self:RegisterEvent(event)
@@ -39,7 +39,7 @@ function QuickQuest:Register(event, func)
 end
 
 local function GetNPCID()
-	return F.GetNPCID(UnitGUID("npc"))
+	return F.GetNPCID(UnitGUID('npc'))
 end
 
 local function IsTrackingHidden()
@@ -93,7 +93,7 @@ local function GetQuestLogQuests(onlyComplete)
 	return quests
 end
 
-QuickQuest:Register("QUEST_GREETING", function()
+QuickQuest:Register('QUEST_GREETING', function()
 	local npcID = GetNPCID()
 	if(ignoreQuestNPC[npcID]) then
 		return
@@ -173,7 +173,7 @@ local ignoreGossipNPC = {
 }
 
 local rogueClassHallInsignia = {
-	[97004] = true, -- "Red" Jack Findle
+	[97004] = true, -- 'Red' Jack Findle
 	[96782] = true, -- Lucian Trias
 	[93188] = true, -- Mongar
 }
@@ -183,7 +183,7 @@ local followerAssignees = {
 	[135614] = true, -- 马迪亚斯·肖尔大师
 }
 
-QuickQuest:Register("GOSSIP_SHOW", function()
+QuickQuest:Register('GOSSIP_SHOW', function()
 	local npcID = GetNPCID()
 	if(ignoreQuestNPC[npcID]) then
 		return
@@ -231,9 +231,9 @@ QuickQuest:Register("GOSSIP_SHOW", function()
 			end
 
 			local _, instance, _, _, _, _, _, mapID = GetInstanceInfo()
-			if(instance ~= "raid" and not ignoreGossipNPC[npcID] and not (instance == "scenario" and mapID == 1626)) then
+			if(instance ~= 'raid' and not ignoreGossipNPC[npcID] and not (instance == 'scenario' and mapID == 1626)) then
 				local _, type = GetGossipOptions()
-				if(type == "gossip") then
+				if(type == 'gossip') then
 					SelectGossipOption(1)
 					return
 				end
@@ -250,27 +250,27 @@ local darkmoonNPC = {
 	[54334] = true, -- Darkmoon Faire Mystic Mage (Alliance)
 }
 
-QuickQuest:Register("GOSSIP_CONFIRM", function(index)
+QuickQuest:Register('GOSSIP_CONFIRM', function(index)
 	local npcID = GetNPCID()
 	if(npcID and darkmoonNPC[npcID]) then
-		SelectGossipOption(index, "", true)
-		StaticPopup_Hide("GOSSIP_CONFIRM")
+		SelectGossipOption(index, '', true)
+		StaticPopup_Hide('GOSSIP_CONFIRM')
 	end
 end)
 
-QuickQuest:Register("QUEST_DETAIL", function()
+QuickQuest:Register('QUEST_DETAIL', function()
 	AcceptQuest()
 end)
 
-QuickQuest:Register("QUEST_ACCEPT_CONFIRM", AcceptQuest)
+QuickQuest:Register('QUEST_ACCEPT_CONFIRM', AcceptQuest)
 
-QuickQuest:Register("QUEST_ACCEPTED", function()
+QuickQuest:Register('QUEST_ACCEPTED', function()
 	if QuestFrame:IsShown() then
 		CloseQuest()
 	end
 end)
 
-QuickQuest:Register("QUEST_ITEM_UPDATE", function()
+QuickQuest:Register('QUEST_ITEM_UPDATE', function()
 	if(choiceQueue and QuickQuest[choiceQueue]) then
 		QuickQuest[choiceQueue]()
 	end
@@ -294,39 +294,39 @@ local itemBlacklist = {
 	[29464] = 71716, -- Soothsayer's Runes
 
 	-- Tiller Gifts
-	["progress_79264"] = 79264, -- Ruby Shard
-	["progress_79265"] = 79265, -- Blue Feather
-	["progress_79266"] = 79266, -- Jade Cat
-	["progress_79267"] = 79267, -- Lovely Apple
-	["progress_79268"] = 79268, -- Marsh Lily
+	['progress_79264'] = 79264, -- Ruby Shard
+	['progress_79265'] = 79265, -- Blue Feather
+	['progress_79266'] = 79266, -- Jade Cat
+	['progress_79267'] = 79267, -- Lovely Apple
+	['progress_79268'] = 79268, -- Marsh Lily
 
 	-- Garrison scouting missives
-	["38180"] = 122424, -- Scouting Missive: Broken Precipice
-	["38193"] = 122423, -- Scouting Missive: Broken Precipice
-	["38182"] = 122418, -- Scouting Missive: Darktide Roost
-	["38196"] = 122417, -- Scouting Missive: Darktide Roost
-	["38179"] = 122400, -- Scouting Missive: Everbloom Wilds
-	["38192"] = 122404, -- Scouting Missive: Everbloom Wilds
-	["38194"] = 122420, -- Scouting Missive: Gorian Proving Grounds
-	["38202"] = 122419, -- Scouting Missive: Gorian Proving Grounds
-	["38178"] = 122402, -- Scouting Missive: Iron Siegeworks
-	["38191"] = 122406, -- Scouting Missive: Iron Siegeworks
-	["38184"] = 122413, -- Scouting Missive: Lost Veil Anzu
-	["38198"] = 122414, -- Scouting Missive: Lost Veil Anzu
-	["38177"] = 122403, -- Scouting Missive: Magnarok
-	["38190"] = 122399, -- Scouting Missive: Magnarok
-	["38181"] = 122421, -- Scouting Missive: Mok'gol Watchpost
-	["38195"] = 122422, -- Scouting Missive: Mok'gol Watchpost
-	["38185"] = 122411, -- Scouting Missive: Pillars of Fate
-	["38199"] = 122409, -- Scouting Missive: Pillars of Fate
-	["38187"] = 122412, -- Scouting Missive: Shattrath Harbor
-	["38201"] = 122410, -- Scouting Missive: Shattrath Harbor
-	["38186"] = 122408, -- Scouting Missive: Skettis
-	["38200"] = 122407, -- Scouting Missive: Skettis
-	["38183"] = 122416, -- Scouting Missive: Socrethar's Rise
-	["38197"] = 122415, -- Scouting Missive: Socrethar's Rise
-	["38176"] = 122405, -- Scouting Missive: Stonefury Cliffs
-	["38189"] = 122401, -- Scouting Missive: Stonefury Cliffs
+	['38180'] = 122424, -- Scouting Missive: Broken Precipice
+	['38193'] = 122423, -- Scouting Missive: Broken Precipice
+	['38182'] = 122418, -- Scouting Missive: Darktide Roost
+	['38196'] = 122417, -- Scouting Missive: Darktide Roost
+	['38179'] = 122400, -- Scouting Missive: Everbloom Wilds
+	['38192'] = 122404, -- Scouting Missive: Everbloom Wilds
+	['38194'] = 122420, -- Scouting Missive: Gorian Proving Grounds
+	['38202'] = 122419, -- Scouting Missive: Gorian Proving Grounds
+	['38178'] = 122402, -- Scouting Missive: Iron Siegeworks
+	['38191'] = 122406, -- Scouting Missive: Iron Siegeworks
+	['38184'] = 122413, -- Scouting Missive: Lost Veil Anzu
+	['38198'] = 122414, -- Scouting Missive: Lost Veil Anzu
+	['38177'] = 122403, -- Scouting Missive: Magnarok
+	['38190'] = 122399, -- Scouting Missive: Magnarok
+	['38181'] = 122421, -- Scouting Missive: Mok'gol Watchpost
+	['38195'] = 122422, -- Scouting Missive: Mok'gol Watchpost
+	['38185'] = 122411, -- Scouting Missive: Pillars of Fate
+	['38199'] = 122409, -- Scouting Missive: Pillars of Fate
+	['38187'] = 122412, -- Scouting Missive: Shattrath Harbor
+	['38201'] = 122410, -- Scouting Missive: Shattrath Harbor
+	['38186'] = 122408, -- Scouting Missive: Skettis
+	['38200'] = 122407, -- Scouting Missive: Skettis
+	['38183'] = 122416, -- Scouting Missive: Socrethar's Rise
+	['38197'] = 122415, -- Scouting Missive: Socrethar's Rise
+	['38176'] = 122405, -- Scouting Missive: Stonefury Cliffs
+	['38189'] = 122401, -- Scouting Missive: Stonefury Cliffs
 
 	-- Misc
 	[31664] = 88604, -- Nat's Fishing Journal
@@ -342,7 +342,7 @@ local ignoreProgressNPC = {
 	[150563] = true, -- 斯卡基特，麦卡贡订单日常
 }
 
-QuickQuest:Register("QUEST_PROGRESS", function()
+QuickQuest:Register('QUEST_PROGRESS', function()
 	if(IsQuestCompletable()) then
 		local id, _, worldQuest = GetQuestTagInfo(GetQuestID())
 		if id == 153 or worldQuest then return end
@@ -352,16 +352,16 @@ QuickQuest:Register("QUEST_PROGRESS", function()
 		local requiredItems = GetNumQuestItems()
 		if(requiredItems > 0) then
 			for index = 1, requiredItems do
-				local link = GetQuestItemLink("required", index)
+				local link = GetQuestItemLink('required', index)
 				if(link) then
-					local id = tonumber(strmatch(link, "item:(%d+)"))
+					local id = tonumber(strmatch(link, 'item:(%d+)'))
 					for _, itemID in next, itemBlacklist do
 						if(itemID == id) then
 							return
 						end
 					end
 				else
-					choiceQueue = "QUEST_PROGRESS"
+					choiceQueue = 'QUEST_PROGRESS'
 					return
 				end
 			end
@@ -384,7 +384,7 @@ local cashRewards = {
 	[138133] = 27, -- Elixir of Endless Wonder, 27 copper
 }
 
-QuickQuest:Register("QUEST_COMPLETE", function()
+QuickQuest:Register('QUEST_COMPLETE', function()
 	-- Blingtron 6000 only!
 	local npcID = GetNPCID()
 	if npcID == 43929 or npcID == 77789 then return end
@@ -396,17 +396,17 @@ QuickQuest:Register("QUEST_COMPLETE", function()
 		local bestValue, bestIndex = 0
 
 		for index = 1, choices do
-			local link = GetQuestItemLink("choice", index)
+			local link = GetQuestItemLink('choice', index)
 			if(link) then
 				local _, _, _, _, _, _, _, _, _, _, value = GetItemInfo(link)
-				value = cashRewards[tonumber(strmatch(link, "item:(%d+):"))] or value
+				value = cashRewards[tonumber(strmatch(link, 'item:(%d+):'))] or value
 
 				if(value > bestValue) then
 					bestValue, bestIndex = value, index
 				end
 			else
-				choiceQueue = "QUEST_COMPLETE"
-				return GetQuestItemInfo("choice", index)
+				choiceQueue = 'QUEST_COMPLETE'
+				return GetQuestItemInfo('choice', index)
 			end
 		end
 
@@ -420,9 +420,9 @@ end)
 local function AttemptAutoComplete(event)
 	C_Timer.After(1, AttemptAutoComplete)
 
-	if(event == "PLAYER_REGEN_ENABLED") then
-		QuickQuest:UnregisterEvent("PLAYER_REGEN_ENABLED")
+	if(event == 'PLAYER_REGEN_ENABLED') then
+		QuickQuest:UnregisterEvent('PLAYER_REGEN_ENABLED')
 	end
 end
-QuickQuest:Register("PLAYER_LOGIN", AttemptAutoComplete)
-QuickQuest:Register("QUEST_AUTOCOMPLETE", AttemptAutoComplete)
+QuickQuest:Register('PLAYER_LOGIN', AttemptAutoComplete)
+QuickQuest:Register('QUEST_AUTOCOMPLETE', AttemptAutoComplete)
