@@ -1,5 +1,5 @@
 local F, C = unpack(select(2, ...))
-
+if not C.appearance.fonts then return end
 
 local normalFont = C.font.normal
 local headerFont = C.font.header
