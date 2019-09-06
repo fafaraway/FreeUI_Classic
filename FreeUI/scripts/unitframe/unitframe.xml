@@ -1,9 +1,8 @@
 <Ui xmlns='http://www.blizzard.com/wow/ui/'>
 	<Script file='utility.lua'/>
 
+	<Script file='elements\custom\fct.lua'/>
 	<Script file='elements\custom\dispellable.lua'/>
-	<Script file='elements\custom\playerbufftimer.lua'/>
-	<Script file='elements\custom\quaketimer.lua'/>
 	<Script file='elements\custom\spellrange.lua'/>
 	<Script file='elements\custom\totems.lua'/>
 	

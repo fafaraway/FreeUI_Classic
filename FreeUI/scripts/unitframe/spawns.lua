@@ -23,6 +23,7 @@ local function CreatePlayerStyle(self)
 	UNITFRAME:AddRaidTargetIndicator(self)
 	UNITFRAME:AddStatusIndicator(self)
 	UNITFRAME:AddPvPIndicator(self)
+	UNITFRAME:AddFCT(self)
 
 	if C.Class == 'SHAMAN' then UNITFRAME:AddTotems(self) end
 	if cfg.classPower then UNITFRAME:AddClassPower(self) end
@@ -60,6 +61,7 @@ local function CreateTargetStyle(self)
 	UNITFRAME:AddAuras(self)
 	UNITFRAME:AddRaidTargetIndicator(self)
 	UNITFRAME:AddRangeCheck(self)
+	UNITFRAME:AddFCT(self)
 end
 
 local function CreateTargetTargetStyle(self)

@@ -5,24 +5,17 @@ C['general'] = {
 	['uiScale'] = 1,
 	['uiScaleAuto'] = true,
 
+	['fasterLoot'] = true,
 	['enhancedMenu'] = true,
-
 	['mailButton'] = true, 				
 	['alreadyKnown'] = true,
 	['tradeTabs'] = true,
-
-	
-	['fasterLoot'] = true,
+	['marker'] = true,
+	['itemLevel'] = true,
+	['helmCloak'] = true,
 	['PVPSound'] = true,
 
-	['marker'] = true,
 
-	['itemLevel'] = true,
-
-	['combatText'] = true,
-		['combatText_info'] = true,
-		['combatText_incoming'] = true,
-		['combatText_outgoing'] = true,
 	
 	['clickCast'] = true,
 		['clickCast_filter'] = false,
@@ -49,8 +42,7 @@ C['appearance'] = {
 	['vignette'] = true,
 		['vignetteAlpha'] = .8,
 
-	['questTracker'] = true,
-	['petBattle'] = true,
+
 
 	['fonts'] = true,
 
@@ -247,6 +239,14 @@ C['unitframe'] = {
 
 		['power_height'] = 3,
 		['altpower_height'] = 2,
+
+		['enableFCT'] = true,
+			['playerFCT'] = true,
+			['targetFCT'] = true,
+			['petFCT'] = true,
+			['hotsDots'] = true,
+			['autoAttack'] = true,
+			['overHealing'] = false,
 		
 		['enableCastbar'] = true,
 			['castbar_separatePlayer'] = false,

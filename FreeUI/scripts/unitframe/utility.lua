@@ -1,12 +1,13 @@
-local F, C = unpack(select(2, ...))
+local F, C, L = unpack(select(2, ...))
 local UNITFRAME = F:RegisterModule('Unitframe')
 
 
 local format, floor, abs, min = string.format, math.floor, math.abs, math.min
 local pairs, next = pairs, next
 
-F.LibClassicDurations = LibStub("LibClassicDurations")
-F.LibClassicDurations:RegisterFrame("FreeUI")
+F.LibClassicDurations = LibStub('LibClassicDurations')
+F.LibClassicDurations:RegisterFrame('FreeUI')
+local LCD = F.LibClassicDurations
 
 local cfg = C.unitframe
 local oUF = FreeUI.oUF
@@ -143,16 +144,29 @@ function UNITFRAME:AddSelectedBorder(self)
 	self:RegisterEvent('GROUP_ROSTER_UPDATE', UpdateSelectedBorder, true)
 end
 
+function UNITFRAME:AddFCT(self)
+	if not cfg.enableFCT then return end
 
-function UNITFRAME.FormatAuraTime(s)
-	local day, hour, minute = 86400, 3600, 60
-
-	if s >= day then
-		return format('%d', F.Round(s/day))
-	elseif s >= hour then
-		return format('%d', F.Round(s/hour))
-	elseif s >= minute then
-		return format('%d', F.Round(s/minute))
+	local parentFrame = CreateFrame('Frame', nil, UIParent)
+	local fcf = CreateFrame('Frame', 'oUF_CombatTextFrame', parentFrame)
+	fcf:SetSize(32, 32)
+	if self.unitStyle == 'player' then
+		F.Mover(fcf, L['MOVER_COMBATTEXT_INCOMING'], 'PlayerCombatText', {'BOTTOM', self, 'TOPLEFT', 0, 120})
+	else
+		F.Mover(fcf, L['MOVER_COMBATTEXT_OUTGOING'], 'TargetCombatText', {'BOTTOM', self, 'TOPRIGHT', 0, 120})
 	end
-	return format('%d', mod(s, minute))
+
+	for i = 1, 36 do
+		fcf[i] = parentFrame:CreateFontString('$parentText', 'OVERLAY')
+	end
+
+	fcf.font = C.font.normal
+	fcf.fontHeight = 18
+	fcf.fontFlags = nil
+	fcf.showPets = cfg.petFCT
+	fcf.showHots = cfg.hotsDots
+	fcf.showAutoAttack = cfg.autoAttack
+	fcf.showOverHealing = cfg.overHealing
+	fcf.abbreviateNumbers = true
+	self.FloatingCombatFeedback = fcf
 end
