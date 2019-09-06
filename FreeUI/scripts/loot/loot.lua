@@ -1,5 +1,5 @@
 local F, C = unpack(select(2, ...))
-local LOOT = F:RegisterModule('loot')
+local LOOT = F:GetModule('loot')
 
 
 local iconsize = 32
