@@ -80,8 +80,8 @@ end
 function MAP:WorldMapCoords()
 	if not C.map.worldMapCoords then return end
 
-	playerCoords = F.CreateFS(WorldMapFrame.BorderFrame, {C.font.normal, 11}, '', nil, nil, 'BOTTOMLEFT', 10, 10)
-	cursorCoords = F.CreateFS(WorldMapFrame.BorderFrame, {C.font.normal, 11}, '', nil, nil, 'BOTTOMLEFT', 130, 10)
+	playerCoords = F.CreateFS(WorldMapFrame, {C.font.normal, 11}, '', nil, nil, 'TOPLEFT', 14, -10)
+	cursorCoords = F.CreateFS(WorldMapFrame, {C.font.normal, 11}, '', nil, nil, 'TOPLEFT', 120, -10)
 
 	hooksecurefunc(WorldMapFrame, 'OnFrameSizeChanged', MAP.UpdateMapID)
 	hooksecurefunc(WorldMapFrame, 'OnMapChanged', MAP.UpdateMapID)
