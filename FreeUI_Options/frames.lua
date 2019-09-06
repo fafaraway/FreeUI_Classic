@@ -88,15 +88,17 @@ line:SetColorTexture(.5, .5, .5, .1)
 
 ns.addCategory('general')
 ns.addCategory('appearance')
-ns.addCategory('automation')
 ns.addCategory('notification')
 ns.addCategory('infobar')
 ns.addCategory('actionbar')
+ns.addCategory('cooldown')
 ns.addCategory('unitFrame')
 ns.addCategory('inventory')
+ns.addCategory('loot')
 ns.addCategory('tooltip')
 ns.addCategory('chat')
 ns.addCategory('map')
+ns.addCategory('quest')
 
 
 CreditsButton:SetPoint('BOTTOM', InstallButton, 'TOP', 0, 4)
@@ -278,7 +280,7 @@ end
 
 -- [[ Automation ]]
 
-do
+--[[do
 	local automation = FreeUIOptionsPanel.automation
 	automation.tab.Icon:SetTexture('Interface\\Icons\\INV_Misc_EngGizmos_swissArmy')
 
@@ -308,7 +310,7 @@ do
 	
 	local autoSetRole = ns.CreateCheckBox(automation, 'autoSetRole', true)
 	autoSetRole:SetPoint('LEFT', autoTabBinder, 'RIGHT', 160, 0)
-end
+end--]]
 
 -- [[ Notifications ]]
 

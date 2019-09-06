@@ -9,7 +9,7 @@
 
 freeui_options.lua
 localization\english.lua
-localization\chinese.lua
+#localization\chinese.lua
 frames.lua
 
 
