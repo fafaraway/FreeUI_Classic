@@ -10,7 +10,7 @@ C['general'] = {
 	['mailButton'] = true, 				
 	['alreadyKnown'] = true,
 	['tradeTabs'] = true,
-	['nakedButton'] = true,
+
 	
 	['fasterLoot'] = true,
 	['PVPSound'] = true,

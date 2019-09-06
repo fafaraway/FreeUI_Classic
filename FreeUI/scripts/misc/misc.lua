@@ -25,9 +25,6 @@ function MISC:OnLogin()
 	self:ReadyCheck()
 	self:Marker()
 
-
-	self:NakedButton()
-
 	self:MailButton()
 
 
@@ -150,51 +147,6 @@ function MISC:ReadyCheck()
 	end)
 end
 
-
-
--- Get Naked
-function MISC:NakedButton()
-	if not C.general.nakedButton then return end
-
-	local nakedButton = CreateFrame('Button', nil, CharacterFrameInsetRight)
-	nakedButton:SetSize(31, 33)
-	nakedButton:SetPoint('RIGHT', PaperDollSidebarTab1, 'LEFT', -4, -2)
-	F.PixelIcon(nakedButton, 'Interface\\ICONS\\UI_Calendar_FreeTShirtDay', true)
-	F.AddTooltip(nakedButton, 'ANCHOR_RIGHT', L['MISC_GET_NAKED'])
-
-	local function UnequipItemInSlot(i)
-		local action = EquipmentManager_UnequipItemInSlot(i)
-		EquipmentManager_RunAction(action)
-	end
-
-	nakedButton:SetScript('OnDoubleClick', function()
-		for i = 1, 17 do
-			local texture = GetInventoryItemTexture('player', i)
-			if texture then
-				UnequipItemInSlot(i)
-			end
-		end
-	end)
-
-	local undressButton = CreateFrame('Button', 'DressUpFrameUndressButton', DressUpFrame, 'UIPanelButtonTemplate')
-	undressButton:SetSize(80, 22)
-	undressButton:SetPoint('RIGHT', DressUpFrameResetButton, 'LEFT', -1, 0)
-	undressButton:SetText(L['NAKE_BUTTON'])
-	undressButton:SetScript('OnClick', function()
-		DressUpModel:Undress()
-	end)
-
-	local sideUndressButton = CreateFrame('Button', 'SideDressUpModelUndressButton', SideDressUpModel, 'UIPanelButtonTemplate')
-	sideUndressButton:SetSize(80, 22)
-	sideUndressButton:SetPoint('TOP', SideDressUpModelResetButton, 'BOTTOM', 0, -5)
-	sideUndressButton:SetText(L['NAKE_BUTTON'])
-	sideUndressButton:SetScript('OnClick', function()
-		SideDressUpModel:Undress()
-	end)
-
-	F.Reskin(undressButton)
-	F.Reskin(sideUndressButton)
-end
 
 -- TradeFrame hook
 function MISC:TradeTargetInfo()
@@ -379,7 +331,12 @@ end
 
 
 
-
+-- Temporary taint fix
+do
+	InterfaceOptionsFrameCancel:SetScript("OnClick", function()
+		InterfaceOptionsFrameOkay:Click()
+	end)
+end
 
 
 

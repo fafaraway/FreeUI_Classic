@@ -50,7 +50,6 @@ function MISC:CreateItemTexture(slot, relF, x, y)
 	icon:SetSize(14, 14)
 	icon:SetTexCoord(unpack(C.TexCoord))
 	icon.bg = F.CreateBDFrame(icon)
-	--F.CreateBD(icon.bg)
 	icon.bg:Hide()
 
 	return icon
@@ -186,41 +185,6 @@ function MISC:ItemLevel_UpdateInspect(...)
 	end
 end
 
-function MISC:ItemLevel_FlyoutUpdate(bag, slot, quality)
-	if not self.iLvl then
-		self.iLvl = F.CreateFS(self, 'pixel', "", false, "BOTTOMLEFT", 1, 1)
-	end
-
-	local link, level
-	if bag then
-		link = GetContainerItemLink(bag, slot)
-		level = F.GetItemLevel(link, bag, slot)
-	else
-		link = GetInventoryItemLink("player", slot)
-		level = F.GetItemLevel(link, "player", slot)
-	end
-
-	local color = BAG_ITEM_QUALITY_COLORS[quality or 1]
-	self.iLvl:SetText(level)
-	self.iLvl:SetTextColor(color.r, color.g, color.b)
-end
-
-function MISC:ItemLevel_FlyoutSetup()
-	local location = self.location
-	if not location or location >= EQUIPMENTFLYOUT_FIRST_SPECIAL_LOCATION then
-		if self.iLvl then self.iLvl:SetText("") end
-		return
-	end
-
-	local _, _, bags, voidStorage, slot, bag = EquipmentManager_UnpackLocation(location)
-	if voidStorage then return end
-	local quality = select(13, EquipmentManager_GetItemInfoByLocation(location))
-	if bags then
-		MISC.ItemLevel_FlyoutUpdate(self, bag, slot, quality)
-	else
-		MISC.ItemLevel_FlyoutUpdate(self, nil, slot, quality)
-	end
-end
 
 function MISC:ItemLevel()
 	if not C.general.itemLevel then return end
