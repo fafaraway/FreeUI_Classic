@@ -7,11 +7,11 @@ local QUEST = F:GetModule('Quest')
 local created
 local function setupCheckButton()
 	if created then return end
-	local mono = CreateFrame("CheckButton", nil, WorldMapFrame.BorderFrame, "OptionsCheckButtonTemplate")
+	local mono = CreateFrame("CheckButton", nil, WorldMapFrame, "OptionsCheckButtonTemplate")
 	mono:SetPoint("TOPRIGHT", -140, -2)
 	mono:SetSize(26, 26)
 	F.CreateCB(mono, .25)
-	mono.text = F.CreateFS(mono, {C.font.normal, 12}, L['QUEST_QUICK_QUEST'], 'yellow', true, 'LEFT', 25, 0)
+	mono.text = F.CreateFS(mono, {C.font.normal, 11}, L['QUEST_QUICK_QUEST'], 'yellow', true, 'LEFT', 25, 0)
 	mono:SetChecked(C.quest.quickQuest)
 	mono:SetScript("OnClick", function(self)
 		C.quest.quickQuest = self:GetChecked()

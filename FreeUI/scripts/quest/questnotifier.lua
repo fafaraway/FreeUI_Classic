@@ -51,7 +51,7 @@ local questMatches = {
 	['QuestFailed'] = getPattern(ERR_QUEST_FAILED_S),
 }
 
-function NOTIFICATION:FindQuestProgress(_, msg)
+function QUEST:FindQuestProgress(_, msg)
 	if not C.quest.questProgress then return end
 	if C.quest.onlyCompleteRing then return end
 
@@ -71,7 +71,7 @@ function NOTIFICATION:FindQuestProgress(_, msg)
 	end
 end
 
-function NOTIFICATION:FindQuestAccept(questLogIndex, questID)
+function QUEST:FindQuestAccept(questLogIndex, questID)
 	local name, _, _, _, _, _, frequency = GetQuestLogTitle(questLogIndex)
 	if name then
 		local tagID, _, worldQuestType = GetQuestTagInfo(questID)
@@ -80,7 +80,7 @@ function NOTIFICATION:FindQuestAccept(questLogIndex, questID)
 	end
 end
 
-function NOTIFICATION:FindQuestComplete()
+function QUEST:FindQuestComplete()
 	for i = 1, GetNumQuestLogEntries() do
 		local name, _, _, _, _, isComplete, _, questID = GetQuestLogTitle(i)
 		local worldQuest = select(3, GetQuestTagInfo(questID))
@@ -95,7 +95,7 @@ function NOTIFICATION:FindQuestComplete()
 	end
 end
 
-function NOTIFICATION:FindWorldQuestComplete(questID)
+function QUEST:FindWorldQuestComplete(questID)
 	if QuestUtils_IsQuestWorldQuest(questID) then
 		local link = GetQuestLink(questID)
 		if link and not completedQuest[questID] then
@@ -105,7 +105,7 @@ function NOTIFICATION:FindWorldQuestComplete(questID)
 	end
 end
 
-function NOTIFICATION:QuestNotifier()
+function QUEST:QuestNotifier()
 	if C.quest.questNotifier then
 		self:FindQuestComplete()
 		F:RegisterEvent('QUEST_ACCEPTED', self.FindQuestAccept)
