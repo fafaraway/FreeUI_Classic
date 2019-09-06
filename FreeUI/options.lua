@@ -366,3 +366,11 @@ C['quest'] = {
 		['onlyCompleteRing'] = false,
 }
 
+C['cooldown'] = {
+	['cdEnhanced'] = true,
+	['cdPulse'] = true,
+		['ignoredSpells'] = {
+			--GetSpellInfo(6807),	-- Maul
+			--GetSpellInfo(35395),	-- Crusader Strike
+		},
+}
