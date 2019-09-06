@@ -52,7 +52,8 @@ function MISC:OnLogin()
 
 
 
-
+	-- Fix blizz error
+	MAIN_MENU_MICRO_ALERT_PRIORITY = MAIN_MENU_MICRO_ALERT_PRIORITY or {}
 end
 
 

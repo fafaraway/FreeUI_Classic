@@ -116,10 +116,10 @@ function MISC:RefreshButtonInfo()
 			self:Hide()
 			return
 		end
+	else
+		wipe(pending)
+		self:Hide()
 	end
-
-	wipe(pending)
-	self:Hide()
 end
 
 function MISC:ItemLevel_SetupLevel(frame, strType, unit)

@@ -85,7 +85,7 @@ function INFOBAR:Friends()
 		if InCombatLockdown() then UIErrorsFrame:AddMessage(C.InfoColor..ERR_NOT_IN_COMBAT) return end
 		
 		if button == 'LeftButton' then
-			ToggleFriendsFrame()
+			ToggleFriendsFrame(1)
 		elseif button == 'RightButton' then
 			StaticPopupSpecial_Show(AddFriendFrame)
 			AddFriendFrame_ShowEntry()
