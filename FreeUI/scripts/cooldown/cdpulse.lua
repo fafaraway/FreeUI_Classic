@@ -127,8 +127,8 @@ end
 
 
 function frame:ADDON_LOADED(addon)
-	for _, v in pairs(C.general.cooldownPulse_ignoredSpells) do
-		C.general.cooldownPulse_ignoredSpells[v] = true
+	for _, v in pairs(C.cooldown.ignoredSpells) do
+		C.cooldown.ignoredSpells[v] = true
 	end
 	self:UnregisterEvent("ADDON_LOADED")
 end
