@@ -3,7 +3,7 @@
 	<Script file='tabs.lua'/>
 	<Script file='abbreviate.lua'/>
 	<Script file='filters.lua'/>
-	<Script file='itemlinks.lua'/>
+	<!-- <Script file='itemlinks.lua'/> -->
 	<Script file='chatcopy.lua'/>
 	<Script file='urlcopy.lua'/>
 	<Script file='spamagemeter.lua'/>
