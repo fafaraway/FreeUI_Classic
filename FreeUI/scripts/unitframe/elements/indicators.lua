@@ -32,29 +32,6 @@ function UNITFRAME:AddStatusIndicator(self)
 	statusIndicator:SetScript('OnEvent', updateStatus)
 end
 
-function UNITFRAME:AddPvPIndicator(self)
-	local PvPIndicator = F.CreateFS(self, 'pixel', '', nil, true)
-	PvPIndicator:SetPoint('BOTTOMRIGHT', self.Health, 'TOPRIGHT', -50, 3)
-	PvPIndicator:SetText('P')
-	PvPIndicator:SetTextColor(1, 0, 0)
-
-	local UpdatePvPIndicator = function(self, event, unit)
-		if(unit ~= self.unit) then return end
-
-		--local PvPIndicator = self.PvPIndicator
-		local factionGroup = UnitFactionGroup(unit)
-
-		if(UnitIsPVPFreeForAll(unit) or (factionGroup and factionGroup ~= 'Neutral' and UnitIsPVP(unit))) then
-			PvPIndicator:Show()
-		else
-			PvPIndicator:Hide()
-		end
-	end
-
-	self.PvPIndicator = PvPIndicator
-	PvPIndicator.Override = UpdatePvPIndicator
-end
-
 function UNITFRAME:AddRaidTargetIndicator(self)
 	local raidTargetIndicator = self.Health:CreateTexture(nil, 'OVERLAY')
 	raidTargetIndicator:SetTexture(C.AssetsPath..'UI-RaidTargetingIcons')
@@ -63,12 +40,6 @@ function UNITFRAME:AddRaidTargetIndicator(self)
 	raidTargetIndicator:SetPoint('CENTER', self)
 
 	self.RaidTargetIndicator = raidTargetIndicator
-end
-
-function UNITFRAME:AddLeaderIndicator(self)
-	local leaderIndicator = F.CreateFS(self.Health, 'pixel', 'L', nil, true)
-	leaderIndicator:SetPoint('TOPLEFT', self.Health, 2, -2)
-	self.LeaderIndicator = leaderIndicator
 end
 
 function UNITFRAME:AddResurrectIndicator(self)

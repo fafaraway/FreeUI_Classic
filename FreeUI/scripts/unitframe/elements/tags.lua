@@ -83,6 +83,19 @@ tags['free:percentage'] = function(unit)
 end
 tagEvents['free:percentage'] = 'UNIT_CONNECTION UNIT_HEALTH_FREQUENT UNIT_MAXHEALTH'
 
+tags['free:level'] = function(unit)
+	local level = UnitLevel(unit)
+	local color = GetCreatureDifficultyColor(level)
+	local r, g, b = color.r, color.g, color.b
+
+	if(level > 0) then
+		return format('|cff%02x%02x%02x%s|r', r * 255, g * 255, b * 255, level)
+	else
+		return '??'
+	end
+end
+tagEvents['free:level'] = 'UNIT_LEVEL PLAYER_LEVEL_UP'
+
 tags['free:classification'] = function(unit)
 	local class, level = UnitClassification(unit), UnitLevel(unit)
 	if(class == 'worldboss' or level == -1) then
@@ -93,6 +106,8 @@ tags['free:classification'] = function(unit)
 		return '|cffFF0099(R+)|r'
 	elseif(class == 'elite') then
 		return '|cffCC3300(E)|r'
+	elseif(class == 'minus') then
+		return '|cff888888(-)|r'
 	end
 end
 tagEvents['free:classification'] = 'UNIT_CLASSIFICATION_CHANGED'
@@ -146,11 +161,11 @@ function UNITFRAME:AddNameText(self)
 	local name
 
 	if self.unitStyle == 'party' or self.unitStyle == 'raid' then
-		name = F.CreateFS(self.Health, (C.isCNClient and cfg.groupNames and C.NormalFont) or 'pixel', '', nil, not C.isCNClient)
+		name = F.CreateFS(self.Health, (C.isCNClient and {C.font.normal, 11}) or 'pixel', '', nil, (C.isCNClient and {0, 0, 0, 1, 0, -2}) or true)
 
 		self:Tag(name, '[free:groupname]')
 	else
-		name = F.CreateFS(self.Health, (C.isCNClient and C.NormalFont) or 'pixel', '', nil, not C.isCNClient)
+		name = F.CreateFS(self.Health, (C.isCNClient and {C.font.normal, 11}) or 'pixel', '', nil, (C.isCNClient and {0, 0, 0, 1, 0, -2}) or true)
 
 		if self.unitStyle == 'target' then
 			name:SetPoint('BOTTOMRIGHT', self, 'TOPRIGHT', 0, 3)
@@ -201,6 +216,8 @@ function UNITFRAME:AddHealthPercentage(self)
 
 	self:Tag(healthPercentage, '[free:percentage]')
 	self.HealthPercentage = healthPercentage
+
+	self.HealthPercentage = healthPercentage
 end
 
 function UNITFRAME:AddPowerValue(self)
@@ -221,11 +238,36 @@ function UNITFRAME:AddPowerValue(self)
 	self.PowerValue = powerValue
 end
 
-function UNITFRAME:AddClassificationText(self)
-	local classificationText = F.CreateFS(self.Health, 'pixel', '', nil, true)
-	classificationText:SetPoint('BOTTOMLEFT', self.PowerValue, 'BOTTOMRIGHT', 4, 0)
+function UNITFRAME:AddLevelText(self)
+	local levelText = F.CreateFS(self.Health, 'pixel', '', nil, true)
+	levelText:SetPoint('BOTTOMRIGHT', self.Name, 'BOTTOMLEFT', -4, 0)
 
-	self:Tag(classificationText, '[free:classification]')
+	self:Tag(levelText, '[free:level] [free:classification]')
 
-	self.ClassificationText = classificationText
+	self.Level = levelText
+end
+
+tags['free:pvp'] = function(unit)
+	if(UnitIsPVP(unit)) then
+		return '|cffff2735P|r'
+	end
+end
+tagEvents['free:pvp'] = 'UNIT_FACTION'
+
+function UNITFRAME:AddPVPText(self)
+	local PVPText = F.CreateFS(self.Health, 'pixel', nil, nil, true)
+	PVPText:SetPoint('BOTTOMRIGHT', self.PowerValue, 'BOTTOMLEFT', -4, 0)
+
+	self:Tag(PVPText, '[free:pvp]')
+
+	self.PVP = PVPText
+end
+
+function UNITFRAME:AddLeaderText(self)
+	local leaderText = F.CreateFS(self.Health, 'pixel', 'L', nil, true)
+	leaderText:SetPoint('TOPLEFT', self.Health, 2, -2)
+
+	self:Tag(leaderText, '[leader]')
+
+	self.Leader = leaderText
 end
