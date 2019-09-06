@@ -1,4 +1,4 @@
-local F, C = unpack(select(2, ...))
+local F, C, L = unpack(select(2, ...))
 local ACTIONBAR = F:RegisterModule('Actionbar')
 
 
@@ -337,6 +337,46 @@ function ACTIONBAR:CreateStancebar()
 	end
 end
 
+function ACTIONBAR:CreateLeaveVehicleBar()
+	local padding, margin = 10, 5
+	local num = 1
+
+	local frame = CreateFrame('Frame', 'FreeUI_LeaveVehicleBar', UIParent)
+	frame:SetWidth(num*24 + (num-1)*margin + 2*padding)
+	frame:SetHeight(24 + 2*padding)
+	frame.Pos = {'CENTER', UIParent, 'CENTER', 0, 100}
+
+	local button = CreateFrame('Button', 'FreeUI_LeaveVehicleButton', frame)
+	table.insert(buttonList, button)
+	button:SetSize(24, 24)
+	button:SetPoint('BOTTOMLEFT', frame, padding, padding)
+	button:RegisterForClicks('AnyUp')
+	F.PixelIcon(button, 'INTERFACE\\VEHICLES\\UI-Vehicles-Button-Exit-Up', true)
+	button.Icon:SetTexCoord(.216, .784, .216, .784)
+	F.CreateSD(button)
+
+	local function updateVisibility()
+		if UnitOnTaxi('player') then
+			button:Show()
+		else
+			button:Hide()
+			button:UnlockHighlight()
+		end
+	end
+	hooksecurefunc('MainMenuBarVehicleLeaveButton_Update', updateVisibility)
+
+	local function onClick(self)
+		if not UnitOnTaxi('player') then return end
+		TaxiRequestEarlyLanding()
+		self:LockHighlight()
+	end
+	button:SetScript('OnClick', onClick)
+	button:SetScript('OnEnter', MainMenuBarVehicleLeaveButton_OnEnter)
+	button:SetScript('OnLeave', F.HideTooltip)
+
+	F.Mover(frame, L['ACTIONBAR_LEAVE_VEHICLE'], 'LeaveVehicle', frame.Pos)
+end
+
 local scripts = {
 	'OnShow', 'OnHide', 'OnEvent', 'OnEnter', 'OnLeave', 'OnUpdate', 'OnValueChanged', 'OnClick', 'OnMouseDown', 'OnMouseUp',
 }
@@ -348,7 +388,7 @@ local framesToHide = {
 local framesToDisable = {
 	MainMenuBar,
 	MicroButtonAndBagsBar, MainMenuBarArtFrame, StatusTrackingBarManager,
-	ActionBarDownButton, ActionBarUpButton, MainMenuBarVehicleLeaveButton,
+	ActionBarDownButton, ActionBarUpButton,
 	OverrideActionBar,
 	OverrideActionBarExpBar, OverrideActionBarHealthBar, OverrideActionBarPowerBar, OverrideActionBarPitchFrame,
 }
@@ -413,6 +453,7 @@ function ACTIONBAR:OnLogin()
 	self:CreateBar5()
 	self:CreatePetbar()
 	self:CreateStancebar()
+	self:CreateLeaveVehicleBar()
 	self:RemoveBlizzArt()
 	self:RestyleButtons()
 	self:HookActionEvents()
