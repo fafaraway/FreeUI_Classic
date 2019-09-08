@@ -33,6 +33,7 @@ function MISC:OnLogin()
 
 	self:TradeTargetInfo()
 	self:TicketStatusFrame()
+	self:Reputation()
 
 
 
