@@ -21,18 +21,17 @@ end
 local function UpdateClassPowerColor(element)
 	local _, playerClass = UnitClass('player')
 	local r, g, b = 1, 1, 2/5
-	if(not UnitHasVehicleUI('player')) then
-		if(playerClass == 'MONK') then
-			r, g, b = 0, 4/5, 3/5
-		elseif(playerClass == 'WARLOCK') then
-			r, g, b = 2/3, 1/3, 2/3
-		elseif(playerClass == 'PALADIN') then
-			r, g, b = 238/255, 220/255, 127/255
-		elseif(playerClass == 'MAGE') then
-			r, g, b = 5/6, 1/2, 5/6
-		elseif(playerClass == 'ROGUE') then
-			r, g, b = 179/255, 54/255, 16/255
-		end
+
+	if(playerClass == 'MONK') then
+		r, g, b = 0, 4/5, 3/5
+	elseif(playerClass == 'WARLOCK') then
+		r, g, b = 2/3, 1/3, 2/3
+	elseif(playerClass == 'PALADIN') then
+		r, g, b = 238/255, 220/255, 127/255
+	elseif(playerClass == 'MAGE') then
+		r, g, b = 5/6, 1/2, 5/6
+	elseif(playerClass == 'ROGUE') then
+		r, g, b = 179/255, 54/255, 16/255
 	end
 
 	for index = 1, #element do
