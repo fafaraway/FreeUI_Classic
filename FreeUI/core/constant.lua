@@ -13,6 +13,11 @@ C.Support = GetAddOnMetadata('FreeUI', 'X-Support')
 C.wowBuild = select(2, GetBuildInfo()); C.wowBuild = tonumber(C.wowBuild)
 C.isClassic = select(4, GetBuildInfo()) < 20000
 
+RAID_CLASS_COLORS['SHAMAN']['r'] = 0.0
+RAID_CLASS_COLORS['SHAMAN']['g'] = 0.44
+RAID_CLASS_COLORS['SHAMAN']['b'] = 0.87
+RAID_CLASS_COLORS['SHAMAN']['colorStr'] = 'ff0070de'
+
 C.ClassColors = {}
 C.ClassList = {}
 for k, v in pairs(LOCALIZED_CLASS_NAMES_MALE) do
