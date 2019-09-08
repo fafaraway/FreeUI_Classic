@@ -12,4 +12,5 @@
 	<Script file='mail.lua'/>
 	<Script file='marker.lua'/>
 	<Script file='pvpsound.lua'/>
+	<Script file='reputation.lua'/>
 </Ui>
