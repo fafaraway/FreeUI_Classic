@@ -6,16 +6,20 @@ function module:Interrupt()
 	local frame = CreateFrame('Frame')
 	frame:RegisterEvent('COMBAT_LOG_EVENT_UNFILTERED')
 	frame:SetScript('OnEvent', function(self)
-		local _, event, _, sourceGUID, _, _, _, _, destName, _, _, _, _, _, spellID = CombatLogGetCurrentEventInfo()
+		local _, eventType, _, sourceGUID, sourceName, sourceFlags, _, _, destName, _, _, _, spellName, _, _, extraskillName = CombatLogGetCurrentEventInfo()
+		if not sourceGUID or sourceName == destName then return end
+
 		local inInstance, instanceType = IsInInstance()
+		--local infoText = infoType[eventType]
 		if ((sourceGUID == UnitGUID('player')) or (sourceGUID == UnitGUID('pet'))) then
-			if (event == 'SPELL_INTERRUPT') then
+			if (eventType == 'SPELL_INTERRUPT') then
 				if C.notification.interrupt then
 					PlaySoundFile(interruptSound, 'Master')
 				end
 
 				if C.notification.interruptAnnounce and inInstance and IsInGroup() then
-					SendChatMessage(L['NOTIFICATION_INTERRUPTED']..destName..' '..GetSpellLink(spellID), say)
+					--SendChatMessage(L['NOTIFICATION_INTERRUPTED']..destName..' '..GetSpellLink(spellID), say)
+					SendChatMessage(format(L['NOTIFICATION_INTERRUPTED']..destName..' '..extraskillName), say)
 				end
 			end
 		end
