@@ -49,7 +49,7 @@ function CHAT:RestyleChatFrame()
 	F.CreateBD(lang)
 	F.CreateSD(lang)
 
-	--F.StripTextures(self)
+	F.StripTextures(self)
 	F.HideObject(self.buttonFrame)
 	--F.HideObject(self.ScrollBar)
 	--F.HideObject(self.ScrollToBottomButton)
