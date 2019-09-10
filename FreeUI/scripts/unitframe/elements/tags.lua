@@ -83,35 +83,6 @@ tags['free:percentage'] = function(unit)
 end
 tagEvents['free:percentage'] = 'UNIT_CONNECTION UNIT_HEALTH_FREQUENT UNIT_MAXHEALTH'
 
-tags['free:level'] = function(unit)
-	local level = UnitLevel(unit)
-	local color = GetCreatureDifficultyColor(level)
-	local r, g, b = color.r, color.g, color.b
-
-	if(level > 0) then
-		return format('|cff%02x%02x%02x%s|r', r * 255, g * 255, b * 255, level)
-	else
-		return '??'
-	end
-end
-tagEvents['free:level'] = 'UNIT_LEVEL PLAYER_LEVEL_UP'
-
-tags['free:classification'] = function(unit)
-	local class, level = UnitClassification(unit), UnitLevel(unit)
-	if(class == 'worldboss' or level == -1) then
-		return '|cff9D2933(B)|r'
-	elseif(class == 'rare') then
-		return '|cffFF99FF(R)|r'
-	elseif(class == 'rareelite') then
-		return '|cffFF0099(R+)|r'
-	elseif(class == 'elite') then
-		return '|cffCC3300(E)|r'
-	elseif(class == 'minus') then
-		return '|cff888888(-)|r'
-	end
-end
-tagEvents['free:classification'] = 'UNIT_CLASSIFICATION_CHANGED'
-
 tags['free:power'] = function(unit)
 	local cur, max = UnitPower(unit), UnitPowerMax(unit)
 	if(cur == 0 or max == 0 or not UnitIsConnected(unit) or UnitIsDead(unit) or UnitIsGhost(unit)) then return end
@@ -238,11 +209,41 @@ function UNITFRAME:AddPowerValue(self)
 	self.PowerValue = powerValue
 end
 
+tags['free:level'] = function(unit)
+	local level = UnitLevel(unit)
+	local color = GetCreatureDifficultyColor(level)
+	local r, g, b = color.r, color.g, color.b
+
+	if(level > 0) then
+		return format('|cff%02x%02x%02x%s|r', r * 255, g * 255, b * 255, level)
+	else
+		return '|cffff2735??|r'
+	end
+end
+tagEvents['free:level'] = 'UNIT_LEVEL PLAYER_LEVEL_UP'
+
+tags['free:classification'] = function(unit)
+	local class = UnitClassification(unit)
+	
+	if(class == 'elite') then
+		return '|cffCC3300+|r'
+	elseif(class == 'rare') then
+		return '|cffFF99FFRare|r'
+	elseif(class == 'rareelite') then
+		return '|cffFF0099Rare+|r'
+	elseif(class == 'worldboss') then
+		return '|cffff2735Boss|r'
+	elseif(class == 'minus') then
+		return '|cff888888-|r'
+	end
+end
+tagEvents['free:classification'] = 'UNIT_CLASSIFICATION_CHANGED'
+
 function UNITFRAME:AddLevelText(self)
 	local levelText = F.CreateFS(self.Health, 'pixel', '', nil, true)
 	levelText:SetPoint('BOTTOMRIGHT', self.Name, 'BOTTOMLEFT', -4, 0)
 
-	self:Tag(levelText, '[free:level] [free:classification]')
+	self:Tag(levelText, '[free:level][free:classification]')
 
 	self.Level = levelText
 end
