@@ -83,7 +83,7 @@ local function delayFunc()
 		print(format(C.RedColor..'%s:|r %s', L['INFOBAR_GUILD_REPAIR_COST'], GetMoneyString(repairAllCost)))
 
 		if C.notification.enableBanner then
-			F.Notification(L['NOTIFICATION_REPAIR'], format(C.RedColor..'%s:|r %s', L['INFOBAR_GUILD_REPAIR_COST'], GetMoneyString(repairAllCost)), 'Interface\\Icons\\INV_Hammer_20')
+			F.Notification(L['NOTIFICATION_REPAIR'], format(C.RedColor..'%s:|r %s', L['INFOBAR_GUILD_REPAIR_COST'], GetMoneyString(repairAllCost)), 'Interface\\ICONS\\Ability_Repair')
 		end
 	end
 end
@@ -106,14 +106,14 @@ function autoRepair(override)
 				print(format(C.RedColor..'%s:|r'..' %s', L['INFOBAR_REPAIR_COST'], GetMoneyString(repairAllCost)))
 
 				if (C.notification.enableBanner and C.notification.autoRepairCost) then
-					F.Notification(L['NOTIFICATION_REPAIR'], format(C.RedColor..'%s:|r'..' %s', L['INFOBAR_REPAIR_COST'], GetMoneyString(repairAllCost)), 'Interface\\Icons\\INV_Hammer_20')
+					F.Notification(L['NOTIFICATION_REPAIR'], format(C.RedColor..'%s:|r'..' %s', L['INFOBAR_REPAIR_COST'], GetMoneyString(repairAllCost)), 'Interface\\ICONS\\Ability_Repair')
 				end
 				return
 			else
 				print(C.InfoColor..L['INFOBAR_REPAIR_FAILED'])
 
 				if (C.notification.enableBanner and C.notification.autoRepairCost) then
-					F.Notification(L['NOTIFICATION_REPAIR'], C.InfoColor..L['INFOBAR_REPAIR_FAILED'], 'Interface\\Icons\\INV_Hammer_20')
+					F.Notification(L['NOTIFICATION_REPAIR'], C.InfoColor..L['INFOBAR_REPAIR_FAILED'], 'Interface\\ICONS\\Ability_Repair')
 				end
 				return
 			end

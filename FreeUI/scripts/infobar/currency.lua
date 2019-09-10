@@ -50,17 +50,11 @@ local errorText = _G.ERR_VENDOR_DOESNT_BUY
 local function stopSelling(tell)
 	stop = true
 	if sellCount > 0 and tell then
-		--print(format('|cff99CCFF%s|r%s', L['INFOBAR_AUTO_SELL_JUNK'], INFOBAR:GetMoneyString(sellCount, true)))
-
 		print(C.GreenColor..L['INFOBAR_AUTO_SELL_JUNK']..'|r: '..GetMoneyString(sellCount))
 		if C.notification.enableBanner then
-			F.Notification(L['NOTIFICATION_SELL'], C.GreenColor..L['INFOBAR_AUTO_SELL_JUNK']..'|r: '..GetMoneyString(sellCount), 'Interface\\Icons\\INV_Hammer_20')
+			F.Notification(L['NOTIFICATION_SELL'], C.GreenColor..L['INFOBAR_AUTO_SELL_JUNK']..'|r: '..GetMoneyString(sellCount), 'Interface\\Icons\\INV_Misc_Coin_02')
 		end
 	end
-
-
-
-
 
 	sellCount = 0
 end
