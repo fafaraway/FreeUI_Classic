@@ -1,11 +1,16 @@
 local F, C, L = unpack(select(2, ...))
-local module = F:GetModule('Misc')
+local UNITFRAME = F:GetModule('Unitframe')
 
-if not C.general.clickCast then return end
+
+local cfg = C.unitframe
+if not cfg.clickCast then return end
 
 local SpellBinder = CreateFrame('Frame', 'SpellBinder', SpellBookFrame, 'ButtonFrameTemplate')
-SpellBinder:SetPoint('TOPLEFT', SpellBookFrame, 'TOPRIGHT', 100, 0)
-SpellBinder:SetSize(300, 400)
+SpellBinder:SetPoint('TOPLEFT', SpellBookFrame, 'TOPRIGHT', 30, 0)
+SpellBinder:SetWidth(300)
+SpellBinder.title = F.CreateFS(SpellBinder, {C.font.normal, 12}, L['UNITFRAME_SPELL_BINDER'], 'yellow', true, 'TOP', 0, -20)
+F.ReskinPortraitFrame(SpellBinder, 10, -10, 0, 0)
+SpellBinderCloseButton:SetPoint('TOPRIGHT', self, -6, -16)
 SpellBinder:Hide()
 
 SpellBinder.sbOpen = false
@@ -53,9 +58,10 @@ end)
 
 local ScrollSpells = CreateFrame('ScrollFrame', 'SpellBinderScrollFrameSpellList', _G['SpellBinderInset'], 'UIPanelScrollFrameTemplate')
 ScrollSpells.child = CreateFrame('Frame', 'SpellBinderScrollFrameSpellListChild', ScrollSpells)
-ScrollSpells:SetPoint('TOPLEFT', _G['SpellBinderInset'], 'TOPLEFT', 0, -5)
-ScrollSpells:SetPoint('BOTTOMRIGHT', _G['SpellBinderInset'], 'BOTTOMRIGHT', -30, 5)
+ScrollSpells:SetPoint('TOPLEFT', _G['SpellBinderInset'], 'TOPLEFT', 10, -5)
+ScrollSpells:SetPoint('BOTTOMRIGHT', _G['SpellBinderInset'], 'BOTTOMRIGHT', -20, 5)
 ScrollSpells:SetScrollChild(ScrollSpells.child)
+F.ReskinScroll(SpellBinderScrollFrameSpellListScrollBar)
 
 SpellBinder.makeSpellsList = function(self, scroll, delete)
 	local oldb
@@ -91,11 +97,12 @@ SpellBinder.makeSpellsList = function(self, scroll, delete)
 			bf:EnableMouse(true)
 
 			bf.tex = bf.tex or bf:CreateTexture(i..'_texture', 'OVERLAY')
-			bf.tex:SetSize(34, 34)
+			bf.tex:SetSize(32, 32)
 			bf.tex:SetPoint('LEFT')
 			bf.tex:SetTexture(spell.texture)
 
-			bf.tex:SetTexCoord(0.1, 0.9, 0.1, 0.9)
+			bf.tex:SetTexCoord(unpack(C.TexCoord))
+			F.CreateBDFrame(bf.tex)
 
 
 			bf.delete = bf.delete or CreateFrame('Button', i..'_delete', bf)
@@ -161,7 +168,7 @@ SpellBinder.makeFramesList = function(self)
 	for frame, value in pairs(ClickCastFrames) do
 		local v
 		if frame and type(frame) == 'table' then v = frame:GetName() end
-		if C.general.clickCast_filter ~= true then
+		if cfg.clickCastfilter ~= true then
 			if v then DB.frames[frame] = DB.frames[frame] or true end
 		else
 			if v ~= 'oUF_Target' and v ~= 'oUF_Player' then DB.frames[frame] = DB.frames[frame] or true end
@@ -191,7 +198,10 @@ end
 hooksecurefunc('SpellBookFrame_Update', function() if SpellBinder.sbOpen then SpellBinder:ToggleButtons() end end)
 
 SpellBinder.OpenButton = CreateFrame('CheckButton', 'SpellBinderOpenButton', _G['SpellBookSkillLineTab1'], 'SpellBookSkillLineTabTemplate')
-SpellBinder.OpenButton:SetNormalTexture('Interface\\ICONS\\Achievement_Guild_Doctorisin')
+SpellBinder.OpenButton:SetNormalTexture('Interface\\ICONS\\Spell_Holy_Renew')
+SpellBinder.OpenButton:GetNormalTexture():SetTexCoord(unpack(C.TexCoord))
+F.CreateBDFrame(SpellBinder.OpenButton)
+F.ReskinTab(SpellBinder.OpenButton)
 
 SpellBinder.OpenButton:SetScript('OnShow', function(self)
 	if SpellBinder:IsVisible() then self:SetChecked(true) end
@@ -340,25 +350,6 @@ SpellBinder:SetScript('OnEvent', function(self, event, ...)
 		self:UnregisterEvent('PLAYER_LOGIN')
 	elseif event == 'PLAYER_ENTERING_WORLD' or event == 'GROUP_ROSTER_UPDATE' or event == 'ZONE_CHANGED' or event == 'ZONE_CHANGED_NEW_AREA' then
 		SpellBinder.UpdateAll()
-	end
-
-	if event == 'PLAYER_ENTERING_WORLD' then
-		F.ReskinPortraitFrame(SpellBinder, true)
-		F.ReskinPortraitFrame(SpellBinder)
-
-		F.ReskinTab(SpellBinder.OpenButton)
-		F.CreateBDFrame(SpellBinder.OpenButton)
-
-		SpellBinder.OpenButton:SetNormalTexture('Interface\\ICONS\\Spell_holy_chastise')
-		SpellBinder.OpenButton:GetNormalTexture():SetTexCoord(unpack(C.TexCoord))
-
-		SpellBinder.OpenButton:SetCheckedTexture(C.media.checked)
-		SpellBinder.OpenButton:GetHighlightTexture():SetColorTexture(1, 1, 1, .3)
-		SpellBinder.OpenButton:GetHighlightTexture():SetAllPoints(SpellBinder.OpenButton:GetNormalTexture())
-
-		F.CreateBG(SpellBinder.OpenButton)
-		F.ReskinClose(SpellBinderCloseButton)
-		F.ReskinScroll(SpellBinderScrollFrameSpellListScrollBar)
 	end
 end)
 

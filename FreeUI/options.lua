@@ -17,13 +17,10 @@ C['general'] = {
 
 
 	
-	['clickCast'] = true,
-		['clickCast_filter'] = false,
+	
 
 	['camera'] = true,
 		['cameraZoomSpeed'] = 5,
-		['actionCam'] = false,
-		['actionCam_full'] = false,
 
 	['numberFormat'] = 1, -- 2 for Chinse number format (万/亿/兆)
 }
@@ -237,6 +234,9 @@ C['unitframe'] = {
 
 		['totems'] = true,
 
+		['clickCast'] = true,
+			['clickCastfilter'] = false,
+
 		['power_height'] = 3,
 		['altpower_height'] = 2,
 
@@ -345,7 +345,7 @@ C['quest'] = {
 
 C['cooldown'] = {
 	['cdEnhanced'] = true,
-		['cdFont'] = {'interface\\addons\\FreeUI\\assets\\font\\supereffective.ttf', 16, 'OUTLINEMONOCHROME'},
+		['cdFont'] = {C.AssetsPath..'font\\supereffective.ttf', 16, 'OUTLINEMONOCHROME'},
 	['cdPulse'] = true,
 		['ignoredSpells'] = {
 			--GetSpellInfo(6807),	-- Maul

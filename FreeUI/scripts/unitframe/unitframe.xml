@@ -25,4 +25,5 @@
 	<Script file='elements\totems.lua'/>
 	
 	<Script file='spawns.lua'/>
+	<Script file='clickcast.lua'/>
 </Ui>

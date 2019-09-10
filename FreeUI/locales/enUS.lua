@@ -6,6 +6,8 @@ local F, C, L = unpack(select(2, ...))
 -- Actionbar
 L['ACTIONBAR_LEAVE_VEHICLE'] = 'Leave vehicle button'
 
+-- Unitframe
+L['UNITFRAME_SPELL_BINDER'] = 'Spell binder'
 
 -- Quest
 L['QUEST_ACCEPT_QUEST'] = 'Accept quest: '

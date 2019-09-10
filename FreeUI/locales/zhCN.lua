@@ -6,6 +6,8 @@ if (GetLocale() ~= 'zhCN' and GetLocale() ~= 'zhTW') then return end
 -- Actionbar
 L['ACTIONBAR_LEAVE_VEHICLE'] = '离开载具按钮'
 
+-- Unitframe
+L['UNITFRAME_SPELL_BINDER'] = '点击施法绑定'
 
 -- Quest
 L['QUEST_ACCEPT_QUEST'] = '接受任务：'
