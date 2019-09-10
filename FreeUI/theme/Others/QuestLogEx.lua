@@ -123,6 +123,8 @@ function APPEARANCE:ReskinQuestLogEx()
 	QuestLogExRewardTitleText.SetTextColor = F.Dummy
 	QuestLogExItemChooseText:SetTextColor(1, 1, 1)
 	QuestLogExItemChooseText.SetTextColor = F.Dummy
+	QuestLogExItemReceiveText:SetTextColor(1, 1, 1)
+	QuestLogExItemReceiveText.SetTextColor = F.Dummy
 end
 
 function APPEARANCE:ExtraQuestSkin()

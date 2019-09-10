@@ -9,7 +9,7 @@ tinsert(C.themes["FreeUI"], function()
 	ItemTextMaterialBotLeft:SetAlpha(0)
 	ItemTextMaterialBotRight:SetAlpha(0)
 
-	--F.ReskinPortraitFrame(ItemTextFrame)
+	F.ReskinPortraitFrame(ItemTextFrame)
 	F.ReskinClose(ItemTextCloseButton)
 	F.ReskinScroll(ItemTextScrollFrameScrollBar)
 	F.ReskinArrow(ItemTextPrevPageButton, "left")
@@ -17,4 +17,8 @@ tinsert(C.themes["FreeUI"], function()
 	--ItemTextFramePageBg:SetAlpha(0)
 	ItemTextPageText:SetTextColor(1, 1, 1)
 	ItemTextPageText.SetTextColor = F.Dummy
+
+	-- fix scrollbar bg, need reviewed
+	ItemTextScrollFrame:DisableDrawLayer("ARTWORK")
+	ItemTextScrollFrame:DisableDrawLayer("BACKGROUND")
 end)
