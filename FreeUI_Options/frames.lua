@@ -95,10 +95,10 @@ ns.addCategory('cooldown')
 ns.addCategory('unitFrame')
 ns.addCategory('inventory')
 ns.addCategory('loot')
-ns.addCategory('tooltip')
-ns.addCategory('chat')
 ns.addCategory('map')
 ns.addCategory('quest')
+ns.addCategory('tooltip')
+ns.addCategory('chat')
 
 
 CreditsButton:SetPoint('BOTTOM', InstallButton, 'TOP', 0, 4)
@@ -106,11 +106,10 @@ InstallButton:SetPoint('BOTTOM', ResetButton, 'TOP', 0, 4)
 ResetButton:SetPoint('TOP', FreeUIOptionsPanel.general.tab, 'BOTTOM', 0, -500)
 
 
--- [[ General ]]
-
+-- General
 do
 	local general = FreeUIOptionsPanel.general
-	general.tab.Icon:SetTexture('Interface\\Icons\\INV_Eng_GearspringParts')
+	general.tab.Icon:SetTexture('Interface\\Icons\\Trade_Engineering')
 
 	local basic = ns.addSubCategory(general, ns.localization.general_subCategory_basic)
 	basic:SetPoint('TOPLEFT', general.subText, 'BOTTOMLEFT', 0, -8)
@@ -154,11 +153,10 @@ do
 	uiScale:HookScript('OnShow', toggleUIScaleOptions)
 end
 
--- [[ Appearance ]]
-
+-- Appearance
 do
 	local appearance = FreeUIOptionsPanel.appearance
-	appearance.tab.Icon:SetTexture('Interface\\Icons\\INV_Misc_Toy_07')
+	appearance.tab.Icon:SetTexture('Interface\\Icons\\INV_Jewelry_Talisman_03')
 
 	local basic = ns.addSubCategory(appearance, ns.localization.appearance_subCategory_basic)
 	basic:SetPoint('TOPLEFT', appearance.subText, 'BOTTOMLEFT', 0, -8)
@@ -230,45 +228,10 @@ do
 	PremadeGroupsFilter:SetPoint('TOPLEFT', WeakAuras, 'BOTTOMLEFT', 0, -8)
 end
 
--- [[ Automation ]]
-
---[[do
-	local automation = FreeUIOptionsPanel.automation
-	automation.tab.Icon:SetTexture('Interface\\Icons\\INV_Misc_EngGizmos_swissArmy')
-
-	local line = ns.addSubCategory(automation, ns.localization.automation_subCategory_automation)
-	line:SetPoint('TOPLEFT', automation.subText, 'BOTTOMLEFT', 0, -8)
-
-	local autoScreenShot = ns.CreateCheckBox(automation, 'autoScreenShot')
-	autoScreenShot:SetPoint('TOPLEFT', line, 'BOTTOMLEFT', 0, -8)
-
-	local autoQuest = ns.CreateCheckBox(automation, 'autoQuest')
-	autoQuest:SetPoint('LEFT', autoScreenShot, 'RIGHT', 160, 0)
-
-	local autoRepair = ns.CreateCheckBox(automation, 'autoRepair')
-	autoRepair:SetPoint('TOPLEFT', autoScreenShot, 'BOTTOMLEFT', 0, -8)
-
-	local autoSellJunk = ns.CreateCheckBox(automation, 'autoSellJunk')
-	autoSellJunk:SetPoint('LEFT', autoRepair, 'RIGHT', 160, 0)
-
-	local autoInvite = ns.CreateCheckBox(automation, 'autoInvite')
-	autoInvite:SetPoint('TOPLEFT', autoRepair, 'BOTTOMLEFT', 0, -8)
-
-	local autoAcceptInvite = ns.CreateCheckBox(automation, 'autoAcceptInvite')
-	autoAcceptInvite:SetPoint('LEFT', autoInvite, 'RIGHT', 160, 0)
-
-	local autoTabBinder = ns.CreateCheckBox(automation, 'autoTabBinder')
-	autoTabBinder:SetPoint('TOPLEFT', autoInvite, 'BOTTOMLEFT', 0, -8)
-	
-	local autoSetRole = ns.CreateCheckBox(automation, 'autoSetRole', true)
-	autoSetRole:SetPoint('LEFT', autoTabBinder, 'RIGHT', 160, 0)
-end--]]
-
--- [[ Notifications ]]
-
+-- Notification
 do
 	local notification = FreeUIOptionsPanel.notification
-	notification.tab.Icon:SetTexture('Interface\\Icons\\INV_Misc_Horn_04')
+	notification.tab.Icon:SetTexture('Interface\\Icons\\Ability_Warrior_BattleShout')
 
 	local banner = ns.addSubCategory(notification, ns.localization.notification_subCategory_banner)
 	banner:SetPoint('TOPLEFT', notification.subText, 'BOTTOMLEFT', 0, -8)
@@ -365,11 +328,10 @@ do
 	questNotifier.children = {questProgress, onlyCompleteRing}
 end
 
--- [[ Info bar ]]
-
+-- Infobar
 do
 	local infobar = FreeUIOptionsPanel.infobar
-	infobar.tab.Icon:SetTexture('Interface\\Icons\\INV_Misc_NotePicture1c')
+	infobar.tab.Icon:SetTexture('Interface\\Icons\\INV_Misc_Note_02')
 
 	local line = ns.addSubCategory(infobar, ns.localization.infobar_subCategory_cores)
 	line:SetPoint('TOPLEFT', infobar.subText, 'BOTTOMLEFT', 0, -8)
@@ -418,11 +380,10 @@ do
 	infobar:HookScript('OnShow', toggleInfoBarOptions)
 end
 
--- [[ Action bars ]]
-
+-- Actionbar
 do
 	local actionbar = FreeUIOptionsPanel.actionbar
-	actionbar.tab.Icon:SetTexture('Interface\\Icons\\UI_WarMode')
+	actionbar.tab.Icon:SetTexture('Interface\\Icons\\Ability_Warrior_Challange')
 
 	local main = ns.addSubCategory(actionbar, ns.localization.actionbar_subCategory_layout)
 	main:SetPoint('TOPLEFT', actionbar.subText, 'BOTTOMLEFT', 0, -8)
@@ -521,11 +482,20 @@ do
 	actionbar:HookScript('OnShow', toggleActionBarsOptions)
 end
 
--- [[ Unit frames ]]
+-- Cooldown
+do
+	local cooldown = FreeUIOptionsPanel.cooldown
+	cooldown.tab.Icon:SetTexture('Interface\\Icons\\Spell_Nature_TimeStop')
 
+	local main = ns.addSubCategory(cooldown, ns.localization.cooldown_subCategory_layout)
+	main:SetPoint('TOPLEFT', cooldown.subText, 'BOTTOMLEFT', 0, -8)
+
+end
+
+-- Unitframe
 do
 	local unitframe = FreeUIOptionsPanel.unitframe
-	unitframe.tab.Icon:SetTexture('Interface\\Icons\\Spell_Nature_Invisibilty')
+	unitframe.tab.Icon:SetTexture('Interface\\Icons\\Spell_Holy_DivineSpirit')
 
 	local basic = ns.addSubCategory(unitframe, ns.localization.unitframe_subCategory_basic)
 	basic:SetPoint('TOPLEFT', unitframe.subText, 'BOTTOMLEFT', 0, -8)
@@ -669,8 +639,7 @@ do
 	unitframe:HookScript('OnShow', toggleGroupOptions)
 end
 
--- [[ Inventory ]]
-
+-- Inventory
 do
 	local inventory = FreeUIOptionsPanel.inventory
 	inventory.tab.Icon:SetTexture('Interface\\Icons\\INV_Misc_Bag_07')
@@ -736,11 +705,81 @@ do
 	inventory:HookScript('OnShow', toggleInventoryOptions)
 end
 
--- [[ Tooltip ]]
+-- Loot
+do
+	local loot = FreeUIOptionsPanel.loot
+	loot.tab.Icon:SetTexture('Interface\\Icons\\INV_Misc_MonsterScales_07')
 
+	local main = ns.addSubCategory(loot, ns.localization.loot_subCategory_layout)
+	main:SetPoint('TOPLEFT', loot.subText, 'BOTTOMLEFT', 0, -8)
+
+end
+
+-- Map
+do
+	local map = FreeUIOptionsPanel.map
+	map.tab.Icon:SetTexture('Interface\\Icons\\Ability_Spy')
+
+	local worldMap = ns.addSubCategory(map, ns.localization.map_subCategory_worldMap)
+	worldMap:SetPoint('TOPLEFT', map.subText, 'BOTTOMLEFT', 0, -8)
+
+	local coords = ns.CreateCheckBox(map, 'coords')
+	coords:SetPoint('TOPLEFT', worldMap, 'BOTTOMLEFT', 0, -8)
+
+	local mapReveal = ns.CreateCheckBox(map, 'mapReveal')
+	mapReveal:SetPoint('LEFT', coords, 'RIGHT', 160, 0)
+
+	local miniMap = ns.addSubCategory(map, ns.localization.map_subCategory_miniMap)
+	miniMap:SetPoint('TOPLEFT', coords, 'BOTTOMLEFT', 0, -16)
+
+	local miniMapEnhancement = ns.CreateCheckBox(map, 'miniMap')
+	miniMapEnhancement:SetPoint('TOPLEFT', miniMap, 'BOTTOMLEFT', 0, -8)
+
+	local whoPings = ns.CreateCheckBox(map, 'whoPings')
+	whoPings:SetPoint('TOPLEFT', miniMapEnhancement, 'BOTTOMLEFT', 16, -8)
+
+	local miniMapMenu = ns.CreateCheckBox(map, 'microMenu')
+	miniMapMenu:SetPoint('LEFT', whoPings, 'RIGHT', 160, 0)
+
+
+	local marker = ns.CreateCheckBox(map, 'marker')
+	marker:SetPoint('TOPLEFT', whoPings, 'BOTTOMLEFT', 0, -8)
+
+	local progressBar = ns.CreateCheckBox(map, 'progressBar')
+	progressBar:SetPoint('LEFT', marker, 'RIGHT', 160, 0)
+
+
+
+	local miniMapSize = ns.CreateNumberSlider(map, 'miniMapSize', 100, 300, 100, 300, 1, true)
+	miniMapSize:SetPoint('TOPLEFT', marker, 'BOTTOMLEFT', 16, -32)
+
+	local function toggleMiniMapsOptions()
+		local shown = miniMapEnhancement:GetChecked()
+		whoPings:SetShown(shown)
+		miniMapMenu:SetShown(shown)
+		miniMapSize:SetShown(shown)
+		progressBar:SetShown(shown)
+		marker:SetShown(shown)
+	end
+
+	miniMapEnhancement:HookScript('OnClick', toggleMiniMapsOptions)
+	map:HookScript('OnShow', toggleMiniMapsOptions)
+end
+
+-- Quest
+do
+	local quest = FreeUIOptionsPanel.quest
+	quest.tab.Icon:SetTexture('Interface\\Icons\\INV_Misc_Book_08')
+
+	local main = ns.addSubCategory(quest, ns.localization.quest_subCategory_layout)
+	main:SetPoint('TOPLEFT', quest.subText, 'BOTTOMLEFT', 0, -8)
+
+end
+
+-- Tooltip
 do
 	local tooltip = FreeUIOptionsPanel.tooltip
-	tooltip.tab.Icon:SetTexture('Interface\\Icons\\INV_Misc_ScrollUnrolled02d')
+	tooltip.tab.Icon:SetTexture('Interface\\Icons\\INV_Scroll_08')
 
 	local basic = ns.addSubCategory(tooltip, ns.localization.tooltip_subCategory_basic)
 	basic:SetPoint('TOPLEFT', tooltip.subText, 'BOTTOMLEFT', 0, -8)
@@ -808,11 +847,10 @@ do
 	tooltip:HookScript('OnShow', toggleTooltipOptions)
 end
 
--- [[ Chat ]]
-
+-- Chat
 do
 	local chat = FreeUIOptionsPanel.chat
-	chat.tab.Icon:SetTexture('Interface\\Icons\\Ability_Warrior_RallyingCry')
+	chat.tab.Icon:SetTexture('Interface\\Icons\\UI_Chat')
 
 	local enable = ns.CreateCheckBox(chat, 'enable')
 	enable:SetPoint('TOPLEFT', chat.subText, 'BOTTOMLEFT', 0, -8)
@@ -873,63 +911,7 @@ do
 	chat:HookScript('OnShow', toggleChatOptions)
 end
 
-
--- [[ Map ]]
-
-do
-	local map = FreeUIOptionsPanel.map
-	map.tab.Icon:SetTexture('Interface\\Icons\\INV_Misc_Map08')
-
-	local worldMap = ns.addSubCategory(map, ns.localization.map_subCategory_worldMap)
-	worldMap:SetPoint('TOPLEFT', map.subText, 'BOTTOMLEFT', 0, -8)
-
-	local coords = ns.CreateCheckBox(map, 'coords')
-	coords:SetPoint('TOPLEFT', worldMap, 'BOTTOMLEFT', 0, -8)
-
-	local mapReveal = ns.CreateCheckBox(map, 'mapReveal')
-	mapReveal:SetPoint('LEFT', coords, 'RIGHT', 160, 0)
-
-	local miniMap = ns.addSubCategory(map, ns.localization.map_subCategory_miniMap)
-	miniMap:SetPoint('TOPLEFT', coords, 'BOTTOMLEFT', 0, -16)
-
-	local miniMapEnhancement = ns.CreateCheckBox(map, 'miniMap')
-	miniMapEnhancement:SetPoint('TOPLEFT', miniMap, 'BOTTOMLEFT', 0, -8)
-
-	local whoPings = ns.CreateCheckBox(map, 'whoPings')
-	whoPings:SetPoint('TOPLEFT', miniMapEnhancement, 'BOTTOMLEFT', 16, -8)
-
-	local miniMapMenu = ns.CreateCheckBox(map, 'microMenu')
-	miniMapMenu:SetPoint('LEFT', whoPings, 'RIGHT', 160, 0)
-
-
-	local marker = ns.CreateCheckBox(map, 'marker')
-	marker:SetPoint('TOPLEFT', whoPings, 'BOTTOMLEFT', 0, -8)
-
-	local progressBar = ns.CreateCheckBox(map, 'progressBar')
-	progressBar:SetPoint('LEFT', marker, 'RIGHT', 160, 0)
-
-
-
-	local miniMapSize = ns.CreateNumberSlider(map, 'miniMapSize', 100, 300, 100, 300, 1, true)
-	miniMapSize:SetPoint('TOPLEFT', marker, 'BOTTOMLEFT', 16, -32)
-
-	local function toggleMiniMapsOptions()
-		local shown = miniMapEnhancement:GetChecked()
-		whoPings:SetShown(shown)
-		miniMapMenu:SetShown(shown)
-		miniMapSize:SetShown(shown)
-		progressBar:SetShown(shown)
-		marker:SetShown(shown)
-	end
-
-	miniMapEnhancement:HookScript('OnClick', toggleMiniMapsOptions)
-	map:HookScript('OnShow', toggleMiniMapsOptions)
-end
-
-
-
--- [[ Credits ]]
-
+--Credits
 do
 	CreditsFrame:SetSize(500, 500)
 	CreditsFrame:SetPoint('CENTER')
