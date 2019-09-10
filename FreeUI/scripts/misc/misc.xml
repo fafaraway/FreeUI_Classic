@@ -3,7 +3,6 @@
 	<Script file='alerts.lua'/>
 	<Script file='alreadyknown.lua'/>
 	<Script file='camera.lua'/>
-	<Script file='clickcast.lua'/>
 	<Script file='colors.lua'/>
 	<Script file='colorpicker.lua'/>
 	<Script file='dragemall.lua'/>
