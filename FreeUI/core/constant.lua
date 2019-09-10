@@ -128,36 +128,33 @@ C.PixelFont = {C.font.pixel, 8, 'OUTLINEMONOCHROME'}
 
 
 
-local LSM = LibStub and LibStub('LibSharedMedia-3.0', true)
-if not LSM then return end
 
-local zhCN, zhTW, western = LSM.LOCALE_BIT_zhCN, LSM.LOCALE_BIT_zhTW, LSM.LOCALE_BIT_western
 
-LSM:Register('background', 'FreeUI_BG', 			C.media.bdTex)
+local LSM = LibStub('LibSharedMedia-3.0')
 
-LSM:Register('statusbar', 'FreeUI_SB',  			C.media.sbTex)
+local cn, tw, western = LSM.LOCALE_BIT_zhCN, LSM.LOCALE_BIT_zhTW, LSM.LOCALE_BIT_western
 
-LSM:Register('font', 'FreeUI_ExocetBlizzardLight', 	C.AssetsPath..'font\\ExocetBlizzardLight.ttf', zhCN + zhTW + western)
-LSM:Register('font', 'FreeUI_ExocetBlizzardMedium', C.AssetsPath..'font\\ExocetBlizzardMedium.ttf', zhCN + zhTW + western)
-LSM:Register('font', 'FreeUI_supereffective', 		C.AssetsPath..'font\\supereffective.ttf', zhCN + zhTW + western)
-LSM:Register('font', 'FreeUI_pixel', 				C.AssetsPath..'font\\pixel.ttf', zhCN + zhTW + western)
-LSM:Register('font', 'FreeUI_pixel_bold', 			C.AssetsPath..'font\\pixel_bold.ttf', zhCN + zhTW + western)
+LSM:Register(LSM.MediaType.BACKGROUND, 'FreeUI_Background', 	C.media.bdTex)
 
-LSM:Register('font', 'FreeUI_Normal', 				C.font.normal, zhCN + zhTW + western)
-LSM:Register('font', 'FreeUI_Header', 				C.font.header, zhCN + zhTW + western)
-LSM:Register('font', 'FreeUI_Chat', 				C.font.chat, zhCN + zhTW + western)
+LSM:Register(LSM.MediaType.STATUSBAR, 'FreeUI_Statusbar', 		C.media.sbTex)
 
-LSM:Register('sound', 'FreeUI_Buzz', 				C.AssetsPath..'sound\\buzz.ogg')
-LSM:Register('sound', 'FreeUI_Ding', 				C.AssetsPath..'sound\\ding.ogg')
-LSM:Register('sound', 'FreeUI_Execute', 			C.AssetsPath..'sound\\execute.ogg')
-LSM:Register('sound', 'FreeUI_LowHealth', 			C.AssetsPath..'sound\\lowhealth.ogg')
-LSM:Register('sound', 'FreeUI_LowMana', 			C.AssetsPath..'sound\\lowmana.ogg')
-LSM:Register('sound', 'FreeUI_Miss', 				C.AssetsPath..'sound\\miss.mp3')
-LSM:Register('sound', 'FreeUI_Proc', 				C.AssetsPath..'sound\\proc.ogg')
-LSM:Register('sound', 'FreeUI_Interrupt', 			C.AssetsPath..'sound\\interrupt.ogg')
-LSM:Register('sound', 'FreeUI_Notification', 		C.AssetsPath..'sound\\notification.mp3')
-LSM:Register('sound', 'FreeUI_Warning', 			C.AssetsPath..'sound\\warning.ogg')
-LSM:Register('sound', 'FreeUI_WhisperNormal', 		C.AssetsPath..'sound\\whisper_normal.ogg')
-LSM:Register('sound', 'FreeUI_WhisperBN', 			C.AssetsPath..'sound\\whisper_bn.ogg')
-LSM:Register('sound', 'FreeUI_Forthehorde', 		C.AssetsPath..'sound\\forthehorde.mp3')
+LSM:Register(LSM.MediaType.FONT, 'FreeUI_PixelAlt', 			C.AssetsPath..'font\\supereffective.ttf', cn + tw + western)
+LSM:Register(LSM.MediaType.FONT, 'FreeUI_Pixel', 				C.AssetsPath..'font\\pixel.ttf', cn + tw + western)
+LSM:Register(LSM.MediaType.FONT, 'FreeUI_Normal', 				C.font.normal, cn + tw + western)
+LSM:Register(LSM.MediaType.FONT, 'FreeUI_Header', 				C.font.header, cn + tw + western)
+LSM:Register(LSM.MediaType.FONT, 'FreeUI_Chat', 				C.font.chat, cn + tw + western)
 
+LSM:Register(LSM.MediaType.SOUND, 'FreeUI_Buzz', 				C.AssetsPath..'sound\\buzz.ogg')
+LSM:Register(LSM.MediaType.SOUND, 'FreeUI_Buzz', 				C.AssetsPath..'sound\\buzz.ogg')
+LSM:Register(LSM.MediaType.SOUND, 'FreeUI_Ding', 				C.AssetsPath..'sound\\ding.ogg')
+LSM:Register(LSM.MediaType.SOUND, 'FreeUI_Execute', 			C.AssetsPath..'sound\\execute.ogg')
+LSM:Register(LSM.MediaType.SOUND, 'FreeUI_LowHealth', 			C.AssetsPath..'sound\\lowhealth.ogg')
+LSM:Register(LSM.MediaType.SOUND, 'FreeUI_LowMana', 			C.AssetsPath..'sound\\lowmana.ogg')
+LSM:Register(LSM.MediaType.SOUND, 'FreeUI_Miss', 				C.AssetsPath..'sound\\miss.mp3')
+LSM:Register(LSM.MediaType.SOUND, 'FreeUI_Proc', 				C.AssetsPath..'sound\\proc.ogg')
+LSM:Register(LSM.MediaType.SOUND, 'FreeUI_Interrupt', 			C.AssetsPath..'sound\\interrupt.ogg')
+LSM:Register(LSM.MediaType.SOUND, 'FreeUI_Notification', 		C.AssetsPath..'sound\\notification.mp3')
+LSM:Register(LSM.MediaType.SOUND, 'FreeUI_Warning', 			C.AssetsPath..'sound\\warning.ogg')
+LSM:Register(LSM.MediaType.SOUND, 'FreeUI_WhisperNormal', 		C.AssetsPath..'sound\\whisper_normal.ogg')
+LSM:Register(LSM.MediaType.SOUND, 'FreeUI_WhisperBN', 			C.AssetsPath..'sound\\whisper_bn.ogg')
+LSM:Register(LSM.MediaType.SOUND, 'FreeUI_Forthehorde', 		C.AssetsPath..'sound\\forthehorde.mp3')
