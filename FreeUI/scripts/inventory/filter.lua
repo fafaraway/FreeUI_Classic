@@ -144,7 +144,7 @@ end
 
 local function isItemAmmo(item)
 	if not C.inventory.useCategory then return end
-	return item.equipLoc == "INVTYPE_AMMO"
+	return item.equipLoc == "INVTYPE_AMMO" or INVENTORY.AmmoBags[item.bagID]
 end
 
 local function isItemEquipment(item)
