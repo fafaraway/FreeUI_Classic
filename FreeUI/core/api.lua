@@ -508,29 +508,67 @@ function F:ReskinArrow(direction)
 	self:HookScript('OnLeave', textureOnLeave)
 end
 
-function F:ReskinCheck()
+local function checkOnEnter(self)
+	self.glow:SetBackdropBorderColor(r, g, b, .35)
+	self.bg:SetBackdropBorderColor(r, g, b)
+end
+
+local function checkOnLeave(self)
+	self.glow:SetBackdropBorderColor(0, 0, 0, .35)
+	self.bg:SetBackdropBorderColor(0, 0, 0, 1)
+end
+
+function F:ReskinCheck(default)
 	self:SetNormalTexture('')
 	self:SetPushedTexture('')
 	self:SetHighlightTexture(C.media.bdTex)
-
-	local hl = self:GetHighlightTexture()
-	hl:SetPoint('TOPLEFT', 5, -5)
-	hl:SetPoint('BOTTOMRIGHT', -5, 5)
-	hl:SetVertexColor(r, g, b, .2)
+	
+	
 
 	local bd = CreateFrame('Frame', nil, self)
-	bd:SetPoint('TOPLEFT', 4, -4)
-	bd:SetPoint('BOTTOMRIGHT', -4, 4)
+	bd:SetPoint('TOPLEFT', 7, -7)
+	bd:SetPoint('BOTTOMRIGHT', -7, 7)
 	bd:SetFrameLevel(self:GetFrameLevel() - 1)
-	F.CreateBD(bd)
+	self.bg = F.CreateBDFrame(bd)
+
+	self.glow = F.CreateSD(self.bg)
+
+	local hl = self:GetHighlightTexture()
+	hl:SetPoint('TOPLEFT', 7, -7)
+	hl:SetPoint('BOTTOMRIGHT', -7, 7)
+	hl:SetVertexColor(r, g, b, .25)
+
+	self:HookScript("OnEnter", checkOnEnter)
+	self:HookScript("OnLeave", checkOnLeave)
 
 	local tex = F.CreateGradient(self)
-	tex:SetPoint('TOPLEFT', 5, -5)
-	tex:SetPoint('BOTTOMRIGHT', -5, 5)
+	tex:SetPoint('TOPLEFT', 7, -7)
+	tex:SetPoint('BOTTOMRIGHT', -7, 7)
 
-	local ch = self:GetCheckedTexture()
-	ch:SetDesaturated(true)
-	ch:SetVertexColor(r, g, b)
+	if not default then
+		self:SetCheckedTexture(C.media.bdTex)
+
+		if self.SetCheckedTexture then
+			local ch = self:GetCheckedTexture()
+			ch:SetPoint('TOPLEFT', 8, -8)
+			ch:SetPoint('BOTTOMRIGHT', -8, 8)
+			ch:SetDesaturated(true)
+			ch:SetVertexColor(r, g, b)
+
+		end
+
+		self:SetDisabledCheckedTexture(C.media.bdTex)
+
+		if self.SetDisabledCheckedTexture then
+			local dis = self:GetDisabledCheckedTexture()
+			dis:SetPoint('TOPLEFT', 8, -8)
+			dis:SetPoint('BOTTOMRIGHT', -8, 8)
+			dis:SetVertexColor(.5, .5, .5, .75)
+
+		end
+	end
+
+
 end
 
 local function colourRadio(self)
