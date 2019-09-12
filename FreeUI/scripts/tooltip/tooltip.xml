@@ -3,8 +3,5 @@
 	<Script file='extra.lua'/>
 	<Script file='hover.lua'/>
 	<Script file='icon.lua'/>
-	<!-- <Script file='pet.lua'/> -->
-	<!-- <Script file='specilvl.lua'/> -->
 	<Script file='target.lua'/>
-	<!-- <Script file='trait.lua'/> -->
 </Ui>

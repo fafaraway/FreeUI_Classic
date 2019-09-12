@@ -239,7 +239,7 @@ function TOOLTIP:ReskinTooltip()
 		return
 	end
 	if self:IsForbidden() then return end
-	self:SetScale(C.tooltip.scale)
+	--self:SetScale(C.tooltip.scale)
 
 	if not self.tipStyled then
 		self:SetBackdrop(nil)
