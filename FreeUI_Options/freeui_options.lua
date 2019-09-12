@@ -271,7 +271,7 @@ local function onValueChanged(self, value)
 
 		if self.needsReload then
 			if self.step < 1 then
-				self.oldValue = tonumber(string.format("%.2f", self.oldValue))
+				self.oldValue = tonumber(string.format('%.2f', self.oldValue))
 			end
 			old[self] = self.oldValue
 
@@ -348,7 +348,7 @@ ns.CreateNumberSlider = function(parent, option, lowText, highText, low, high, s
 
 	f.num = f:GetRegions()
 	if f.num:GetObjectType() == 'FontString' then
-		f.num:SetJustifyH("CENTER")
+		f.num:SetJustifyH('CENTER')
 	end
 
 	f:SetScript('OnEscapePressed', onSliderEscapePressed)
@@ -372,39 +372,39 @@ local function onEnterPressed(self)
 end
 
 ns.CreateEditBox = function(parent, option, needsReload, number)
-	local f = CreateFrame("EditBox", parent:GetName()..option.."TextInput", parent, "InputBoxTemplate")
+	local f = CreateFrame('EditBox', parent:GetName()..option..'TextInput', parent, 'InputBoxTemplate')
 	f:SetAutoFocus(false)
 	f:SetWidth(55)
 	f:SetHeight(20)
 	f:SetMaxLetters(8)
 	f:SetFontObject(GameFontHighlight)
 
-	f:SetPoint("LEFT", 40, 0)
+	f:SetPoint('LEFT', 40, 0)
 
-	f.value = ""
+	f.value = ''
 	f.valueNumber = number and true or false
 
-	f:SetScript("OnEscapePressed", onSliderEscapePressed)
-	f:SetScript("OnEscapePressed", function(self) self:ClearFocus() self:SetText(f.value) end)
-	f:SetScript("OnEnterPressed", onEnterPressed)
-	f:SetScript("OnEditFocusGained", function() f.value = f:GetText() end)
-	f:SetScript("OnEditFocusLost", onEnterPressed)
+	f:SetScript('OnEscapePressed', onSliderEscapePressed)
+	f:SetScript('OnEscapePressed', function(self) self:ClearFocus() self:SetText(f.value) end)
+	f:SetScript('OnEnterPressed', onEnterPressed)
+	f:SetScript('OnEditFocusGained', function() f.value = f:GetText() end)
+	f:SetScript('OnEditFocusLost', onEnterPressed)
 
-	local label = f:CreateFontString(nil, "OVERLAY", "GameFontHighlight")
+	local label = f:CreateFontString(nil, 'OVERLAY', 'GameFontHighlight')
 	label:SetWidth(440)
 	label:SetHeight(20)
-	label:SetJustifyH("LEFT")
-	label:SetPoint("LEFT", f, "RIGHT", 10, 0)
-	label:SetText(ns.localization[parent.tag.."_"..option])
+	label:SetJustifyH('LEFT')
+	label:SetPoint('LEFT', f, 'RIGHT', 10, 0)
+	label:SetText(ns.localization[parent.tag..'_'..option])
 
-	f.tooltipText = ns.localization[parent.tag.."_"..option.."_tooltip"] or label
+	f.tooltipText = ns.localization[parent.tag..'_'..option..'_tooltip'] or label
 
-	f:SetScript("OnEnter", function()
-		GameTooltip:SetOwner(f, "ANCHOR_RIGHT", 5, 5)
+	f:SetScript('OnEnter', function()
+		GameTooltip:SetOwner(f, 'ANCHOR_RIGHT', 5, 5)
 		GameTooltip:SetText(f.tooltipText, nil, nil, nil, nil, true)
 	end)
 
-	f:SetScript("OnLeave", function()
+	f:SetScript('OnLeave', function()
 		GameTooltip:Hide()
 	end)
 
@@ -470,28 +470,28 @@ local function onColourSwatchClicked(self)
 end
 
 ns.CreateColourPicker = function(parent, option, needsReload)
-	local f = CreateFrame("Button", nil, parent)
+	local f = CreateFrame('Button', nil, parent)
 	f:SetSize(22, 14)
 
-	--[[f.label = f:CreateFontString(nil, "OVERLAY", "GameFontNormalTiny")
+	--[[f.label = f:CreateFontString(nil, 'OVERLAY', 'GameFontNormalTiny')
 	f.label:SetText(COLOR)
 	f.label:SetTextColor(1, 1, 1)
-	f.label:SetPoint("CENTER")
-	f.label:SetJustifyH("CENTER")--]]
+	f.label:SetPoint('CENTER')
+	f.label:SetJustifyH('CENTER')--]]
 
-	f.text = f:CreateFontString(nil, "OVERLAY", "GameFontHighlight")
-	f.text:SetText(ns.localization[parent.tag.."_"..option])
+	f.text = f:CreateFontString(nil, 'OVERLAY', 'GameFontHighlight')
+	f.text:SetText(ns.localization[parent.tag..'_'..option])
 	f.text:SetWidth(300)
 	f.text:SetHeight(20)
-	f.text:SetJustifyH("LEFT")
-	f.text:SetPoint("LEFT", 20, 0)
+	f.text:SetJustifyH('LEFT')
+	f.text:SetPoint('LEFT', 30, 2)
 
 	f.group = parent.tag
 	f.option = option
 
 	f.needsReload = needsReload
 
-	f:SetScript("OnClick", onColourSwatchClicked)
+	f:SetScript('OnClick', onColourSwatchClicked)
 	parent[option] = f
 
 	tinsert(colourpickers, f)
@@ -502,13 +502,12 @@ end
 -- DropDown
 
 local DropDownText = {
-	["interface\\addons\\FreeUI\\assets\\font\\expresswaysb.ttf"] = "Normal font",
-	["interface\\addons\\FreeUI\\assets\\font\\Pixel.ttf"] = "Pixel Font",
-	[STANDARD_TEXT_FONT] = "Blizzard font"
+	['interface\\addons\\FreeUI\\assets\\font\\supereffective.ttf'] = 'Pixel font',
+	[STANDARD_TEXT_FONT] = 'Normal font'
 }
 
 ns.CreateDropDown = function(parent, option, needsReload, text, tableValue)
-	local f = CreateFrame("Frame", parent:GetName()..option.."DropDown", parent, "UIDropDownMenuTemplate")
+	local f = CreateFrame('Frame', parent:GetName()..option..'DropDown', parent, 'UIDropDownMenuTemplate')
 	UIDropDownMenu_SetWidth(f, 110)
 
 	UIDropDownMenu_Initialize(f, function(self)
@@ -532,16 +531,16 @@ ns.CreateDropDown = function(parent, option, needsReload, text, tableValue)
 		CloseDropDownMenus()
 	end
 
-	local label = f:CreateFontString(nil, "OVERLAY", "GameFontHighlight")
+	local label = f:CreateFontString(nil, 'OVERLAY', 'GameFontHighlight')
 	if text then
 		label:SetText(text)
 	else
-		label:SetText(ns.localization[parent.tag.."_"..option])
+		label:SetText(ns.localization[parent.tag..'_'..option])
 	end
 	label:SetWidth(440)
 	label:SetHeight(20)
-	label:SetJustifyH("LEFT")
-	label:SetPoint("LEFT", 160, 4)
+	label:SetJustifyH('LEFT')
+	label:SetPoint('LEFT', 150, 4)
 
 	f.group = parent.tag
 	f.option = option
@@ -581,8 +580,8 @@ ns.addCategory = function(name)
 	panel:Hide()
 
 	panel.child = CreateFrame('Frame', nil, panel)
-	panel.child:SetPoint("TOPLEFT", 0, 0)
-	panel.child:SetPoint("BOTTOMRIGHT", 0, 0)
+	panel.child:SetPoint('TOPLEFT', 0, 0)
+	panel.child:SetPoint('BOTTOMRIGHT', 0, 0)
 	panel.child:SetSize(420, 800)
 
 	panel:SetScrollChild(panel.child)
@@ -632,7 +631,7 @@ ns.addSubCategory = function(category, name)
 	header:SetTextColor(233/255, 197/255, 93/255)
 
 	local line = category.child:CreateTexture(nil, 'ARTWORK')
-	line:SetSize(420, 1)
+	line:SetSize(380, 1)
 	line:SetPoint('TOPLEFT', header, 'BOTTOMLEFT', 0, -4)
 	line:SetColorTexture(.5, .5, .5, .1)
 
@@ -843,10 +842,15 @@ init:SetScript('OnEvent', function()
 		picker.text:SetTextColor(unpack(value))
 	end
 
+	for _, dropdown in pairs(dropdowns) do
+		F.ReskinDropDown(dropdown)
+	end
+
 
 	local title = F.CreateFS(FreeUIOptionsPanel, {C.AssetsPath..'font\\supereffective.ttf', 24, 'OUTLINEMONOCHROME'}, 'Free'..C.MyColor..'UI', nil, true, 'TOP', 0, -4)
 	local description = F.CreateFS(FreeUIOptionsPanel, 'pixel', 'configuration', 'grey', true, 'TOP', 0, -36)
-	local version = F.CreateFS(FreeUIOptionsPanel, 'pixel', C.GreyColor..'v|r'..C.GreyColor..C.Version, 'yellow', true, 'TOPLEFT', 4, -4)
+	local version = F.CreateFS(FreeUIOptionsPanel, 'pixel', C.GreyColor..'v|r'..C.GreyColor..C.Version, 'yellow', true, 'BOTTOM', 0, 4)
+	version:SetAlpha(.3)
 	
 	local lineLeft = CreateFrame('Frame', nil, FreeUIOptionsPanel)
 	lineLeft:SetPoint('TOP', -50, -32)

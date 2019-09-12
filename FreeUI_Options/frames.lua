@@ -13,18 +13,18 @@ tinsert(UISpecialFrames, options:GetName())
 
 options.close = CreateFrame('Button', nil, options, 'UIPanelCloseButton')
 
-local CloseButton = CreateFrame("Button", nil, options, "UIPanelButtonTemplate")
+local CloseButton = CreateFrame('Button', nil, options, 'UIPanelButtonTemplate')
 CloseButton:SetPoint('BOTTOMRIGHT', -6, 6)
 CloseButton:SetSize(80, 24)
 CloseButton:SetText(CLOSE)
-CloseButton:SetScript("OnClick", function()
+CloseButton:SetScript('OnClick', function()
 	PlaySound(SOUNDKIT.IG_MAINMENU_OPTION)
 	options:Hide()
 end)
 tinsert(ns.buttons, CloseButton)
 
-local OkayButton = CreateFrame('Button', "FreeUIOptionsPanelOkayButton", options, 'UIPanelButtonTemplate')
-OkayButton:SetPoint("RIGHT", CloseButton, "LEFT", -6, 0)
+local OkayButton = CreateFrame('Button', 'FreeUIOptionsPanelOkayButton', options, 'UIPanelButtonTemplate')
+OkayButton:SetPoint('RIGHT', CloseButton, 'LEFT', -6, 0)
 OkayButton:SetSize(80, 24)
 OkayButton:SetText(OKAY)
 OkayButton:SetScript('OnClick', function()
@@ -92,6 +92,7 @@ ns.addCategory('notification')
 ns.addCategory('infobar')
 ns.addCategory('actionbar')
 ns.addCategory('cooldown')
+ns.addCategory('aura')
 ns.addCategory('unitFrame')
 ns.addCategory('inventory')
 ns.addCategory('loot')
@@ -103,7 +104,19 @@ ns.addCategory('chat')
 
 CreditsButton:SetPoint('BOTTOM', InstallButton, 'TOP', 0, 4)
 InstallButton:SetPoint('BOTTOM', ResetButton, 'TOP', 0, 4)
-ResetButton:SetPoint('TOP', FreeUIOptionsPanel.general.tab, 'BOTTOM', 0, -500)
+ResetButton:SetPoint('TOP', FreeUIOptionsPanel.general.tab, 'BOTTOM', 0, -540)
+
+
+local fontsTable = {
+	'interface\\addons\\FreeUI\\assets\\font\\supereffective.ttf',
+	STANDARD_TEXT_FONT
+}
+
+local flagsTable = {
+	'OUTLINE',
+	'OUTLINEMONOCHROME',
+	''
+}
 
 
 -- General
@@ -117,14 +130,14 @@ do
 	local fasterLoot = ns.CreateCheckBox(general, 'fasterLoot')
 	fasterLoot:SetPoint('TOPLEFT', basic, 'BOTTOMLEFT', 0, -8)
 
-	local enhancedMenu = ns.CreateCheckBox(general, 'enhancedMenu')
-	enhancedMenu:SetPoint('LEFT', fasterLoot, 'RIGHT', 160, 0)
+	local alreadyKnown = ns.CreateCheckBox(general, 'alreadyKnown')
+	alreadyKnown:SetPoint('LEFT', fasterLoot, 'RIGHT', 160, 0)
 
 	local mailButton = ns.CreateCheckBox(general, 'mailButton')
 	mailButton:SetPoint('TOPLEFT', fasterLoot, 'BOTTOMLEFT', 0, -8)
 
-	local alreadyKnown = ns.CreateCheckBox(general, 'alreadyKnown')
-	alreadyKnown:SetPoint('LEFT', mailButton, 'RIGHT', 160, 0)
+	local enhancedMenu = ns.CreateCheckBox(general, 'enhancedMenu')
+	enhancedMenu:SetPoint('LEFT', mailButton, 'RIGHT', 160, 0)
 
 	local marker = ns.CreateCheckBox(general, 'marker')
 	marker:SetPoint('TOPLEFT', mailButton, 'BOTTOMLEFT', 0, -8)
@@ -135,14 +148,20 @@ do
 	local PVPSound = ns.CreateCheckBox(general, 'PVPSound')
 	PVPSound:SetPoint('TOPLEFT', marker, 'BOTTOMLEFT', 0, -8)
 
+	local camerasub = ns.addSubCategory(general, ns.localization.general_subCategory_camera)
+	camerasub:SetPoint('TOPLEFT', PVPSound, 'BOTTOMLEFT', 0, -16)
+
+	local cameraZoomSpeed = ns.CreateNumberSlider(general, 'cameraZoomSpeed', 1, 5, 1, 5, 1, true)
+	cameraZoomSpeed:SetPoint('TOPLEFT', camerasub, 'BOTTOMLEFT', 24, -32)
+
 	local uiscalesub = ns.addSubCategory(general, ns.localization.general_subCategory_uiscale)
-	uiscalesub:SetPoint('TOPLEFT', PVPSound, 'BOTTOMLEFT', 0, -16)
+	uiscalesub:SetPoint('TOPLEFT', cameraZoomSpeed, 'BOTTOMLEFT', -24, -24)
 
 	local uiScaleAuto = ns.CreateCheckBox(general, 'uiScaleAuto')
 	uiScaleAuto:SetPoint('TOPLEFT', uiscalesub, 'BOTTOMLEFT', 0, -8)
 
 	local uiScale = ns.CreateNumberSlider(general, 'uiScale', 0.4, 1.2, 0.4, 1.2, 0.01, true)
-	uiScale:SetPoint('TOPLEFT', uiScaleAuto, 'BOTTOMLEFT', 24, -24)
+	uiScale:SetPoint('TOPLEFT', uiScaleAuto, 'BOTTOMLEFT', 24, -32)
 
 	local function toggleUIScaleOptions()
 		local shown = not uiScaleAuto:GetChecked()
@@ -156,7 +175,7 @@ end
 -- Appearance
 do
 	local appearance = FreeUIOptionsPanel.appearance
-	appearance.tab.Icon:SetTexture('Interface\\Icons\\INV_Jewelry_Talisman_03')
+	appearance.tab.Icon:SetTexture('Interface\\Icons\\Ability_Rogue_Disguise')
 
 	local basic = ns.addSubCategory(appearance, ns.localization.appearance_subCategory_basic)
 	basic:SetPoint('TOPLEFT', appearance.subText, 'BOTTOMLEFT', 0, -8)
@@ -167,13 +186,7 @@ do
 	local backdropAlpha = ns.CreateNumberSlider(appearance, 'backdropAlpha', 0.1, 1, 0.1, 1, 0.01, true)
 	backdropAlpha:SetPoint('TOPLEFT', themes, 'BOTTOMLEFT', 24, -24)
 
-	local function toggleThemesOptions()
-		local shown = themes:GetChecked()
-		backdropAlpha:SetShown(shown)
-	end
-
-	themes:HookScript('OnClick', toggleThemesOptions)
-	backdropAlpha:HookScript('OnShow', toggleThemesOptions)
+	themes.children = {backdropAlpha}
 
 	local vignette = ns.CreateCheckBox(appearance, 'vignette')
 	vignette:SetPoint('TOPLEFT', backdropAlpha, 'BOTTOMLEFT', -24, -24)
@@ -181,30 +194,22 @@ do
 	local vignetteAlpha = ns.CreateNumberSlider(appearance, 'vignetteAlpha', 0.1, 1, 0.1, 1, 0.01, true)
 	vignetteAlpha:SetPoint('TOPLEFT', vignette, 'BOTTOMLEFT', 24, -24)
 
-	local function toggleVignetteOptions()
-		local shown = vignette:GetChecked()
-		vignetteAlpha:SetShown(shown)
-	end
+	vignette.children = {vignetteAlpha}
 
-	vignette:HookScript('OnClick', toggleVignetteOptions)
-	vignetteAlpha:HookScript('OnShow', toggleVignetteOptions)
+	local misc = ns.addSubCategory(appearance, ns.localization.appearance_subCategory_misc)
+	misc:SetPoint('TOPLEFT', vignetteAlpha, 'BOTTOMLEFT', -24, -24)
 
 	local flashCursor = ns.CreateCheckBox(appearance, 'flashCursor')
-	flashCursor:SetPoint('TOPLEFT', vignetteAlpha, 'BOTTOMLEFT', -24, -24)
+	flashCursor:SetPoint('TOPLEFT', misc, 'BOTTOMLEFT', 0, -16)
 
 	local shadow = ns.CreateCheckBox(appearance, 'shadow')
 	shadow:SetPoint('LEFT', flashCursor, 'RIGHT', 160, 0)
 
-	local misc = ns.addSubCategory(appearance, ns.localization.appearance_subCategory_misc)
-	misc:SetPoint('TOPLEFT', flashCursor, 'BOTTOMLEFT', 0, -16)
-
-	local questTracker = ns.CreateCheckBox(appearance, 'questTracker')
-	questTracker:SetPoint('TOPLEFT', misc, 'BOTTOMLEFT', 0, -8)
-	local petBattle = ns.CreateCheckBox(appearance, 'petBattle')
-	petBattle:SetPoint('LEFT', questTracker, 'RIGHT', 160, 0)
+	local gradient = ns.CreateCheckBox(appearance, 'gradient')
+	gradient:SetPoint('TOPLEFT', flashCursor, 'BOTTOMLEFT', 0, -8)
 
 	local subfonts = ns.addSubCategory(appearance, ns.localization.appearance_subCategory_font)
-	subfonts:SetPoint('TOPLEFT', questTracker, 'BOTTOMLEFT', 0, -16)
+	subfonts:SetPoint('TOPLEFT', gradient, 'BOTTOMLEFT', 0, -16)
 
 	local fonts = ns.CreateCheckBox(appearance, 'fonts')
 	fonts:SetPoint('TOPLEFT', subfonts, 'BOTTOMLEFT', 0, -8)
@@ -212,20 +217,17 @@ do
 	local addons = ns.addSubCategory(appearance, ns.localization.appearance_subCategory_addons)
 	addons:SetPoint('TOPLEFT', fonts, 'BOTTOMLEFT', 0, -16)
 
-	local DBM = ns.CreateCheckBox(appearance, 'DBM')
-	DBM:SetPoint('TOPLEFT', addons, 'BOTTOMLEFT', 0, -8)
-
 	local BigWigs = ns.CreateCheckBox(appearance, 'BigWigs')
-	BigWigs:SetPoint('LEFT', DBM, 'RIGHT', 160, 0)
+	BigWigs:SetPoint('TOPLEFT', addons, 'BOTTOMLEFT', 0, -8)
 
 	local WeakAuras = ns.CreateCheckBox(appearance, 'WeakAuras')
-	WeakAuras:SetPoint('TOPLEFT', DBM, 'BOTTOMLEFT', 0, -8)
+	WeakAuras:SetPoint('LEFT', BigWigs, 'RIGHT', 160, 0)
 
 	local Skada = ns.CreateCheckBox(appearance, 'Skada')
-	Skada:SetPoint('LEFT', WeakAuras, 'RIGHT', 160, 0)
+	Skada:SetPoint('TOPLEFT', BigWigs, 'BOTTOMLEFT', 0, -8)
 
-	local PremadeGroupsFilter = ns.CreateCheckBox(appearance, 'PremadeGroupsFilter')
-	PremadeGroupsFilter:SetPoint('TOPLEFT', WeakAuras, 'BOTTOMLEFT', 0, -8)
+	local QuestLogEx = ns.CreateCheckBox(appearance, 'QuestLogEx')
+	QuestLogEx:SetPoint('LEFT', Skada, 'RIGHT', 160, 0)
 end
 
 -- Notification
@@ -248,13 +250,13 @@ do
 	local checkMail = ns.CreateCheckBox(notification, 'checkMail')
 	checkMail:SetPoint('TOPLEFT', playSounds, 'BOTTOMLEFT', 0, -8)
 
-	local autoRepairCost = ns.CreateCheckBox(notification, 'autoRepairCost')
-	autoRepairCost:SetPoint('LEFT', checkMail, 'RIGHT', 160, 0)
+	local autoRepair = ns.CreateCheckBox(notification, 'autoRepair')
+	autoRepair:SetPoint('LEFT', checkMail, 'RIGHT', 160, 0)
 
 	local autoSellJunk = ns.CreateCheckBox(notification, 'autoSellJunk')
 	autoSellJunk:SetPoint('TOPLEFT', checkMail, 'BOTTOMLEFT', 0, -8)
 
-	enable.children = {playSounds, checkBagsFull, checkMail, autoRepairCost, autoSellJunk}
+	enable.children = {playSounds, checkBagsFull, checkMail, autoRepair, autoSellJunk}
 
 	local alert = ns.addSubCategory(notification, ns.localization.notification_subCategory_combat)
 	alert:SetPoint('TOPLEFT', autoSellJunk, 'BOTTOMLEFT', -16, -16)
@@ -293,45 +295,13 @@ do
 	local lowMana = ns.CreateNumberSlider(notification, 'lowMana', 0.1, 1, 0.1, 1, 0.1, true)
 	lowMana:SetPoint('TOPLEFT', lowHealth, 'BOTTOMLEFT', 0, -32)
 
-	local function toggleEmergencyOptions()
-		local shown = emergency:GetChecked()
-		lowHealth:SetShown(shown)
-		lowMana:SetShown(shown)
-	end
-
-	emergency:HookScript('OnClick', toggleEmergencyOptions)
-	notification:HookScript('OnShow', toggleEmergencyOptions)
-
-	local rares = ns.addSubCategory(notification, ns.localization.notification_subCategory_rares)
-	rares:SetPoint('TOPLEFT', lowMana, 'BOTTOMLEFT', -24, -32)
-
-	local rare = ns.CreateCheckBox(notification, 'rare')
-	rare:SetPoint('TOPLEFT', rares, 'BOTTOMLEFT', 0, -8)
-
-	local rareSound = ns.CreateCheckBox(notification, 'rareSound')
-	rareSound:SetPoint('TOPLEFT', rare, 'BOTTOMLEFT', 16, -8)
-
-	rare.children = {rareSound}
-
-	local quest = ns.addSubCategory(notification, ns.localization.notification_subCategory_quest)
-	quest:SetPoint('TOPLEFT', rareSound, 'BOTTOMLEFT', -16, -16)
-	
-	local questNotifier = ns.CreateCheckBox(notification, 'questNotifier')
-	questNotifier:SetPoint('TOPLEFT', quest, 'BOTTOMLEFT', 0, -8)
-
-	local questProgress = ns.CreateCheckBox(notification, 'questProgress')
-	questProgress:SetPoint('TOPLEFT', questNotifier, 'BOTTOMLEFT', 16, -8)
-
-	local onlyCompleteRing = ns.CreateCheckBox(notification, 'onlyCompleteRing')
-	onlyCompleteRing:SetPoint('TOPLEFT', questProgress, 'BOTTOMLEFT', 0, -8)
-
-	questNotifier.children = {questProgress, onlyCompleteRing}
+	emergency.children = {lowHealth, lowMana}
 end
 
 -- Infobar
 do
 	local infobar = FreeUIOptionsPanel.infobar
-	infobar.tab.Icon:SetTexture('Interface\\Icons\\INV_Misc_Note_02')
+	infobar.tab.Icon:SetTexture('Interface\\Icons\\INV_Misc_Note_03')
 
 	local line = ns.addSubCategory(infobar, ns.localization.infobar_subCategory_cores)
 	line:SetPoint('TOPLEFT', infobar.subText, 'BOTTOMLEFT', 0, -8)
@@ -345,35 +315,26 @@ do
 	local stats = ns.CreateCheckBox(infobar, 'stats')
 	stats:SetPoint('LEFT', mouseover, 'RIGHT', 160, 0)
 
-	local report = ns.CreateCheckBox(infobar, 'report')
-	report:SetPoint('TOPLEFT', mouseover, 'BOTTOMLEFT', 0, -8)
-
 	local currencies = ns.CreateCheckBox(infobar, 'currencies')
-	currencies:SetPoint('LEFT', report, 'RIGHT', 160, 0)
+	currencies:SetPoint('TOPLEFT', mouseover, 'BOTTOMLEFT', 0, -8)
 
 	local friends = ns.CreateCheckBox(infobar, 'friends')
-	friends:SetPoint('TOPLEFT', report, 'BOTTOMLEFT', 0, -8)
+	friends:SetPoint('LEFT', currencies, 'RIGHT', 160, 0)
 
 	local durability = ns.CreateCheckBox(infobar, 'durability')
-	durability:SetPoint('LEFT', friends, 'RIGHT', 160, 0)
+	durability:SetPoint('TOPLEFT', currencies, 'BOTTOMLEFT', 0, -8)
 
-	local specTalent = ns.CreateCheckBox(infobar, 'specTalent')
-	specTalent:SetPoint('TOPLEFT', friends, 'BOTTOMLEFT', 0, -8)
-
-	local skadaHelper = ns.CreateCheckBox(infobar, 'skadaHelper')
-	skadaHelper:SetPoint('LEFT', specTalent, 'RIGHT', 160, 0)
-
+	local talent = ns.CreateCheckBox(infobar, 'talent')
+	talent:SetPoint('LEFT', durability, 'RIGHT', 160, 0)
 
 	local function toggleInfoBarOptions()
 		local shown = enable:GetChecked()
 		mouseover:SetShown(shown)
 		stats:SetShown(shown)
-		report:SetShown(shown)
 		currencies:SetShown(shown)
 		friends:SetShown(shown)
 		durability:SetShown(shown)
-		specTalent:SetShown(shown)
-		skadaHelper:SetShown(shown)
+		talent:SetShown(shown)
 	end
 
 	enable:HookScript('OnClick', toggleInfoBarOptions)
@@ -383,7 +344,7 @@ end
 -- Actionbar
 do
 	local actionbar = FreeUIOptionsPanel.actionbar
-	actionbar.tab.Icon:SetTexture('Interface\\Icons\\Ability_Warrior_Challange')
+	actionbar.tab.Icon:SetTexture('Interface\\Icons\\Ability_DualWield')
 
 	local main = ns.addSubCategory(actionbar, ns.localization.actionbar_subCategory_layout)
 	main:SetPoint('TOPLEFT', actionbar.subText, 'BOTTOMLEFT', 0, -8)
@@ -487,15 +448,49 @@ do
 	local cooldown = FreeUIOptionsPanel.cooldown
 	cooldown.tab.Icon:SetTexture('Interface\\Icons\\Spell_Nature_TimeStop')
 
-	local main = ns.addSubCategory(cooldown, ns.localization.cooldown_subCategory_layout)
-	main:SetPoint('TOPLEFT', cooldown.subText, 'BOTTOMLEFT', 0, -8)
+	local basic = ns.addSubCategory(cooldown, ns.localization.cooldown_subCategory_basic)
+	basic:SetPoint('TOPLEFT', cooldown.subText, 'BOTTOMLEFT', 0, -8)
 
+	local cdEnhanced = ns.CreateCheckBox(cooldown, 'cdEnhanced')
+	cdEnhanced:SetPoint('TOPLEFT', basic, 'BOTTOMLEFT', 0, -8)
+
+	local cdPulse = ns.CreateCheckBox(cooldown, 'cdPulse')
+	cdPulse:SetPoint('LEFT', cdEnhanced, 'RIGHT', 160, 0)
+
+	local cdFont = ns.CreateDropDown(cooldown, 'cdFont', true, ns.localization.font_stats_font, fontsTable)
+	cdFont:SetPoint('TOPLEFT', cdEnhanced, 'BOTTOMLEFT', 0, -16)
+
+	local cdFontFlag = ns.CreateDropDown(cooldown, 'cdFontFlag', true, ns.localization.font_stats_font_style, flagsTable)
+	cdFontFlag:SetPoint('LEFT', cdFont, 'RIGHT', 30, 0)
+
+	local cdFontSize = ns.CreateNumberSlider(cooldown, 'cdFontSize', 8, 24, 8, 24, 1, true)
+	cdFontSize:SetPoint('TOPLEFT', cdFont, 'BOTTOMLEFT', 24, -32)
+
+	local function toggleCooldownOptions()
+		local shown = cdEnhanced:GetChecked()
+		cdFont:SetShown(shown)
+		cdFontFlag:SetShown(shown)
+		cdFontSize:SetShown(shown)
+	end
+
+	cdEnhanced:HookScript('OnClick', toggleCooldownOptions)
+	cdFontFlag:HookScript('OnShow', toggleCooldownOptions)
+	cdFontSize:HookScript('OnShow', toggleCooldownOptions)
+end
+
+-- Aura
+do
+	local aura = FreeUIOptionsPanel.aura
+	aura.tab.Icon:SetTexture('Interface\\Icons\\Spell_Holy_WordFortitude')
+
+	local basic = ns.addSubCategory(aura, ns.localization.aura_subCategory_basic)
+	basic:SetPoint('TOPLEFT', aura.subText, 'BOTTOMLEFT', 0, -8)
 end
 
 -- Unitframe
 do
 	local unitframe = FreeUIOptionsPanel.unitframe
-	unitframe.tab.Icon:SetTexture('Interface\\Icons\\Spell_Holy_DivineSpirit')
+	unitframe.tab.Icon:SetTexture('Interface\\Icons\\Spell_Holy_PrayerofSpirit')
 
 	local basic = ns.addSubCategory(unitframe, ns.localization.unitframe_subCategory_basic)
 	basic:SetPoint('TOPLEFT', unitframe.subText, 'BOTTOMLEFT', 0, -8)
@@ -503,14 +498,14 @@ do
 	local enable = ns.CreateCheckBox(unitframe, 'enable')
 	enable:SetPoint('TOPLEFT', basic, 'BOTTOMLEFT', 0, -8)
 
-	local healer_layout = ns.CreateCheckBox(unitframe, 'healer_layout')
-	healer_layout:SetPoint('TOPLEFT', enable, 'BOTTOMLEFT', 16, -8)
+	local healer = ns.CreateCheckBox(unitframe, 'healer')
+	healer:SetPoint('TOPLEFT', enable, 'BOTTOMLEFT', 16, -8)
 
 	local transMode = ns.CreateCheckBox(unitframe, 'transMode')
-	transMode:SetPoint('LEFT', healer_layout, 'RIGHT', 160, 0)
+	transMode:SetPoint('LEFT', healer, 'RIGHT', 160, 0)
 
 	local colourSmooth = ns.CreateCheckBox(unitframe, 'colourSmooth')
-	colourSmooth:SetPoint('TOPLEFT', healer_layout, 'BOTTOMLEFT', 0, -8)
+	colourSmooth:SetPoint('TOPLEFT', healer, 'BOTTOMLEFT', 0, -8)
 
 	local portrait = ns.CreateCheckBox(unitframe, 'portrait')
 	portrait:SetPoint('LEFT', colourSmooth, 'RIGHT', 160, 0)
@@ -521,35 +516,49 @@ do
 	local feature = ns.addSubCategory(unitframe, ns.localization.unitframe_subCategory_feature)
 	feature:SetPoint('TOPLEFT', frameVisibility, 'BOTTOMLEFT', -16, -16)
 
-	local threat = ns.CreateCheckBox(unitframe, 'threat')
-	threat:SetPoint('TOPLEFT', feature, 'BOTTOMLEFT', 0, -8)
-
 	local dispellable = ns.CreateCheckBox(unitframe, 'dispellable')
-	dispellable:SetPoint('LEFT', threat, 'RIGHT', 160, 0)
-
-	local healPrediction = ns.CreateCheckBox(unitframe, 'healPrediction')
-	healPrediction:SetPoint('TOPLEFT', threat, 'BOTTOMLEFT', 0, -8)
-
-	local overAbsorb = ns.CreateCheckBox(unitframe, 'overAbsorb')
-	overAbsorb:SetPoint('LEFT', healPrediction, 'RIGHT', 160, 0)
+	dispellable:SetPoint('TOPLEFT', feature, 'BOTTOMLEFT', 0, -8)
 
 	local rangeCheck = ns.CreateCheckBox(unitframe, 'rangeCheck')
-	rangeCheck:SetPoint('TOPLEFT', healPrediction, 'BOTTOMLEFT', 0, -8)
+	rangeCheck:SetPoint('LEFT', dispellable, 'RIGHT', 160, 0)
 
 	local classPower = ns.CreateCheckBox(unitframe, 'classPower')
-	classPower:SetPoint('LEFT', rangeCheck, 'RIGHT', 160, 0)
-
-	local stagger = ns.CreateCheckBox(unitframe, 'stagger')
-	stagger:SetPoint('TOPLEFT', rangeCheck, 'BOTTOMLEFT', 0, -8)
+	classPower:SetPoint('TOPLEFT', dispellable, 'BOTTOMLEFT', 0, -8)
 
 	local totems = ns.CreateCheckBox(unitframe, 'totems')
-	totems:SetPoint('LEFT', stagger, 'RIGHT', 160, 0)
+	totems:SetPoint('LEFT', classPower, 'RIGHT', 160, 0)
 
-	local quakeTimer = ns.CreateCheckBox(unitframe, 'quakeTimer')
-	quakeTimer:SetPoint('TOPLEFT', stagger, 'BOTTOMLEFT', 0, -8)
+	local clickCast = ns.CreateCheckBox(unitframe, 'clickCast')
+	clickCast:SetPoint('TOPLEFT', classPower, 'BOTTOMLEFT', 0, -8)
+
+	local fct = ns.addSubCategory(unitframe, ns.localization.unitframe_subCategory_fct)
+	fct:SetPoint('TOPLEFT', clickCast, 'BOTTOMLEFT', 0, -16)
+
+	local enableFCT = ns.CreateCheckBox(unitframe, 'enableFCT')
+	enableFCT:SetPoint('TOPLEFT', fct, 'BOTTOMLEFT', 0, -8)
+
+	local playerFCT = ns.CreateCheckBox(unitframe, 'playerFCT')
+	playerFCT:SetPoint('TOPLEFT', enableFCT, 'BOTTOMLEFT', 16, -8)
+
+	local targetFCT = ns.CreateCheckBox(unitframe, 'targetFCT')
+	targetFCT:SetPoint('LEFT', playerFCT, 'RIGHT', 160, 0)
+
+	local petFCT = ns.CreateCheckBox(unitframe, 'petFCT')
+	petFCT:SetPoint('TOPLEFT', playerFCT, 'BOTTOMLEFT', 0, -8)
+
+	local hotsDots = ns.CreateCheckBox(unitframe, 'hotsDots')
+	hotsDots:SetPoint('LEFT', petFCT, 'RIGHT', 160, 0)
+
+	local autoAttack = ns.CreateCheckBox(unitframe, 'autoAttack')
+	autoAttack:SetPoint('TOPLEFT', petFCT, 'BOTTOMLEFT', 0, -8)
+
+	local overHealing = ns.CreateCheckBox(unitframe, 'overHealing')
+	overHealing:SetPoint('LEFT', autoAttack, 'RIGHT', 160, 0)
+
+	enableFCT.children = {playerFCT, targetFCT, petFCT, hotsDots, autoAttack, overHealing}
 
 	local castbar = ns.addSubCategory(unitframe, ns.localization.unitframe_subCategory_castbar)
-	castbar:SetPoint('TOPLEFT', quakeTimer, 'BOTTOMLEFT', 0, -16)
+	castbar:SetPoint('TOPLEFT', autoAttack, 'BOTTOMLEFT', -16, -16)
 
 	local enableCastbar = ns.CreateCheckBox(unitframe, 'enableCastbar')
 	enableCastbar:SetPoint('TOPLEFT', castbar, 'BOTTOMLEFT', 0, -8)
@@ -557,10 +566,7 @@ do
 	local castbar_separatePlayer = ns.CreateCheckBox(unitframe, 'castbar_separatePlayer')
 	castbar_separatePlayer:SetPoint('TOPLEFT', enableCastbar, 'BOTTOMLEFT', 16, -8)
 
-	local castbar_separateTarget = ns.CreateCheckBox(unitframe, 'castbar_separateTarget')
-	castbar_separateTarget:SetPoint('LEFT', castbar_separatePlayer, 'RIGHT', 160, 0)
-
-	enableCastbar.children = {castbar_separatePlayer, castbar_separateTarget}
+	enableCastbar.children = {castbar_separatePlayer}
 
 	local extra = ns.addSubCategory(unitframe, ns.localization.unitframe_subCategory_extra)
 	extra:SetPoint('TOPLEFT', castbar_separatePlayer, 'BOTTOMLEFT', -16, -16)
@@ -577,26 +583,16 @@ do
 	local groupFilter = ns.CreateNumberSlider(unitframe, 'groupFilter', 4, 8, 4, 8, 1, true)
 	groupFilter:SetPoint('TOPLEFT', groupNames, 'BOTTOMLEFT', 0, -30)
 
-	local enableBoss = ns.CreateCheckBox(unitframe, 'enableBoss')
-	enableBoss:SetPoint('TOPLEFT', groupFilter, 'BOTTOMLEFT', -16, -32)
-
-	local bossColourSmooth = ns.CreateCheckBox(unitframe, 'bossColourSmooth')
-	bossColourSmooth:SetPoint('TOPLEFT', enableBoss, 'BOTTOMLEFT', 16, -8)
-
-	enableBoss.children = {bossColourSmooth}
-
-	local enableArena = ns.CreateCheckBox(unitframe, 'enableArena')
-	enableArena:SetPoint('LEFT', enableBoss, 'RIGHT', 160, 0)
-
 	local function toggleUFOptions()
 		local shown = enable:GetChecked()
 		feature:SetShown(shown)
 		extra:SetShown(shown)
 		castbar:SetShown(shown)
+		fct:SetShown(shown)
 
 		transMode:SetShown(shown)
 		portrait:SetShown(shown)
-		healer_layout:SetShown(shown)
+		healer:SetShown(shown)
 		colourSmooth:SetShown(shown)
 		frameVisibility:SetShown(shown)
 
@@ -605,24 +601,22 @@ do
 		groupColourSmooth:SetShown(shown)
 		groupFilter:SetShown(shown)
 
-		threat:SetShown(shown)
-		overAbsorb:SetShown(shown)
-		healPrediction:SetShown(shown)
 		dispellable:SetShown(shown)
 		rangeCheck:SetShown(shown)
+		classPower:SetShown(shown)
+		totems:SetShown(shown)
+		clickCast:SetShown(shown)
 		
 		enableCastbar:SetShown(shown)
 		castbar_separatePlayer:SetShown(shown)
-		castbar_separateTarget:SetShown(shown)
-		
-		enableBoss:SetShown(shown)
-		bossColourSmooth:SetShown(shown)
-		enableArena:SetShown(shown)
 
-		classPower:SetShown(shown)
-		stagger:SetShown(shown)
-		totems:SetShown(shown)
-		quakeTimer:SetShown(shown)
+		enableFCT:SetShown(shown)
+		playerFCT:SetShown(shown)
+		targetFCT:SetShown(shown)
+		petFCT:SetShown(shown)
+		hotsDots:SetShown(shown)
+		autoAttack:SetShown(shown)
+		overHealing:SetShown(shown)
 	end
 
 	enable:HookScript('OnClick', toggleUFOptions)
@@ -650,55 +644,51 @@ do
 	local enable = ns.CreateCheckBox(inventory, 'enable')
 	enable:SetPoint('TOPLEFT', basic, 'BOTTOMLEFT', 0, -8)
 
-	local itemLevel = ns.CreateCheckBox(inventory, 'itemLevel')
-	itemLevel:SetPoint('TOPLEFT', enable, 'BOTTOMLEFT', 16, -8)
-
 	local newitemFlash = ns.CreateCheckBox(inventory, 'newitemFlash')
-	newitemFlash:SetPoint('LEFT', itemLevel, 'RIGHT', 160, 0)
-
-	local useCategory = ns.CreateCheckBox(inventory, 'useCategory')
-	useCategory:SetPoint('TOPLEFT', itemLevel, 'BOTTOMLEFT', 0, -8)
-
-	local gearSetFilter = ns.CreateCheckBox(inventory, 'gearSetFilter')
-	gearSetFilter:SetPoint('TOPLEFT', useCategory, 'BOTTOMLEFT', 16, -8)
-
-	local tradeGoodsFilter = ns.CreateCheckBox(inventory, 'tradeGoodsFilter')
-	tradeGoodsFilter:SetPoint('TOPLEFT', gearSetFilter, 'BOTTOMLEFT', 0, -8)
-
-	local questItemFilter = ns.CreateCheckBox(inventory, 'questItemFilter')
-	questItemFilter:SetPoint('TOPLEFT', tradeGoodsFilter, 'BOTTOMLEFT', 0, -8)
-
-	local mechagonItemFilter = ns.CreateCheckBox(inventory, 'mechagonItemFilter')
-	mechagonItemFilter:SetPoint('TOPLEFT', questItemFilter, 'BOTTOMLEFT', 0, -8)
-
-	useCategory.children = {gearSetFilter, tradeGoodsFilter, questItemFilter, mechagonItemFilter}
+	newitemFlash:SetPoint('TOPLEFT', enable, 'BOTTOMLEFT', 16, -8)
 
 	local reverseSort = ns.CreateCheckBox(inventory, 'reverseSort')
-	reverseSort:SetPoint('LEFT', useCategory, 'RIGHT', 160, 0)
+	reverseSort:SetPoint('LEFT', newitemFlash, 'RIGHT', 160, 0)
 
-	local size = ns.CreateNumberSlider(inventory, 'itemSlotSize', 20, 40, 20, 40, 1, true)
-	size:SetPoint('TOPLEFT', mechagonItemFilter, 'BOTTOMLEFT', -16, -32)
+	local category = ns.addSubCategory(inventory, ns.localization.inventory_subCategory_category)
+	category:SetPoint('TOPLEFT', newitemFlash, 'BOTTOMLEFT', -16, -8)
+
+	local useCategory = ns.CreateCheckBox(inventory, 'useCategory')
+	useCategory:SetPoint('TOPLEFT', category, 'BOTTOMLEFT', 0, -8)
+
+	local tradeGoodsFilter = ns.CreateCheckBox(inventory, 'tradeGoodsFilter')
+	tradeGoodsFilter:SetPoint('TOPLEFT', useCategory, 'BOTTOMLEFT', 16, -8)
+
+	local questItemFilter = ns.CreateCheckBox(inventory, 'questItemFilter')
+	questItemFilter:SetPoint('LEFT', tradeGoodsFilter, 'RIGHT', 160, 0)
+
+	useCategory.children = {tradeGoodsFilter, questItemFilter}
+
+	local size = ns.addSubCategory(inventory, ns.localization.inventory_subCategory_size)
+	size:SetPoint('TOPLEFT', tradeGoodsFilter, 'BOTTOMLEFT', -16, -8)
+
+	local slotSize = ns.CreateNumberSlider(inventory, 'itemSlotSize', 20, 40, 20, 40, 1, true)
+	slotSize:SetPoint('TOPLEFT', size, 'BOTTOMLEFT', 24, -32)
 
 	local bagColumns = ns.CreateNumberSlider(inventory, 'bagColumns', 8, 16, 8, 16, 1, true)
-	bagColumns:SetPoint('TOPLEFT', size, 'BOTTOMLEFT', 0, -32)
+	bagColumns:SetPoint('TOPLEFT', slotSize, 'BOTTOMLEFT', 0, -32)
 
 	local bankColumns = ns.CreateNumberSlider(inventory, 'bankColumns', 8, 16, 8, 16, 1, true)
 	bankColumns:SetPoint('TOPLEFT', bagColumns, 'BOTTOMLEFT', 0, -32)
 
-
 	local function toggleInventoryOptions()
 		local shown = enable:GetChecked()
 		useCategory:SetShown(shown)
-		gearSetFilter:SetShown(shown)
 		tradeGoodsFilter:SetShown(shown)
 		questItemFilter:SetShown(shown)
-		mechagonItemFilter:SetShown(shown)
 		reverseSort:SetShown(shown)
-		itemLevel:SetShown(shown)
 		newitemFlash:SetShown(shown)
-		size:SetShown(shown)
+		slotSize:SetShown(shown)
 		bagColumns:SetShown(shown)
 		bankColumns:SetShown(shown)
+		basic:SetShown(shown)
+		size:SetShown(shown)
+		category:SetShown(shown)
 	end
 
 	enable:HookScript('OnClick', toggleInventoryOptions)
@@ -708,7 +698,7 @@ end
 -- Loot
 do
 	local loot = FreeUIOptionsPanel.loot
-	loot.tab.Icon:SetTexture('Interface\\Icons\\INV_Misc_MonsterScales_07')
+	loot.tab.Icon:SetTexture('Interface\\Icons\\Ability_Hunter_BeastSoothe')
 
 	local main = ns.addSubCategory(loot, ns.localization.loot_subCategory_layout)
 	main:SetPoint('TOPLEFT', loot.subText, 'BOTTOMLEFT', 0, -8)
@@ -723,47 +713,26 @@ do
 	local worldMap = ns.addSubCategory(map, ns.localization.map_subCategory_worldMap)
 	worldMap:SetPoint('TOPLEFT', map.subText, 'BOTTOMLEFT', 0, -8)
 
-	local coords = ns.CreateCheckBox(map, 'coords')
+	local coords = ns.CreateCheckBox(map, 'worldMapCoords')
 	coords:SetPoint('TOPLEFT', worldMap, 'BOTTOMLEFT', 0, -8)
 
-	local mapReveal = ns.CreateCheckBox(map, 'mapReveal')
+	local mapReveal = ns.CreateCheckBox(map, 'worldMapReveal')
 	mapReveal:SetPoint('LEFT', coords, 'RIGHT', 160, 0)
 
 	local miniMap = ns.addSubCategory(map, ns.localization.map_subCategory_miniMap)
 	miniMap:SetPoint('TOPLEFT', coords, 'BOTTOMLEFT', 0, -16)
 
-	local miniMapEnhancement = ns.CreateCheckBox(map, 'miniMap')
-	miniMapEnhancement:SetPoint('TOPLEFT', miniMap, 'BOTTOMLEFT', 0, -8)
-
 	local whoPings = ns.CreateCheckBox(map, 'whoPings')
-	whoPings:SetPoint('TOPLEFT', miniMapEnhancement, 'BOTTOMLEFT', 16, -8)
+	whoPings:SetPoint('TOPLEFT', miniMap, 'BOTTOMLEFT', 0, -8)
 
-	local miniMapMenu = ns.CreateCheckBox(map, 'microMenu')
-	miniMapMenu:SetPoint('LEFT', whoPings, 'RIGHT', 160, 0)
+	local microMenu = ns.CreateCheckBox(map, 'microMenu')
+	microMenu:SetPoint('LEFT', whoPings, 'RIGHT', 160, 0)
 
-
-	local marker = ns.CreateCheckBox(map, 'marker')
-	marker:SetPoint('TOPLEFT', whoPings, 'BOTTOMLEFT', 0, -8)
-
-	local progressBar = ns.CreateCheckBox(map, 'progressBar')
-	progressBar:SetPoint('LEFT', marker, 'RIGHT', 160, 0)
-
-
+	local expRepBar = ns.CreateCheckBox(map, 'expRepBar')
+	expRepBar:SetPoint('TOPLEFT', whoPings, 'BOTTOMLEFT', 0, -8)
 
 	local miniMapSize = ns.CreateNumberSlider(map, 'miniMapSize', 100, 300, 100, 300, 1, true)
-	miniMapSize:SetPoint('TOPLEFT', marker, 'BOTTOMLEFT', 16, -32)
-
-	local function toggleMiniMapsOptions()
-		local shown = miniMapEnhancement:GetChecked()
-		whoPings:SetShown(shown)
-		miniMapMenu:SetShown(shown)
-		miniMapSize:SetShown(shown)
-		progressBar:SetShown(shown)
-		marker:SetShown(shown)
-	end
-
-	miniMapEnhancement:HookScript('OnClick', toggleMiniMapsOptions)
-	map:HookScript('OnShow', toggleMiniMapsOptions)
+	miniMapSize:SetPoint('TOPLEFT', expRepBar, 'BOTTOMLEFT', 16, -32)
 end
 
 -- Quest
@@ -771,9 +740,25 @@ do
 	local quest = FreeUIOptionsPanel.quest
 	quest.tab.Icon:SetTexture('Interface\\Icons\\INV_Misc_Book_08')
 
-	local main = ns.addSubCategory(quest, ns.localization.quest_subCategory_layout)
-	main:SetPoint('TOPLEFT', quest.subText, 'BOTTOMLEFT', 0, -8)
+	local basic = ns.addSubCategory(quest, ns.localization.quest_subCategory_basic)
+	basic:SetPoint('TOPLEFT', quest.subText, 'BOTTOMLEFT', 0, -8)
 
+	local questTracker = ns.CreateCheckBox(quest, 'questTracker')
+	questTracker:SetPoint('TOPLEFT', basic, 'BOTTOMLEFT', 0, -8)
+
+	local quickQuest = ns.CreateCheckBox(quest, 'quickQuest')
+	quickQuest:SetPoint('LEFT', questTracker, 'RIGHT', 160, 0)
+
+	local notifier = ns.CreateCheckBox(quest, 'notifier')
+	notifier:SetPoint('TOPLEFT', questTracker, 'BOTTOMLEFT', 0, -8)
+
+	local progressNotify = ns.CreateCheckBox(quest, 'progressNotify')
+	progressNotify:SetPoint('TOPLEFT', notifier, 'BOTTOMLEFT', 16, -8)
+
+	local completeRing = ns.CreateCheckBox(quest, 'completeRing')
+	completeRing:SetPoint('TOPLEFT', progressNotify, 'BOTTOMLEFT', 0, -8)
+
+	notifier.children = {progressNotify, completeRing}
 end
 
 -- Tooltip
@@ -793,8 +778,14 @@ do
 	local combatHide = ns.CreateCheckBox(tooltip, 'combatHide')
 	combatHide:SetPoint('LEFT', cursor, 'RIGHT', 160, 0)
 
+	local tipIcon = ns.CreateCheckBox(tooltip, 'tipIcon')
+	tipIcon:SetPoint('TOPLEFT', cursor, 'BOTTOMLEFT', 0, -8)
+
+	local borderColor = ns.CreateCheckBox(tooltip, 'borderColor')
+	borderColor:SetPoint('LEFT', tipIcon, 'RIGHT', 160, 0)
+
 	local hideTitle = ns.CreateCheckBox(tooltip, 'hideTitle')
-	hideTitle:SetPoint('TOPLEFT', cursor, 'BOTTOMLEFT', 0, -8)
+	hideTitle:SetPoint('TOPLEFT', tipIcon, 'BOTTOMLEFT', 0, -8)
 
 	local hideRealm = ns.CreateCheckBox(tooltip, 'hideRealm')
 	hideRealm:SetPoint('LEFT', hideTitle, 'RIGHT', 160, 0)
@@ -802,29 +793,14 @@ do
 	local hideRank = ns.CreateCheckBox(tooltip, 'hideRank')
 	hideRank:SetPoint('TOPLEFT', hideTitle, 'BOTTOMLEFT', 0, -8)
 
-	local borderColor = ns.CreateCheckBox(tooltip, 'borderColor')
-	borderColor:SetPoint('LEFT', hideRank, 'RIGHT', 160, 0)
-
-	local tipIcon = ns.CreateCheckBox(tooltip, 'tipIcon')
-	tipIcon:SetPoint('TOPLEFT', hideRank, 'BOTTOMLEFT', 0, -8)
+	local targetBy = ns.CreateCheckBox(tooltip, 'targetBy')
+	targetBy:SetPoint('LEFT', hideRank, 'RIGHT', 160, 0)
 
 	local linkHover = ns.CreateCheckBox(tooltip, 'linkHover')
-	linkHover:SetPoint('LEFT', tipIcon, 'RIGHT', 160, 0)
-
-	local azeriteTrait = ns.CreateCheckBox(tooltip, 'azeriteTrait')
-	azeriteTrait:SetPoint('TOPLEFT', tipIcon, 'BOTTOMLEFT', 0, -8)
+	linkHover:SetPoint('TOPLEFT', hideRank, 'BOTTOMLEFT', 0, -8)
 
 	local extraInfo = ns.CreateCheckBox(tooltip, 'extraInfo')
-	extraInfo:SetPoint('TOPLEFT', azeriteTrait, 'BOTTOMLEFT', 0, -8)
-
-	local extraInfoByShift = ns.CreateCheckBox(tooltip, 'extraInfoByShift')
-	extraInfoByShift:SetPoint('TOPLEFT', extraInfo, 'BOTTOMLEFT', 16, -8)
-
-	local ilvlSpec = ns.CreateCheckBox(tooltip, 'ilvlSpec')
-	ilvlSpec:SetPoint('LEFT', extraInfo, 'RIGHT', 160, 0)
-
-	local ilvlSpecByShift = ns.CreateCheckBox(tooltip, 'ilvlSpecByShift')
-	ilvlSpecByShift:SetPoint('TOPLEFT', ilvlSpec, 'BOTTOMLEFT', 16, -8)
+	extraInfo:SetPoint('LEFT', linkHover, 'RIGHT', 160, 0)
 
 	local function toggleTooltipOptions()
 		local shown = enable:GetChecked()
@@ -833,14 +809,11 @@ do
 		hideRealm:SetShown(shown)
 		hideRank:SetShown(shown)
 		combatHide:SetShown(shown)
-		ilvlSpec:SetShown(shown)
-		azeriteTrait:SetShown(shown)
 		linkHover:SetShown(shown)
 		borderColor:SetShown(shown)
 		tipIcon:SetShown(shown)
 		extraInfo:SetShown(shown)
-		ilvlSpecByShift:SetShown(shown)
-		extraInfoByShift:SetShown(shown)
+		targetBy:SetShown(shown)
 	end
 
 	enable:HookScript('OnClick', toggleTooltipOptions)
@@ -864,47 +837,31 @@ do
 	local whisperAlert = ns.CreateCheckBox(chat, 'whisperAlert')
 	whisperAlert:SetPoint('TOPLEFT', lockPosition, 'BOTTOMLEFT', 0, -8)
 
-	local showItemLevel = ns.CreateCheckBox(chat, 'showItemLevel')
-	showItemLevel:SetPoint('TOPLEFT', whisperAlert, 'BOTTOMLEFT', 0, -8)
+	local copyButton = ns.CreateCheckBox(chat, 'copyButton')
+	copyButton:SetPoint('LEFT', whisperAlert, 'RIGHT', 160, 0)
 
-	local spamageMeter = ns.CreateCheckBox(chat, 'spamageMeter')
-	spamageMeter:SetPoint('LEFT', showItemLevel, 'RIGHT', 160, 0)
+	local fading = ns.CreateCheckBox(chat, 'fading')
+	fading:SetPoint('TOPLEFT', whisperAlert, 'BOTTOMLEFT', 0, -8)
 
-	local chatButton = ns.CreateCheckBox(chat, 'chatButton')
-	chatButton:SetPoint('TOPLEFT', showItemLevel, 'BOTTOMLEFT', 0, -8)
-
-	local channelSticky = ns.CreateCheckBox(chat, 'channelSticky')
-	channelSticky:SetPoint('LEFT', chatButton, 'RIGHT', 160, 0)
-
-	local lineFading = ns.CreateCheckBox(chat, 'lineFading')
-	lineFading:SetPoint('TOPLEFT', chatButton, 'BOTTOMLEFT', 0, -8)
-
-	local useFilter = ns.CreateCheckBox(chat, 'useFilter')
-	useFilter:SetPoint('LEFT', lineFading, 'RIGHT', 160, 0)
-
-	local autoBubble = ns.CreateCheckBox(chat, 'autoBubble')
-	autoBubble:SetPoint('TOPLEFT', lineFading, 'BOTTOMLEFT', 0, -8)
-
+	local filters = ns.CreateCheckBox(chat, 'filters')
+	filters:SetPoint('LEFT', fading, 'RIGHT', 160, 0)
 
 	local timeStamp = ns.CreateCheckBox(chat, 'timeStamp')
-	timeStamp:SetPoint('LEFT', autoBubble, 'RIGHT', 160, 0)
+	timeStamp:SetPoint('TOPLEFT', fading, 'BOTTOMLEFT', 0, -8)
 
-	local timeStampColor = ns.CreateColourPicker(chat, "timeStampColor", true)
-	timeStampColor:SetPoint("TOPLEFT", timeStamp, "BOTTOMLEFT", 4, 0)
+	local timeStampColor = ns.CreateColourPicker(chat, 'timeStampColor', true)
+	timeStampColor:SetPoint('TOPLEFT', timeStamp, 'BOTTOMLEFT', 16, -8)
 
 	local function toggleChatOptions()
 		local shown = enable:GetChecked()
 		lockPosition:SetShown(shown)
 		fontOutline:SetShown(shown)
 		whisperAlert:SetShown(shown)
+		copyButton:SetShown(shown)
+		fading:SetShown(shown)
+		filters:SetShown(shown)
 		timeStamp:SetShown(shown)
-		showItemLevel:SetShown(shown)
-		spamageMeter:SetShown(shown)
-		chatButton:SetShown(shown)
-		channelSticky:SetShown(shown)
-		lineFading:SetShown(shown)
-		useFilter:SetShown(shown)
-		autoBubble:SetShown(shown)
+		timeStampColor:SetShown(shown)
 	end
 
 	enable:HookScript('OnClick', toggleChatOptions)
