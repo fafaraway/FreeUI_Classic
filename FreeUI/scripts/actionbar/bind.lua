@@ -210,7 +210,7 @@ SlashCmdList.MOUSEOVERBIND = function()
 		local bindType = 1
 		function bind:Deactivate(save)
 			if save then
-				SaveBindings(bindType)
+				AttemptToSaveBindings(bindType)
 				print('|cffffff00'..KEY_BOUND..'|r')
 			else
 				LoadBindings(bindType)
@@ -231,8 +231,8 @@ SlashCmdList.MOUSEOVERBIND = function()
 			F.CreateBD(frame)
 			F.CreateSD(frame)
 
-			local title = F.CreateFS(frame, {C.font.normal, 14}, KEY_BINDING, nil, nil, true, 'TOP', 0, -15)
-			local text = F.CreateFS(frame, {C.font.normal, 12}, CHARACTER_SPECIFIC_KEYBINDINGS, nil, 'yellow', true, 'TOP', 0, -40)
+			local title = F.CreateFS(frame, {C.font.normal, 14}, KEY_BINDING, nil, true, 'TOP', 0, -15)
+			local text = F.CreateFS(frame, {C.font.normal, 12}, CHARACTER_SPECIFIC_KEYBINDINGS, 'yellow', true, 'TOP', 0, -40)
 
 			local button1 = CreateFrame('Button', nil, frame)
 			button1:SetSize(120, 25)
