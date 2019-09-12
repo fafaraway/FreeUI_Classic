@@ -4,8 +4,8 @@ local CHAT = F:GetModule('Chat')
 
 local gsub, format, tconcat, tostring = string.gsub, string.format, table.concat, tostring
 
-function CHAT:ChatCopy()
-	if not C.chat.chatCopy then return end
+function CHAT:CopyButton()
+	if not C.chat.copyButton then return end
 	
 	local lines = {}
 	local f = CreateFrame('Frame', 'FreeUIChatCopy', UIParent)
@@ -103,7 +103,7 @@ function CHAT:ChatCopy()
 			end
 		end
 
-		if C.Client == 'zhCN' and button == 'RightButton' and ChatHide == false then
+		if C.Client == 'zhCN' and button == 'MiddleButton' and ChatHide == false then
 			local inchannel = false
 			local channels = {GetChannelList()}
 			for i = 1, #channels do
@@ -123,7 +123,7 @@ function CHAT:ChatCopy()
 			end
 		end
 
-		if button == 'MiddleButton' then
+		if button == 'RightButton' then
 			if not f:IsShown() then
 				local chatframe = SELECTED_DOCK_FRAME
 				local _, fontSize = chatframe:GetFont()
@@ -168,12 +168,12 @@ function CHAT:ChatCopy()
 				end
 			end
 			if inchannel then
-				GameTooltip:AddDoubleLine(' ', C.RightButton..L['CHAT_LEAVE_WC']..' ', 1,1,1, .9, .8, .6)
+				GameTooltip:AddDoubleLine(' ', C.MiddleButton..L['CHAT_LEAVE_WC']..' ', 1,1,1, .9, .8, .6)
 			else
-				GameTooltip:AddDoubleLine(' ', C.RightButton..L['CHAT_JOIN_WC']..' ', 1,1,1, .9, .8, .6)
+				GameTooltip:AddDoubleLine(' ', C.MiddleButton..L['CHAT_JOIN_WC']..' ', 1,1,1, .9, .8, .6)
 			end
 
-			GameTooltip:AddDoubleLine(' ', C.MiddleButton..L['CHAT_COPY']..' ', 1,1,1, .9, .8, .6)
+			GameTooltip:AddDoubleLine(' ', C.RightButton..L['CHAT_COPY']..' ', 1,1,1, .9, .8, .6)
 		elseif ChatHide == true then
 			GameTooltip:AddDoubleLine(' ', C.LeftButton..L['CHAT_SHOW']..' ', 1,1,1, .9, .8, .6)
 		end

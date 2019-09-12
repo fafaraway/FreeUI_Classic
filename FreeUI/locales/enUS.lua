@@ -158,6 +158,7 @@ L['MOVER_OBJECTIVE_TRACKER'] = 'objective tracker'
 L['MOVER_VEHICLE_INDICATOR'] = 'vehicle indicator'
 L['MOVER_DURABILITY_INDICATOR'] = 'durability indicator'
 L['MOVER_ALERT_FRAMES'] = 'alert frames'
+L['MOVER_GROUP_LOOT'] = 'group loot roll'
 
 
 -- Chat

@@ -102,7 +102,7 @@ local function UpdateTabChannelSwitch()
 	end
 end
 
-local function QuickMouseScroll(dir)
+function CHAT:QuickMouseScroll(dir)
 	if dir > 0 then
 		if IsShiftKeyDown() then
 			self:ScrollToTop()
@@ -119,6 +119,7 @@ local function QuickMouseScroll(dir)
 		end
 	end
 end
+
 
 local function UpdateTimestamp()
 	local timeStamp = F.HexRGB(unpack(C.chat.timeStampColor))..'%H:%M|r '
@@ -226,7 +227,7 @@ function CHAT:OnLogin()
 	F.HideOption(InterfaceOptionsSocialPanelChatStyle)
 	CombatLogQuickButtonFrame_CustomTexture:SetTexture(nil)
 
-	hooksecurefunc('FloatingChatFrame_OnMouseScroll', QuickMouseScroll)
+	hooksecurefunc("FloatingChatFrame_OnMouseScroll", CHAT.QuickMouseScroll)
 	hooksecurefunc('ChatEdit_CustomTabPressed', UpdateTabChannelSwitch)
 
 	HideForever(ChatFrameMenuButton)
@@ -246,7 +247,7 @@ function CHAT:OnLogin()
 	self:RestyleTabs()
 	self:ChatFilter()
 	self:Abbreviate()
-	self:ChatCopy()
+	self:CopyButton()
 	self:UrlCopy()
 	self:Spamagemeter()
 	--self:ItemLinks()

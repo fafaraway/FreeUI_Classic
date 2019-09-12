@@ -158,6 +158,7 @@ L['MOVER_OBJECTIVE_TRACKER'] = '任务追踪栏'
 L['MOVER_VEHICLE_INDICATOR'] = '载具座位控制'
 L['MOVER_DURABILITY_INDICATOR'] = '耐久提示'
 L['MOVER_ALERT_FRAMES'] = '成就/拾取通知框体'
+L['MOVER_GROUP_LOOT'] = '队伍拾取'
 
 
 -- Chat

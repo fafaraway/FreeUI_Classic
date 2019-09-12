@@ -1,7 +1,7 @@
 local F, C = unpack(select(2, ...))
 
 if IsAddOnLoaded('DynamicCam') then return end
-if not C.general.camera then return end
+
 
 -- based on FasterCamera by Ketho
 
