@@ -12,7 +12,7 @@ function MISC:OnLogin()
 
 	self:ItemLevel()
 
-	self:AlertFrame()
+	--self:AlertFrame()
 	self:ErrorFrame()
 
 
@@ -58,7 +58,7 @@ function MISC:HelmCloak()
 	helm:SetScript("OnEvent", function() helm:SetChecked(ShowingHelm()) end)
 	helm:RegisterEvent("UNIT_MODEL_CHANGED")
 	helm:SetToplevel(true)
-	helm.text = F.CreateFS(helm, (C.isCNClient and {C.font.normal, 11}) or 'pixel', L['MISC_SHOW_HELM'], nil, true, 'LEFT', 22, 0)
+	helm.text = F.CreateFS(helm, (C.isCNClient and {C.font.normal, 11}) or 'pixel', L['MISC_SHOW_HELM'], nil, true, 'LEFT', 22, 1)
 
 	local cloak = CreateFrame("CheckButton", "FreeUI_CloakCheckBox", PaperDollFrame, "OptionsCheckButtonTemplate")
 	cloak:SetSize(22, 22)
@@ -67,7 +67,7 @@ function MISC:HelmCloak()
 	cloak:SetScript("OnEvent", function() cloak:SetChecked(ShowingCloak()) end)
 	cloak:RegisterEvent("UNIT_MODEL_CHANGED")
 	cloak:SetToplevel(true)
-	cloak.text = F.CreateFS(cloak, (C.isCNClient and {C.font.normal, 11}) or 'pixel', L['MISC_SHOW_CLOAK'], nil, true, 'LEFT', 22, 0)
+	cloak.text = F.CreateFS(cloak, (C.isCNClient and {C.font.normal, 11}) or 'pixel', L['MISC_SHOW_CLOAK'], nil, true, 'LEFT', 22, 1)
 
 	helm:SetChecked(ShowingHelm())
 	cloak:SetChecked(ShowingCloak())
