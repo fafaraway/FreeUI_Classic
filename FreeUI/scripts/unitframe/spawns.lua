@@ -122,26 +122,6 @@ local function CreateRaidStyle(self)
 	UNITFRAME:AddSelectedBorder(self)
 end
 
-local function CreateBossStyle(self)
-	self.unitStyle = 'boss'
-	self:SetSize(cfg.boss_width, cfg.boss_height)
-
-	UNITFRAME:AddBackDrop(self)
-	UNITFRAME:AddHealthBar(self)
-	UNITFRAME:AddHealthValue(self)
-
-	UNITFRAME:AddPowerBar(self)
-
-	UNITFRAME:AddPowerValue(self)
-	UNITFRAME:AddPortrait(self)
-	UNITFRAME:AddNameText(self)
-	UNITFRAME:AddCastBar(self)
-	UNITFRAME:AddAuras(self)
-	UNITFRAME:AddRangeCheck(self)
-	UNITFRAME:AddRaidTargetIndicator(self)
-	UNITFRAME:AddSelectedBorder(self)
-end
-
 
 function UNITFRAME:OnLogin()
 	if not C.unitframe.enable then return end
@@ -169,7 +149,7 @@ function UNITFRAME:OnLogin()
 		pet.frameVisibility = cfg.frameVisibility
 		RegisterStateDriver(pet, "visibility", cfg.pet_frameVisibility)
 	end
-	F.Mover(pet, L['MOVER_UNITFRAME_PET'], 'PetFrame', cfg.pet_pos, pet:GetWidth(), pet:GetHeight())
+	F.Mover(pet, L['MOVER_UNITFRAME_PET'], 'PetFrame', (cfg.healer and cfg.pet_pos_healer) or cfg.pet_pos, pet:GetWidth(), pet:GetHeight())
 
 	oUF:SetActiveStyle('Target')
 	local target = oUF:Spawn('target', 'oUF_Target')
@@ -178,20 +158,6 @@ function UNITFRAME:OnLogin()
 	oUF:SetActiveStyle('TargetTarget')
 	local targettarget = oUF:Spawn('targettarget', 'oUF_TargetTarget')
 	F.Mover(targettarget, L['MOVER_UNITFRAME_TARGETTARGET'], 'TargetTargetFrame', (cfg.healer and cfg.targettarget_pos_healer) or cfg.targettarget_pos, targettarget:GetWidth(), targettarget:GetHeight())
-
-	if cfg.enableBoss then
-		oUF:RegisterStyle('Boss', CreateBossStyle)
-		oUF:SetActiveStyle('Boss')
-		local boss = {}
-		for i = 1, MAX_BOSS_FRAMES do
-			boss[i] = oUF:Spawn('boss'..i, 'oUF_Boss'..i)
-			if i == 1 then
-				boss[i].mover = F.Mover(boss[i], L['MOVER_UNITFRAME_BOSS'], 'BossFrame', (cfg.healer and cfg.boss_pos_healer) or cfg.boss_pos, cfg.boss_width, cfg.boss_height)
-			else
-				boss[i]:SetPoint('BOTTOM', boss[i-1], 'TOP', 0, cfg.boss_gap)
-			end
-		end
-	end
 
 	if cfg.enableGroup then
 		if IsAddOnLoaded('Blizzard_CompactRaidFrames') then
