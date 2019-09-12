@@ -157,7 +157,7 @@ local function PostCastStart(self, unit)
 		end
 	end
 
-	if (unit == 'player' and not C.unitframe.castbar_separatePlayer) or (unit == 'target' and not C.unitframe.castbar_separateTarget) then
+	if (unit == 'player' and not C.unitframe.castbar_separatePlayer) or unit == 'target' then
 		if self.Glow then
 			if self.notInterruptible then
 				self.Glow:SetBackdropBorderColor(self.notInterruptibleColor[1], self.notInterruptibleColor[2], self.notInterruptibleColor[3], .5)
@@ -171,7 +171,7 @@ local function PostCastStart(self, unit)
 		self:SetStatusBarColor(C.r, C.g, C.b, 1)
 	end
 	
-	if ((unit == 'player' and C.unitframe.castbar_separatePlayer) or (unit == 'target' and C.unitframe.castbar_separateTarget)) then
+	if unit == 'player' and C.unitframe.castbar_separatePlayer then
 		if self.notInterruptible then
 			self:SetStatusBarColor(self.notInterruptibleColor[1], self.notInterruptibleColor[2], self.notInterruptibleColor[3], 1)
 		else
@@ -267,13 +267,7 @@ function UNITFRAME:AddCastBar(self)
 		castbar.SafeZone = safeZone
 	end
 
-	if self.unitStyle == 'target' and cfg.castbar_separateTarget then
-		castbar:SetSize(self:GetWidth(), cfg.target_cb_height*C.Mult)
-		castbar:ClearAllPoints()
-		iconFrame:SetSize(castbar:GetHeight()+4, castbar:GetHeight()+4)
-
-		F.Mover(castbar, L['MOVER_UNITFRAME_TARGET_CASTBAR'], 'TargetCastbar', {'TOPRIGHT', self, 'BOTTOMRIGHT', 0, -10}, cfg.target_cb_width, cfg.target_cb_height)
-	elseif (self.unitStyle == 'target' and not cfg.castbar_separateTarget and cfg.healer) or (self.unitStyle == 'player' and not cfg.castbar_separateTarget) then
+	if (self.unitStyle == 'target' and cfg.healer) or (self.unitStyle == 'player' and not cfg.healer and not cfg.castbar_separatePlayer) then
 		iconFrame:ClearAllPoints()
 		iconFrame:SetPoint('LEFT', castbar, 'RIGHT', 4*C.Mult, 0)
 	end
@@ -286,7 +280,7 @@ function UNITFRAME:AddCastBar(self)
 		castbar:SetParent(UIParent)
 
 		if cfg.healer then
-			F.Mover(castbar, L['MOVER_UNITFRAME_PLAYER_CASTBAR'], 'PlayerCastbar', {'CENTER', UIParent, 'CENTER', 0, -200*C.Mult}, cfg.player_cb_width, cfg.player_cb_height)
+			F.Mover(castbar, L['MOVER_UNITFRAME_PLAYER_CASTBAR'], 'PlayerCastbar', {'CENTER', UIParent, 'CENTER', 0, -300*C.Mult}, cfg.player_cb_width, cfg.player_cb_height)
 		else
 			F.Mover(castbar, L['MOVER_UNITFRAME_PLAYER_CASTBAR'], 'PlayerCastbar', {'TOPLEFT', self, 'BOTTOMLEFT', 0, -40}, cfg.player_cb_width, cfg.player_cb_height)
 		end
