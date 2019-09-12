@@ -14,14 +14,7 @@ C['general'] = {
 	['itemLevel'] = true,
 	['helmCloak'] = true,
 	['PVPSound'] = true,
-
-
-	
-	
-
-	['camera'] = true,
-		['cameraZoomSpeed'] = 5,
-
+	['cameraZoomSpeed'] = 5,
 	['numberFormat'] = 1, -- 2 for Chinse number format (万/亿/兆)
 }
 
@@ -39,14 +32,10 @@ C['appearance'] = {
 	['vignette'] = true,
 		['vignetteAlpha'] = .8,
 
-
-
 	['fonts'] = true,
 
-	['DBM'] = true,
 	['BigWigs'] = true,
 	['WeakAuras'] = true,
-	['PremadeGroupsFilter'] = true,
 	['Skada'] = true,
 	['QuestLogEx'] = true,
 }
@@ -99,7 +88,7 @@ C['notification'] = {
 
 		['checkBagsFull'] = true,
 		['checkMail'] = true,
-		['autoRepairCost'] = true,
+		['autoRepair'] = true,
 		['autoSellJunk'] = true,
 
 	['questNotifier'] = true,
@@ -119,20 +108,6 @@ C['notification'] = {
 	['emergency'] = true,
 		['lowHealth'] = 0.5,
 		['lowMana'] = 0.3,
-}
-
-C['automation'] = {
-	['autoSetRole'] = true,
-
-	['autoSellJunk'] = true,
-	['autoRepair'] = true,
-	['autoScreenShot'] = true,
-	['autoQuest'] = true,
-	['autoBuyStack'] = true,
-	['autoTabBinder'] = true,
-	['autoAcceptInvite'] = false,
-	['autoInvite'] = true,
-		['autoInvite_keyword'] = 'invite',
 }
 
 C['inventory'] = {
@@ -158,7 +133,6 @@ C['infobar'] = {
 		['anchorTop'] = true,
 		['mouseover'] = true,
 		['stats'] = true,
-		['skadaHelper'] = true,
 		['friends'] = true,
 		['currencies'] = true,
 		['durability'] = true,
@@ -175,17 +149,14 @@ C['tooltip'] = {
 		['hideRank'] = true,
 		['hideJunkGuild'] = true,
 		['combatHide'] = false,
-		['ilvlSpec'] = true,
-			['ilvlSpecByShift'] = false,
+
 		['extraInfo'] = true,
-			['extraInfoByShift'] = false,
-		['azeriteTrait'] = true,
-			['azeriteTraitOnlyIcons'] = true,
+			['extraInfoByShift'] = true,
+
 		['linkHover'] = true,
 		['borderColor'] = true,
 		['tipIcon'] = true,
 		['targetBy'] = true,
-		['petInfo'] = true,
 }
 
 C['chat'] = {
@@ -199,8 +170,8 @@ C['chat'] = {
 			['fadingDuration'] = 6,
 		['itemLinks'] = true,
 		['spamageMeter'] = true,
-		['chatCopy'] = true,
-		['nameCopy'] = true,
+		['copyButton'] = true,
+
 		['urlCopy'] = true,
 		['hideVoiceButtons'] = true,
 		['whisperSticky'] = true,
@@ -250,7 +221,6 @@ C['unitframe'] = {
 		
 		['enableCastbar'] = true,
 			['castbar_separatePlayer'] = false,
-			['castbar_separateTarget'] = false,
 			['castbar_CastingColor'] = {110/255, 176/255, 216/255},
 			['castbar_ChannelingColor'] = {92/255, 193/255, 216/255},
 			['castbar_notInterruptibleColor'] = {190/255, 10/255, 18/255},
@@ -263,9 +233,6 @@ C['unitframe'] = {
 			['groupNames'] = false,
 			['groupColourSmooth'] = true,
 			['groupFilter'] = 8,
-
-		['enableBoss'] = true,
-			['bossColourSmooth'] = true,
 
 		['player_pos'] = {'TOP', UIParent, 'CENTER', 0, -300},
 		['player_pos_healer'] = {'RIGHT', UIParent, 'CENTER', -100, -200},
@@ -281,13 +248,12 @@ C['unitframe'] = {
 		['frameVisibility'] = false,
 
 		['pet_pos'] = {'RIGHT', 'oUF_Player', 'LEFT', -6, 0},
-		['pet_pos_healer'] = {'RIGHT', 'oUF_Player', 'LEFT', -6, 0},
+		['pet_pos_healer'] = {'TOPLEFT', 'oUF_Player', 'BOTTOMLEFT', 0, -6},
 		['pet_width'] = 68,
 		['pet_width_healer'] = 68,
 		['pet_height'] = 16,
 		['pet_height_healer'] = 16,
 		['pet_frameVisibility'] = '[nocombat,nomod,@target,noexists][@pet,noexists] hide; show',
-
 
 		['target_pos'] = {'LEFT', 'oUF_Player', 'RIGHT', 80, 60},
 		['target_pos_healer'] = {'LEFT', UIParent, 'CENTER', 100, -200},
@@ -300,11 +266,10 @@ C['unitframe'] = {
 		['target_cb_height'] = 10,
 		['target_cb_height_healer'] = 10,
 
-
 		['targettarget_pos'] = {'LEFT', 'oUF_Target', 'RIGHT', 6, 0},
 		['targettarget_pos_healer'] = {'CENTER', UIParent, 'CENTER', 0, -200},
 		['targettarget_width'] = 80,
-		['targettarget_width_healer'] = 80,
+		['targettarget_width_healer'] = 120,
 		['targettarget_height'] = 16,
 		['targettarget_height_healer'] = 16,
 
@@ -331,24 +296,29 @@ C['unitframe'] = {
 		['boss_height'] = 20,
 		['boss_height_healer'] = 20,
 		['boss_gap'] = 60,
-
 }
 
 
 C['quest'] = {
 	['questTracker'] = true,
 	['quickQuest'] = true,
-	['questNotifier'] = true,
-		['questProgress'] = true,
-		['onlyCompleteRing'] = false,
+	['notifier'] = true,
+		['progressNotify'] = true,
+		['completeRing'] = true,
 }
 
 C['cooldown'] = {
 	['cdEnhanced'] = true,
-		['cdFont'] = {C.AssetsPath..'font\\supereffective.ttf', 16, 'OUTLINEMONOCHROME'},
+		['cdFont'] = C.AssetsPath..'font\\supereffective.ttf',	
+		['cdFontFlag'] = 'OUTLINEMONOCHROME',	
+		['cdFontSize'] = 16,
 	['cdPulse'] = true,
 		['ignoredSpells'] = {
 			--GetSpellInfo(6807),	-- Maul
 			--GetSpellInfo(35395),	-- Crusader Strike
 		},
+}
+
+C['loot'] = {
+	
 }
