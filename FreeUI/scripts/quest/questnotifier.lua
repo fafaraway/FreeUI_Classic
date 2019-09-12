@@ -18,12 +18,14 @@ local function acceptText(link, daily)
 end
 
 local function completeText(link)
-	PlaySound(soundKitID, 'Master')
+	if C.quest.completeRing then
+		PlaySound(soundKitID, 'Master')
+	end
 	return format('%s (%s)', link, QUEST_COMPLETE)
 end
 
 local function sendQuestMsg(msg)
-	if C.quest.onlyCompleteRing then return end
+	if not C.quest.progressNotify then return end
 
 	if debugMode and C.isDeveloper then
 		print(msg)
@@ -52,8 +54,7 @@ local questMatches = {
 }
 
 function QUEST:FindQuestProgress(_, msg)
-	if not C.quest.questProgress then return end
-	if C.quest.onlyCompleteRing then return end
+	if not C.quest.progressNotify then return end
 
 	for _, pattern in pairs(questMatches) do
 		if strmatch(msg, pattern) then
@@ -103,7 +104,7 @@ function QUEST:FindWorldQuestComplete(questID)
 end
 
 function QUEST:QuestNotifier()
-	if C.quest.questNotifier then
+	if C.quest.notifier then
 		self:FindQuestComplete()
 		F:RegisterEvent('QUEST_ACCEPTED', self.FindQuestAccept)
 		F:RegisterEvent('QUEST_LOG_UPDATE', self.FindQuestComplete)
