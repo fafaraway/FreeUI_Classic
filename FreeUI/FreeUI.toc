@@ -2,7 +2,7 @@
 ## Title: |cffffffffFree|r|cffb2b2b2UI|r
 ## Notes: Minimalistic user interface.
 ## Author: Haleth, Solor
-## Version: 1.0
+## Version: 1.1
 ## OptionalDeps: FreeUI_Options
 ## SavedVariables: FreeUIGlobalConfig
 ## SavedVariablesPerCharacter: FreeUIConfig
