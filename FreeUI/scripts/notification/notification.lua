@@ -104,13 +104,7 @@ local function showBanner()
 	end
 end
 
-local function display(name, message, clickFunc, texture, ...)
-	if type(clickFunc) == 'function' then
-		f.clickFunc = clickFunc
-	else
-		f.clickFunc = nil
-	end
-
+local function display(name, message, texture, ...)
 	if type(texture) == 'string' then
 		icon:SetTexture(texture)
 
@@ -120,7 +114,7 @@ local function display(name, message, clickFunc, texture, ...)
 			icon:SetTexCoord(unpack(C.TexCoord))
 		end
 	else
-		icon:SetTexture('Interface\\Icons\\achievement_general')
+		icon:SetTexture('Interface\\ICONS\\INV_Scroll_10')
 		icon:SetTexCoord(unpack(C.TexCoord))
 	end
 
@@ -159,17 +153,17 @@ local function handleIncoming()
 	end)
 end
 
-F.Notification = function(name, message, clickFunc, texture, ...)
+F.Notification = function(name, message, texture, ...)
 	if UnitIsAFK('player') then
-		tinsert(incoming, {name, message, clickFunc, texture, ...})
+		tinsert(incoming, {name, message, texture, ...})
 		handler:RegisterEvent('PLAYER_FLAGS_CHANGED')
 	elseif bannerShown or #incoming ~= 0 then
-		tinsert(incoming, {name, message, clickFunc, texture, ...})
+		tinsert(incoming, {name, message, texture, ...})
 		if not processing then
 			handleIncoming()
 		end
 	else
-		display(name, message, clickFunc, texture, ...)
+		display(name, message, texture, ...)
 	end
 end
 
@@ -213,10 +207,6 @@ function NOTIFICATION:OnLogin()
 		self:SetScale(0.1)
 		self:SetAlpha(0.1)
 		bannerShown = false
-
-		if button ~= 'RightButton' and f.clickFunc then
-			f.clickFunc()
-		end
 
 		if IsShiftKeyDown() then
 			handler:SetScript('OnUpdate', nil)
