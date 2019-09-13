@@ -4,4 +4,5 @@ local AURA = F:RegisterModule('Aura')
 
 function AURA:OnLogin()
 	self:BuffFrame()
+	self:BuffReminder()
 end
