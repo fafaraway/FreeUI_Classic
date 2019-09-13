@@ -5,5 +5,5 @@
 	<Script file='talent.lua'/>
 	<Script file='durability.lua'/>
 	<Script file='friends.lua'/>
-	<Script file='currency.lua'/>
+	<Script file='gold.lua'/>
 </Ui>

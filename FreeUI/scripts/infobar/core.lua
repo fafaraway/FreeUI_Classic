@@ -175,7 +175,7 @@ function INFOBAR:OnLogin()
 	self:Durability()
 	self:Talent()
 	self:Friends()
-	self:Currencies()
+	self:Gold()
 end
 
 

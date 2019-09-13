@@ -98,9 +98,9 @@ local function updateSelling(event, ...)
 end
 
 
-function INFOBAR:Currencies()
+function INFOBAR:Gold()
 	if not C.infobar.enable then return end
-	if not C.infobar.currencies then return end
+	if not C.infobar.gold then return end
 
 	FreeUIMoneyButton = INFOBAR:addButton('', INFOBAR.POSITION_RIGHT, 120)
 
@@ -174,6 +174,7 @@ function INFOBAR:Currencies()
 			StaticPopup_Show('RESETGOLD')
 		elseif btn == 'LeftButton' then
 			FreeUIGlobalConfig['autoSellJunk'] = not FreeUIGlobalConfig['autoSellJunk']
+			F.Notification(L['NOTIFICATION_SELL'], L['INFOBAR_AUTO_SELL_JUNK']..': '..(FreeUIGlobalConfig['autoSellJunk'] and '|cff55ff55'..VIDEO_OPTIONS_ENABLED or '|cffff5555'..VIDEO_OPTIONS_DISABLED), 'Interface\\Icons\\INV_Misc_Coin_02')
 			self:onEnter()
 		end
 	end
