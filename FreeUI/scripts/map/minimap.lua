@@ -96,22 +96,31 @@ local function WhoPings()
 	end)
 end
 
+function MAP:UpdateMinimapScale()
+	local scale = C.map.miniMapScale
+	Minimap:SetScale(scale)
+	Minimap.mover:SetSize(Minimap:GetWidth()*scale, Minimap:GetHeight()*scale)
+end
+
 function MAP:SetupMiniMap()
 	local size = C.map.miniMapSize
 	local pos = C.map.miniMapPosition
+	local scale = C.map.miniMapScale
 	function GetMinimapShape() return 'SQUARE' end
-	
-	MinimapCluster:EnableMouse(false)
+
 	Minimap:SetSize(size*C.Mult, size*C.Mult)
 	Minimap:SetMaskTexture(C.AssetsPath..'rectangle')
 	Minimap:SetHitRectInsets(0, 0, (size/8)*C.Mult, (size/8)*C.Mult)
 	Minimap:SetClampRectInsets(0, 0, 0, 0)
 	Minimap:SetClampedToScreen(true)
 	Minimap:ClearAllPoints()
+	DropDownList1:SetClampedToScreen(true)
 
 	local mover = F.Mover(Minimap, L['MOVER_MINIMAP'], 'Minimap', {pos[1], pos[2], pos[3], pos[4], pos[5]-(size/8*C.Mult)}, Minimap:GetWidth(), Minimap:GetHeight())
-	Minimap:SetPoint('TOPRIGHT', mover)
+	Minimap:SetPoint('CENTER', mover)
 	Minimap.mover = mover
+
+	self:UpdateMinimapScale()
 
 	BorderFrame = CreateFrame('Frame', nil, Minimap)
 	BorderFrame:SetPoint('TOPLEFT', Minimap, 'TOPLEFT', 0, -(size/8*C.Mult))
@@ -147,6 +156,8 @@ function MAP:SetupMiniMap()
 	for _, v in pairs(frames) do
 		F.HideObject(_G[v])
 	end
+
+	MinimapCluster:EnableMouse(false)
 
 	NewMail()
 	ZoneText()

@@ -5,7 +5,6 @@ C['general'] = {
 	['uiScale'] = 1,
 	['uiScaleAuto'] = true,
 
-	['fasterLoot'] = true,
 	['enhancedMenu'] = true,
 	['mailButton'] = true, 				
 	['alreadyKnown'] = true,
@@ -134,7 +133,7 @@ C['infobar'] = {
 		['mouseover'] = true,
 		['stats'] = true,
 		['friends'] = true,
-		['currencies'] = true,
+		['gold'] = true,
 		['durability'] = true,
 		['talent'] = true,
 }
@@ -298,7 +297,6 @@ C['unitframe'] = {
 		['boss_gap'] = 60,
 }
 
-
 C['quest'] = {
 	['questTracker'] = true,
 	['quickQuest'] = true,
@@ -320,5 +318,11 @@ C['cooldown'] = {
 }
 
 C['loot'] = {
-	
+	['fasterLoot'] = false,
+	['autoGreed'] = false,
+	['autoGreedOnMaxLevel'] = false,
+}
+
+C['aura'] = {
+	['reminder'] = true,
 }

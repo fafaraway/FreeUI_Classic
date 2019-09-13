@@ -13,6 +13,10 @@ L['UNITFRAME_SPELL_BINDER'] = '点击施法绑定'
 L['QUEST_ACCEPT_QUEST'] = '接受任务：'
 L['QUEST_QUICK_QUEST'] = '自动交接任务'
 
+-- Aura
+L['AURA_REMINDER_LACK'] = '缺少'
+
+
 
 -- misc
 L['MISC_STRANGER'] = '陌生人'

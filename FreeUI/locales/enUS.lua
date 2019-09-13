@@ -13,6 +13,9 @@ L['UNITFRAME_SPELL_BINDER'] = 'Spell binder'
 L['QUEST_ACCEPT_QUEST'] = 'Accept quest: '
 L['QUEST_QUICK_QUEST'] = 'Auto quest'
 
+-- Aura
+L['AURA_REMINDER_LACK'] = 'Missing'
+
 
 -- misc
 L['MISC_STRANGER'] = 'Stranger'

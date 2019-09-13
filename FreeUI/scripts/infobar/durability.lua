@@ -192,6 +192,7 @@ function INFOBAR:Durability()
 	FreeUIDurabilityButton.onMouseUp = function(self, btn)
 		if btn == 'LeftButton' then
 			FreeUIGlobalConfig['repairType'] = mod(FreeUIGlobalConfig['repairType'] + 1, 2)
+			F.Notification(L['NOTIFICATION_REPAIR'], L['INFOBAR_AUTO_REPAIR']..': '..repairlist[FreeUIGlobalConfig['repairType']], 'Interface\\ICONS\\Ability_Repair')
 			self:onEnter()
 		end
 	end

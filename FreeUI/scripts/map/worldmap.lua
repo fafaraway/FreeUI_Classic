@@ -116,6 +116,21 @@ function MAP:WorldMapScale()
 		return x / scale, y / scale
 	end
 
+	-- Fix scroll zooming in classic
+	WorldMapFrame.ScrollContainer:HookScript('OnMouseWheel', function(self, delta)
+		local x, y = self:GetNormalizedCursorPosition()
+		local nextZoomOutScale, nextZoomInScale = self:GetCurrentZoomRange()
+		if delta == 1 then
+			if nextZoomInScale > self:GetCanvasScale() then
+				self:InstantPanAndZoom(nextZoomInScale, x, y)
+			end
+		else
+			if nextZoomOutScale < self:GetCanvasScale() then
+				self:InstantPanAndZoom(nextZoomOutScale, x, y)
+			end
+		end
+	end)
+
 	F.CreateMF(WorldMapFrame, nil, true)
 	self.UpdateMapScale(WorldMapFrame)
 	hooksecurefunc(WorldMapFrame, 'HandleUserActionToggleSelf', self.UpdateMapAnchor)
