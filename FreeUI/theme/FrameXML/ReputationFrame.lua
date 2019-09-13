@@ -10,11 +10,12 @@ tinsert(C.themes["FreeUI"], function()
 
 	local function UpdateFactionSkins()
 		for i = 1, GetNumFactions() do
+			local bar = _G["ReputationBar"..i]
 			local check = _G["ReputationBar"..i.."AtWarCheck"]
 			if bar and not bar.styled then
 				F.StripTextures(bar)
-				bar:SetStatusBarTexture(C.media.bdTex)
-				F.CreateBD(bar, .25)
+				bar:SetStatusBarTexture(C.media.sbTex)
+				F.CreateBDFrame(bar)
 
 				local icon = check:GetRegions()
 				icon:SetTexture("Interface\\Buttons\\UI-CheckBox-SwordCheck")

@@ -13,10 +13,10 @@ C.themes["Blizzard_TalentUI"] = function()
 	F.StripTextures(TalentFrameScrollFrame)
 	--F.CreateBDFrame(TalentFrameScrollFrame)
 
-	TalentFrameBackgroundTopLeft:SetAlpha(0)
-	TalentFrameBackgroundTopRight:SetAlpha(0)
-	TalentFrameBackgroundBottomLeft:SetAlpha(0)
-	TalentFrameBackgroundBottomRight:SetAlpha(0)
+	TalentFrameBackgroundTopLeft:SetAlpha(.3)
+	TalentFrameBackgroundTopRight:SetAlpha(.3)
+	TalentFrameBackgroundBottomLeft:SetAlpha(.3)
+	TalentFrameBackgroundBottomRight:SetAlpha(.3)
 
 	for i = 1, MAX_NUM_TALENTS do
 		local talent = _G['TalentFrameTalent'..i]

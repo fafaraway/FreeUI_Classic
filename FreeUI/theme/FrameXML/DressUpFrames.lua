@@ -4,18 +4,24 @@ tinsert(C.themes["FreeUI"], function()
 	-- Dressup Frame
 
 	F.ReskinPortraitFrame(DressUpFrame)
---	F.Reskin(DressUpFrameOutfitDropDown.SaveButton)
 	F.Reskin(DressUpFrameCancelButton)
 	F.Reskin(DressUpFrameResetButton)
---	F.StripTextures(DressUpFrameOutfitDropDown)
---	F.ReskinDropDown(DressUpFrameOutfitDropDown)
-	F.ReskinClose(DressUpFrameCloseButton, "TOPRIGHT", DressUpFrame, "TOPRIGHT", -10, 0)
 
---	DressUpFrameOutfitDropDown:SetHeight(32)
---	DressUpFrameOutfitDropDown.SaveButton:SetPoint("LEFT", DressUpFrameOutfitDropDown, "RIGHT", -13, 2)
+	DressUpModelFrameRotateLeftButton:Hide()
+	DressUpModelFrameRotateRightButton:Hide()
+
+	DressUpFrameBackgroundTopLeft:SetAlpha(0)
+	DressUpFrameBackgroundTopRight:SetAlpha(0)
+	DressUpFrameBackgroundBot:SetAlpha(0)
+
+
+
+	F.ReskinClose(DressUpFrameCloseButton, "TOPRIGHT", DressUpFrame, "TOPRIGHT", -6, -6)
+
+
 	DressUpFrameResetButton:SetPoint("RIGHT", DressUpFrameCancelButton, "LEFT", -1, 0)
 
---	F.ReskinMinMax(MaximizeMinimizeFrame)
+
 
 	-- SideDressUp
 

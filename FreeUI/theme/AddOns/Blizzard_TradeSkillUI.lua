@@ -53,7 +53,7 @@ C.themes["Blizzard_TradeSkillUI"] = function()
 
 	F.StripTextures(TradeSkillRankFrameBorder)
 	F.StripTextures(TradeSkillRankFrame)
-	TradeSkillRankFrame:SetStatusBarColor(C.media.bdTex)
+	--TradeSkillRankFrame:SetStatusBarColor(C.r, C.g, C.b)
 	F.CreateBDFrame(TradeSkillRankFrame, .25)
 	TradeSkillRankFrame:SetWidth(220)
 

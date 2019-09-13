@@ -2,7 +2,14 @@ local F, C = unpack(select(2, ...))
 
 tinsert(C.themes["FreeUI"], function()
 	for i = 1, 5 do
-		F.ReskinTab(_G["FriendsFrameTab"..i])
+		local tab = _G["FriendsFrameTab"..i]
+		tab.bg = F.ReskinTab(tab)
+		local hl = _G["FriendsFrameTab"..i.."HighlightTexture"]
+		hl:SetPoint("TOPLEFT", tab.bg, C.Mult, -C.Mult)
+		hl:SetPoint("BOTTOMRIGHT", tab.bg, -C.Mult, C.Mult)
+		if i == 1 then
+			tab:SetPoint("BOTTOMLEFT", -2, -31)
+		end
 	end
 	FriendsFrameIcon:Hide()
 	F.StripTextures(FriendsFrameFriendsScrollFrame)
@@ -183,12 +190,12 @@ tinsert(C.themes["FreeUI"], function()
 	F.Reskin(GuildFrameAddMemberButton)
 	F.Reskin(GuildFrameControlButton)
 	F.StripTextures(GuildFrameLFGFrame)
-	F.Reskin(GuildFrameLFGButton)
+	F.ReskinCheck(GuildFrameLFGButton)
+	F.ReskinScroll(GuildListScrollFrameScrollBar)
 	for i = 1, 4 do
 		local bg = F.ReskinTab(_G["GuildFrameColumnHeader"..i])
 		bg:SetPoint("TOPLEFT", 5, -2)
 		bg:SetPoint("BOTTOMRIGHT", 0, 0)
-		
 		local bg = F.ReskinTab(_G["GuildFrameGuildStatusColumnHeader"..i])
 		bg:SetPoint("TOPLEFT", 5, -2)
 		bg:SetPoint("BOTTOMRIGHT", 0, 0)
@@ -227,5 +234,6 @@ tinsert(C.themes["FreeUI"], function()
 	F.Reskin(GuildControlPopupFrameCancelButton)
 	for i = 1, 13 do
 		F.ReskinCheck(_G["GuildControlPopupFrameCheckbox"..i])
+		_G["GuildFrameButton"..i.."Level"]:SetWidth(30)
 	end
 end)

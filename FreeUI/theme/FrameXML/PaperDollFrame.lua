@@ -61,7 +61,7 @@ tinsert(C.themes["FreeUI"], function()
 	F.ReskinScroll(SkillDetailScrollFrame.ScrollBar)
 	F.CreateBDFrame(SkillDetailScrollFrame, .25)
 	SkillDetailStatusBarBorder:SetAlpha(0)
-	SkillDetailStatusBar:SetStatusBarTexture(C.media.bdTex)
+	SkillDetailStatusBar:SetStatusBarTexture(C.media.sbTex)
 	F.CreateBDFrame(SkillDetailStatusBar, .25)
 
 	for i = 1, 12 do
