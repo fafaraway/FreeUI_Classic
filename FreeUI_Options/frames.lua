@@ -127,14 +127,14 @@ do
 	local basic = ns.addSubCategory(general, ns.localization.general_subCategory_basic)
 	basic:SetPoint('TOPLEFT', general.subText, 'BOTTOMLEFT', 0, -8)
 
-	local fasterLoot = ns.CreateCheckBox(general, 'fasterLoot')
-	fasterLoot:SetPoint('TOPLEFT', basic, 'BOTTOMLEFT', 0, -8)
+	local helmCloak = ns.CreateCheckBox(general, 'helmCloak')
+	helmCloak:SetPoint('TOPLEFT', basic, 'BOTTOMLEFT', 0, -8)
 
 	local alreadyKnown = ns.CreateCheckBox(general, 'alreadyKnown')
-	alreadyKnown:SetPoint('LEFT', fasterLoot, 'RIGHT', 160, 0)
+	alreadyKnown:SetPoint('LEFT', helmCloak, 'RIGHT', 160, 0)
 
 	local mailButton = ns.CreateCheckBox(general, 'mailButton')
-	mailButton:SetPoint('TOPLEFT', fasterLoot, 'BOTTOMLEFT', 0, -8)
+	mailButton:SetPoint('TOPLEFT', helmCloak, 'BOTTOMLEFT', 0, -8)
 
 	local enhancedMenu = ns.CreateCheckBox(general, 'enhancedMenu')
 	enhancedMenu:SetPoint('LEFT', mailButton, 'RIGHT', 160, 0)
@@ -142,14 +142,11 @@ do
 	local marker = ns.CreateCheckBox(general, 'marker')
 	marker:SetPoint('TOPLEFT', mailButton, 'BOTTOMLEFT', 0, -8)
 
-	local helmCloak = ns.CreateCheckBox(general, 'helmCloak')
-	helmCloak:SetPoint('LEFT', marker, 'RIGHT', 160, 0)
-
 	local PVPSound = ns.CreateCheckBox(general, 'PVPSound')
-	PVPSound:SetPoint('TOPLEFT', marker, 'BOTTOMLEFT', 0, -8)
+	PVPSound:SetPoint('LEFT', marker, 'RIGHT', 160, 0)
 
 	local camerasub = ns.addSubCategory(general, ns.localization.general_subCategory_camera)
-	camerasub:SetPoint('TOPLEFT', PVPSound, 'BOTTOMLEFT', 0, -16)
+	camerasub:SetPoint('TOPLEFT', marker, 'BOTTOMLEFT', 0, -16)
 
 	local cameraZoomSpeed = ns.CreateNumberSlider(general, 'cameraZoomSpeed', 1, 5, 1, 5, 1, true)
 	cameraZoomSpeed:SetPoint('TOPLEFT', camerasub, 'BOTTOMLEFT', 24, -32)
@@ -700,8 +697,12 @@ do
 	local loot = FreeUIOptionsPanel.loot
 	loot.tab.Icon:SetTexture('Interface\\Icons\\Ability_Hunter_BeastSoothe')
 
-	local main = ns.addSubCategory(loot, ns.localization.loot_subCategory_layout)
-	main:SetPoint('TOPLEFT', loot.subText, 'BOTTOMLEFT', 0, -8)
+	local basic = ns.addSubCategory(loot, ns.localization.loot_subCategory_basic)
+	basic:SetPoint('TOPLEFT', loot.subText, 'BOTTOMLEFT', 0, -8)
+
+	local fasterLoot = ns.CreateCheckBox(loot, 'fasterLoot')
+	fasterLoot:SetPoint('TOPLEFT', basic, 'BOTTOMLEFT', 0, -8)
+
 
 end
 

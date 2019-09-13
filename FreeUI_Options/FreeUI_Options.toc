@@ -1,5 +1,5 @@
 ## Interface: 11302
-## Title: |cffffffffFree|r|cffb2b2b2UI|r |cffffa500Options|r
+## Title: |cffffffffFree|r|cffb2b2b2UI|r |cfffe8402Options|r
 ## Notes: Options GUI for FreeUI.
 ## Author: Haleth, Solor
 ## Version: 1.1

@@ -758,7 +758,7 @@ init:SetScript('OnEvent', function()
 	end)
 
 	FreeUIOptionsPanel.InstallButton:SetScript('OnClick', function()
-		INSTALL.HelloWorld()
+		INSTALL:HelloWorld()
 		FreeUIOptionsPanel:Hide()
 	end)
 

@@ -29,8 +29,6 @@ L.general_mailButton = "邮件收取增强"
 L.general_mailButton_tooltip = "在邮件界面添加一个按钮来一键收取所有邮件。"
 L.general_alreadyKnown = "已知染色"
 L.general_alreadyKnown_tooltip = "在商人/拍卖行界面给已经学会的配方/坐骑/宠物染色。"
-L.general_fasterLoot = "快速拾取"
-L.general_fasterLoot_tooltip = "跳过拾取动画快速拾取物品。"
 L.general_enhancedMenu = "右键菜单增强"
 L.general_enhancedMenu_tooltip = "目标框体的右键菜单添加复制名字和加入公会功能。"
 L.general_helmCloak = "快速隐藏头盔披风"
@@ -207,6 +205,10 @@ L.inventory_bankColumns = '银行每行格子数量'
 
 L.loot = "拾取"
 L.loot_subText = "这些选项控制大部分和拾取相关的设置。"
+L.loot_subCategory_basic = "基本设定"
+L.loot_fasterLoot = "快速拾取"
+L.loot_fasterLoot_tooltip = "加快拾取速度。"
+
 
 
 L.aura = "光环"

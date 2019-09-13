@@ -45,8 +45,6 @@ L.general_mailButton = "Mail button"
 L.general_mailButton_tooltip = "Adds a button to the mail frame to collect all mail attachments with one click."
 L.general_alreadyKnown = "Already known"
 L.general_alreadyKnown_tooltip = "Colorizes recipes/mounts/pets/toys that is already known."
-L.general_fasterLoot = "Faster loot"
-L.general_fasterLoot_tooltip = "Instantly loot, no more waiting for the loot window to appear."
 L.general_enhancedMenu = "Target menu"
 L.general_enhancedMenu_tooltip = "Adds copy name and guild invite into target menu."
 L.general_helmCloak = "Helm cloak button"
@@ -223,7 +221,10 @@ L.inventory_bankColumns = 'bank column'
 
 
 L.loot = "Loot"
-L.loot_subText = "These options control loot."
+L.loot_subText = "These options control most of the aura related settings."
+L.loot_subCategory_basic = "Basic"
+L.loot_fasterLoot = "Faster loot"
+L.loot_fasterLoot_tooltip = "Instantly loot, no more waiting for the loot window to appear."
 
 
 L.aura = "Aura"
