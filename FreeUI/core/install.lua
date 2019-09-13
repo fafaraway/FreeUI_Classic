@@ -2,42 +2,8 @@ local F, C, L = unpack(select(2, ...))
 local INSTALL = F:RegisterModule('Install')
 
 
-local min, max, tonumber = math.min, math.max, tonumber
-
-local function clipScale(scale)
-	return tonumber(format('%.5f', scale))
-end
-
-local function GetPerfectScale()
-	local _, height = GetPhysicalScreenSize()
-	local scale = C.general.uiScale
-	local bestScale = max(.4, min(1.15, 768 / height))
-	local pixelScale = 768 / height
-
-	if C.general.uiScaleAuto then scale = clipScale(bestScale) end
-
-	C.Mult = (bestScale / scale) - ((bestScale - pixelScale) / scale)
-
-	return scale
-end
-
-local isScaling = false
-local function SetupUIScale()
-	if isScaling then return end
-	isScaling = true
-
-	local scale = GetPerfectScale()
-	local parentScale = UIParent:GetScale()
-	if scale ~= parentScale then
-		UIParent:SetScale(scale)
-	end
-
-	C.general.uiScale = clipScale(scale)
-
-	isScaling = false
-end
-SetupUIScale()
-INSTALL.SetupUIScale = SetupUIScale()
+local pairs, tonumber, wipe = pairs, tonumber, table.wipe
+local min, max, floor = math.min, math.max, floor
 
 local smoothing = {}
 local function Smooth(self, value)
@@ -132,7 +98,8 @@ function INSTALL:HelloWorld()
 
 	local titleText = F.CreateFS(installFrame, {C.AssetsPath..'font\\supereffective.ttf', 24, 'OUTLINEMONOCHROME'}, 'Free'..C.MyColor..'UI', nil, true, 'TOP', 0, -4)
 	local descriptionText = F.CreateFS(installFrame, 'pixel', 'installation', 'grey', true, 'TOP', 0, -36)
-	local versionText = F.CreateFS(installFrame, 'pixel', C.GreyColor..'v|r'..C.GreyColor..C.Version, 'yellow', true, 'BOTTOMRIGHT', -4, 4)
+	local versionText = F.CreateFS(installFrame, 'pixel', C.GreyColor..'v|r'..C.GreyColor..C.Version, 'yellow', true, 'BOTTOM', 0, 4)
+	versionText:SetAlpha(.3)
 
 	local lineLeft = CreateFrame('Frame', nil, installFrame)
 	lineLeft:SetPoint('TOP', -50, -32)
@@ -235,7 +202,7 @@ function INSTALL:HelloWorld()
 
 		leftButton:SetScript('OnClick', step3)
 		rightButton:SetScript('OnClick', function()
-			SetupUIScale()
+			F.SetupUIScale()
 			step3()
 		end)
 	end
@@ -341,15 +308,17 @@ function INSTALL:OnLogin()
 	print(C.RedColor..L['UIHELP'])
 
 	if FreeUIConfig['installComplete'] ~= true then
-		INSTALL:HelloWorld()
+		self:HelloWorld()
 	else
 		if C.general.uiScaleAuto then
 			F.HideOption(Advanced_UseUIScale)
 			F.HideOption(Advanced_UIScaleSlider)
 		end
 		
-		SetupUIScale()
+		F.SetupUIScale()
 	end
+
+	F:RegisterEvent('UI_SCALE_CHANGED', F.SetupUIScale)
 
 	--print('cvar_useUiScale - '.._G.GetCVar('useUiScale'))
 	--print('cvar_uiScale - '.._G.GetCVar('uiscale'))

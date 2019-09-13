@@ -1364,3 +1364,37 @@ F.CheckChat = function(warning)
 	return 'SAY'
 end
 
+-- UI scale
+local function clipScale(scale)
+	return tonumber(format('%.5f', scale))
+end
+
+local function GetPerfectScale()
+	local _, height = GetPhysicalScreenSize()
+	local scale = C.general.uiScale
+	local bestScale = max(.4, min(1.15, 768 / height))
+	local pixelScale = 768 / height
+
+	if C.general.uiScaleAuto then scale = clipScale(bestScale) end
+
+	C.Mult = (bestScale / scale) - ((bestScale - pixelScale) / scale)
+
+	return scale
+end
+GetPerfectScale()
+
+local isScaling = false
+function F:SetupUIScale()
+	if isScaling then return end
+	isScaling = true
+
+	local scale = GetPerfectScale()
+	local parentScale = UIParent:GetScale()
+	if scale ~= parentScale then
+		UIParent:SetScale(scale)
+	end
+
+	C.general.uiScale = clipScale(scale)
+
+	isScaling = false
+end
