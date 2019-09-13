@@ -1,7 +1,7 @@
 local lib = LibStub and LibStub("LibClassicDurations", true)
 if not lib then return end
 
-local Type, Version = "SpellTable", 21
+local Type, Version = "SpellTable", 24
 if lib:GetDataVersion(Type) >= Version then return end  -- older versions didn't have that function
 
 local Spell = lib.AddAura
@@ -189,7 +189,7 @@ Spell({ 5211, 6798, 8983 }, { stacking = true, -- stacking?
     end
 }) -- Bash
 Spell( 5209, { duration = 6 }) -- Challenging Roar
-Spell( 6795, { duration = 3 }) -- Taunt
+Spell( 6795, { duration = 3, stacking = true }) -- Taunt
 
 Spell({ 1850, 9821 }, { duration = 15, type = "BUFF" }) -- Dash
 Spell( 5229, { duration = 10, type = "BUFF" }) -- Enrage
@@ -259,7 +259,7 @@ Spell({ 6343, 8198, 8204, 8205, 11580, 11581 }, {
 }) -- Thunder Clap
 Spell({ 694, 7400, 7402, 20559, 20560 }, { duration = 6 }) -- Mocking Blow
 Spell( 1161 ,{ duration = 6 }) -- Challenging Shout
-Spell( 355 ,{ duration = 3 }) -- Taunt
+Spell( 355 ,{ duration = 3, stacking = true }) -- Taunt
 Spell({ 5242, 6192, 6673, 11549, 11550, 11551, 25289 }, { type = "BUFF",
     duration = function(spellID, isSrcPlayer)
         local talents = isSrcPlayer and Talent(12321, 12835, 12836, 12837, 12838) or 0
@@ -330,26 +330,53 @@ Spell( 2094 , { duration = 10 }) -- Blind
 
 Spell({ 8647, 8649, 8650, 11197, 11198 }, { duration = 30 }) -- Expose Armor
 Spell({ 703, 8631, 8632, 8633, 11289, 11290 }, { duration = 18 }) -- Garrote
-Spell({ 408, 8643 }, {
-    duration = function(spellID, isSrcPlayer, comboPoints)
-        local duration = spellID == 8643 and 1 or 0 -- if Rank 2, add 1s
-        if isSrcPlayer then
-            return duration + comboPoints
-        else
-            return duration + 5 -- just assume 5cp i guess
-        end
-    end
-}) -- Kidney Shot
 
-Spell({ 1943, 8639, 8640, 11273, 11274, 11275 }, { stacking = true,
-    duration = function(spellID, isSrcPlayer, comboPoints)
-        if isSrcPlayer then
-            return (6 + comboPoints*2)
-        else
-            return 16
+do
+    local currentKidneyShotStartTime
+    local currentKidneyShotDuration
+    Spell({ 408, 8643 }, {
+        duration = function(spellID, isSrcPlayer, comboPoints, startTime)
+            local baseDuration = spellID == 8643 and 1 or 0 -- if Rank 2, add 1s
+            if isSrcPlayer then
+                -- This function runs at every UnitAura,
+                -- but we need to return duration calculated at the time of debuff application
+                if startTime == currentKidneyShotStartTime then
+                    return currentKidneyShotDuration
+                end
+
+                local duration = baseDuration + comboPoints
+                currentKidneyShotStartTime = startTime
+                currentKidneyShotDuration = duration
+
+                return duration
+            else
+                return baseDuration + 5 -- just assume 5cp i guess
+            end
         end
-    end
-}) -- Rupture
+    }) -- Kidney Shot
+end
+
+do
+    local currentRuptureStartTime
+    local currentRuptureDuration
+    Spell({ 1943, 8639, 8640, 11273, 11274, 11275 }, { stacking = true,
+        duration = function(spellID, isSrcPlayer, comboPoints, startTime)
+            if isSrcPlayer then
+                if startTime == currentRuptureStartTime then
+                    return currentRuptureDuration
+                end
+
+                local duration = 6 + comboPoints*2
+                currentRuptureStartTime = startTime
+                currentRuptureDuration = duration
+
+                return duration
+            else
+                return 16
+            end
+        end
+    }) -- Rupture
+end
 -- SnD -- player-only, can skip
 
 Spell({ 2983, 8696, 11305 }, { duration = 15, type = "BUFF" }) -- Sprint
@@ -602,7 +629,7 @@ Spell({ 2974, 14267, 14268 }, { duration = 10 }) -- Wing Clip
 Spell(5116, { duration = 4 }) -- Concussive Shot
 Spell(19410, { duration = 3 }) -- Conc Stun
 Spell(24394, { duration = 3 }) -- Intimidation
-Spell(15571, { duration = 4 }) -- Daze from Aspect
+-- Spell(15571, { duration = 4 }) -- Daze from Aspect
 Spell(19185, { duration = 5 }) -- Entrapment
 Spell(25999, { duration = 1 }) -- Boar Charge
 
@@ -619,6 +646,7 @@ Spell( 2855, { duration = 1800, type = "BUFF" }) -- Detect Magic
 Spell( 130, { duration = 1800, type = "BUFF" }) -- Slow Fall
 
 Spell({ 133, 143, 145, 3140, 8400, 8401, 8402, 10148, 10149, 10150, 10151, 25306 }, {
+    stacking = true,
     duration = function(spellID)
         if spellID == 133 then return 4
         elseif spellID == 143 then return 6
@@ -626,7 +654,7 @@ Spell({ 133, 143, 145, 3140, 8400, 8401, 8402, 10148, 10149, 10150, 10151, 25306
         else return 8 end
     end
 }) -- Fireball
-Spell({ 11366, 12505, 12522, 12523, 12524, 12525, 12526, 18809 }, { duration = 12 }) -- Pyroblast
+Spell({ 11366, 12505, 12522, 12523, 12524, 12525, 12526, 18809 }, { duration = 12, stacking = true }) -- Pyroblast
 
 Spell({ 604, 8450, 8451, 10173, 10174 }, { duration = 600, type = "BUFF" }) -- Dampen Magic
 Spell({ 1008, 8455, 10169, 10170 }, { duration = 600, type = "BUFF" }) -- Amplify Magic
