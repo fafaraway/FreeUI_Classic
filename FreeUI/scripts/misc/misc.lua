@@ -12,13 +12,13 @@ function MISC:OnLogin()
 
 	self:ItemLevel()
 
-	--self:AlertFrame()
+
 	self:ErrorFrame()
 
 
 	self:ColorPicker()
 
-	self:FasterLoot()
+
 	self:FasterDelete()
 
 
@@ -88,27 +88,7 @@ function MISC:FasterDelete()
 	end)
 end
 
--- Faster looting
-local lootDelay = 0
-local function FasterLoot()
-	if GetTime() - lootDelay >= 0.3 then
-		lootDelay = GetTime()
-		if GetCVarBool('autoLootDefault') ~= IsModifiedClick('AUTOLOOTTOGGLE') then
-			for i = GetNumLootItems(), 1, -1 do
-				LootSlot(i)
-			end
-			lootDelay = GetTime()
-		end
-	end
-end
 
-function MISC:FasterLoot()
-	if C.general.fasterLoot then
-		F:RegisterEvent('LOOT_READY', FasterLoot)
-	else
-		F:UnregisterEvent('LOOT_READY', FasterLoot)
-	end
-end
 
 
 

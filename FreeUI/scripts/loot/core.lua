@@ -2,7 +2,31 @@ local F, C = unpack(select(2, ...))
 local LOOT = F:RegisterModule('loot')
 
 
+local lootDelay = 0
+local function FasterLoot()
+	if GetTime() - lootDelay >= 0.3 then
+		lootDelay = GetTime()
+		if GetCVarBool('autoLootDefault') ~= IsModifiedClick('AUTOLOOTTOGGLE') then
+			for i = GetNumLootItems(), 1, -1 do
+				LootSlot(i)
+			end
+			lootDelay = GetTime()
+		end
+	end
+end
+
+function LOOT:FasterLoot()
+	if C.loot.fasterLoot then
+		F:RegisterEvent('LOOT_READY', FasterLoot)
+	else
+		F:UnregisterEvent('LOOT_READY', FasterLoot)
+	end
+end
+
+
 function LOOT:OnLogin()
+	self:FasterLoot()
+
 	COPPER_AMOUNT = '%d\124TInterface\\MoneyFrame\\UI-CopperIcon:0:0:2:0\124t'
 	SILVER_AMOUNT = '%d\124TInterface\\MoneyFrame\\UI-SilverIcon:0:0:2:0\124t'
 	GOLD_AMOUNT = '%d\124TInterface\\MoneyFrame\\UI-GoldIcon:0:0:2:0\124t'
