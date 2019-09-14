@@ -26,7 +26,6 @@ local function CreatePlayerStyle(self)
 	UNITFRAME:AddFCT(self)
 
 	if C.Class == 'SHAMAN' then UNITFRAME:AddTotems(self) end
-	if cfg.classPower then UNITFRAME:AddClassPower(self) end
 end
 
 local function CreatePetStyle(self)
