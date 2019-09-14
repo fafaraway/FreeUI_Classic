@@ -80,9 +80,3 @@ function UNITFRAME:AddGroupRoleIndicator(self)
 	groupRoleIndicator.Override = UpdateLFD
 	self.GroupRoleIndicator = groupRoleIndicator
 end
-
-function UNITFRAME:AddPhaseIndicator(self)
-	local phaseIndicator = F.CreateFS(self.Health, 'pixel', '?', nil, true)
-	phaseIndicator:SetPoint('TOPRIGHT', self.Health, 0, -2)
-	self.PhaseIndicator = phaseIndicator
-end

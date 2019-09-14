@@ -94,7 +94,6 @@ local function CreatePartyStyle(self)
 	UNITFRAME:AddResurrectIndicator(self)
 	UNITFRAME:AddReadyCheckIndicator(self)
 	UNITFRAME:AddGroupRoleIndicator(self)
-	UNITFRAME:AddPhaseIndicator(self)
 
 	UNITFRAME:AddSelectedBorder(self)
 end
@@ -116,7 +115,6 @@ local function CreateRaidStyle(self)
 	UNITFRAME:AddResurrectIndicator(self)
 	UNITFRAME:AddReadyCheckIndicator(self)
 	UNITFRAME:AddGroupRoleIndicator(self)
-	UNITFRAME:AddPhaseIndicator(self)
 
 	UNITFRAME:AddSelectedBorder(self)
 end
