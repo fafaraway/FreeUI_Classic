@@ -24,8 +24,6 @@ local function CreatePlayerStyle(self)
 	UNITFRAME:AddStatusIndicator(self)
 	UNITFRAME:AddPVPText(self)
 	UNITFRAME:AddFCT(self)
-
-	if C.Class == 'SHAMAN' then UNITFRAME:AddTotems(self) end
 end
 
 local function CreatePetStyle(self)
