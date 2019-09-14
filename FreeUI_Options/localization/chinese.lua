@@ -258,6 +258,8 @@ L.chat_fading = "文字淡化"
 L.chat_fading_tooltip = "如果聊天框一段时间没有收到新信息则旧信息会逐渐淡化消失。"
 L.chat_filters = "内容过滤"
 L.chat_filters_tooltip = "自动过滤重复或者无用的信息。"
+L.chat_hideVoiceButtons = "隐藏语音按钮"
+L.chat_hideVoiceButtons_tooltip = "自动过滤重复或者无用的信息。"
 
 
 

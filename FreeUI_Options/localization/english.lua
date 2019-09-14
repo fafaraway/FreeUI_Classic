@@ -269,6 +269,8 @@ L.chat_fading = "Lines fading"
 L.chat_fading_tooltip = "Fade chat lines."
 L.chat_filters = "Chat filters"
 L.chat_filters_tooltip = "Filter spam and unnecessary messages."
+L.chat_hideVoiceButtons = "Hide voice button"
+L.chat_hideVoiceButtons_tooltip = "Hide voice button."
 
 
 

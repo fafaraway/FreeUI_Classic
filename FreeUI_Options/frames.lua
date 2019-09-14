@@ -853,6 +853,9 @@ do
 	local timeStampColor = ns.CreateColourPicker(chat, 'timeStampColor', true)
 	timeStampColor:SetPoint('TOPLEFT', timeStamp, 'BOTTOMLEFT', 16, -8)
 
+	local hideVoiceButtons = ns.CreateCheckBox(chat, 'hideVoiceButtons')
+	hideVoiceButtons:SetPoint('LEFT', timeStamp, 'RIGHT', 160, 0)
+
 	local function toggleChatOptions()
 		local shown = enable:GetChecked()
 		lockPosition:SetShown(shown)
