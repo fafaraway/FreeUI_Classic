@@ -7,39 +7,20 @@ local tostring, tonumber, pairs, select, random, strsplit, strmatch = tostring, 
 
 
 function MISC:OnLogin()
-	self:HelmCloak()
-	self:EnhancedMenu()
-
-	self:ItemLevel()
-
-
-	self:ErrorFrame()
-
-
+	self:AutoDismount()
 	self:ColorPicker()
-
-
+	self:EnhancedMenu()
 	self:FasterDelete()
-
-
-	self:ReadyCheck()
+	self:ErrorFrame()
+	self:HelmCloak()
+	self:ItemLevel()
 	self:Marker()
-
 	self:MailButton()
-
-
 	self:PVPSound()
-	
-
-	self:TradeTargetInfo()
-	self:TicketStatusFrame()
+	self:ReadyCheck()
+	self:ReanchorTicketStatusFrame()
 	self:Reputation()
-
-
-
-
-
-
+	self:TradeTargetInfo()
 
 	-- Fix blizz error
 	MAIN_MENU_MICRO_ALERT_PRIORITY = MAIN_MENU_MICRO_ALERT_PRIORITY or {}
@@ -78,19 +59,12 @@ function MISC:HelmCloak()
 	F.ReskinCheck(cloak)
 end
 
-
-
-
 -- Instant delete
 function MISC:FasterDelete()
 	hooksecurefunc(StaticPopupDialogs['DELETE_GOOD_ITEM'], 'OnShow', function(self)
 		self.editBox:SetText(DELETE_ITEM_CONFIRM_STRING)
 	end)
 end
-
-
-
-
 
 -- Ready check in master sound
 function MISC:ReadyCheck()
@@ -121,7 +95,6 @@ function MISC:ReadyCheck()
 	end)
 end
 
-
 -- TradeFrame hook
 function MISC:TradeTargetInfo()
 	local infoText = F.CreateFS(TradeFrame, {C.font.normal, 14}, '', nil, nil, true)
@@ -145,14 +118,8 @@ function MISC:TradeTargetInfo()
 	hooksecurefunc('TradeFrame_Update', updateColor)
 end
 
-
-
-
-
-
-
 -- Reanchor TicketStatusFrame
-function MISC:TicketStatusFrame()
+function MISC:ReanchorTicketStatusFrame()
 	hooksecurefunc(TicketStatusFrame, 'SetPoint', function(self, relF)
 		if relF == 'TOPRIGHT' then
 			self:ClearAllPoints()
@@ -160,15 +127,6 @@ function MISC:TicketStatusFrame()
 		end
 	end)
 end
-
-
-
-
-
-
-
-
-
 
 -- Select target when click on raid units
 do
@@ -287,16 +245,12 @@ do
 	F:RegisterEvent('ADDON_LOADED', setupMisc)
 end
 
-
-
 -- Temporary taint fix
 do
 	InterfaceOptionsFrameCancel:SetScript("OnClick", function()
 		InterfaceOptionsFrameOkay:Click()
 	end)
 end
-
-
 
 -- Fix trade skill search
 hooksecurefunc('ChatEdit_InsertLink', function(text) -- shift-clicked
@@ -371,8 +325,6 @@ do
 	F:RegisterEvent('ADDON_LOADED', fixGuildNews)
 	F:RegisterEvent('ADDON_LOADED', fixCommunitiesNews)
 end
-
-
 
 -- Add friend and guild invite on target menu
 function MISC:MenuButton_OnClick(info)

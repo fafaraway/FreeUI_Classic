@@ -1,10 +1,10 @@
 <Ui xmlns='http://www.blizzard.com/wow/ui/'>
 	<Script file='misc.lua'/>
-	<Script file='alerts.lua'/>
 	<Script file='alreadyknown.lua'/>
 	<Script file='camera.lua'/>
 	<Script file='colors.lua'/>
 	<Script file='colorpicker.lua'/>
+	<Script file='dismount.lua'/>
 	<Script file='dragemall.lua'/>
 	<Script file='errors.lua'/>
 	<Script file='itemlevel.lua'/>
