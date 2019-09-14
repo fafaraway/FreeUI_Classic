@@ -1,6 +1,12 @@
 local parent, ns = ...
 local oUF = ns.oUF
 
+-- sourced from Blizzard_ArenaUI/Blizzard_ArenaUI.lua
+local MAX_ARENA_ENEMIES = MAX_ARENA_ENEMIES or 5
+
+-- sourced from FrameXML/TargetFrame.lua
+local MAX_BOSS_FRAMES = MAX_BOSS_FRAMES or 5
+
 -- sourced from FrameXML/PartyMemberFrame.lua
 local MAX_PARTY_MEMBERS = MAX_PARTY_MEMBERS or 4
 
@@ -41,11 +47,6 @@ local function handleFrame(baseName, doNotReparent)
 		local spell = frame.castBar or frame.spellbar
 		if(spell) then
 			spell:UnregisterAllEvents()
-		end
-
-		local altpowerbar = frame.powerBarAlt
-		if(altpowerbar) then
-			altpowerbar:UnregisterAllEvents()
 		end
 
 		local buffFrame = frame.BuffFrame

@@ -19,11 +19,6 @@ local callback, objects, headers = {}, {}, {}
 local elements = {}
 local activeElements = {}
 
-local PetBattleFrameHider = CreateFrame('Frame', (global or parent) .. '_PetBattleFrameHider', UIParent, 'SecureHandlerStateTemplate')
-PetBattleFrameHider:SetAllPoints()
-PetBattleFrameHider:SetFrameStrata('LOW')
-RegisterStateDriver(PetBattleFrameHider, 'visibility', '[petbattle] hide; show')
-
 -- updating of "invalid" units.
 local function enableTargetUpdate(object)
 	object.onUpdateFrequency = object.onUpdateFrequency or .5
@@ -52,6 +47,10 @@ local function updateActiveUnit(self, event, unit)
 		realUnit = 'pet'
 	elseif(realUnit == 'playertarget') then
 		realUnit = 'target'
+	end
+
+	if(modUnit == 'pet' and realUnit ~= 'pet') then
+		modUnit = 'vehicle'
 	end
 
 	if(not unitExists(modUnit)) then return end
@@ -290,6 +289,11 @@ local function initObject(unit, style, styleFunc, header, ...)
 			object:SetAttribute('*type1', 'target')
 			object:SetAttribute('*type2', 'togglemenu')
 
+			-- No need to enable this for *target frames.
+			if(not (unit:match('target') or suffix == 'target')) then
+				object:SetAttribute('toggleForVehicle', true)
+			end
+
 			-- Other boss and target units are handled by :HandleUnit().
 			if(suffix == 'target') then
 				enableTargetUpdate(object)
@@ -416,15 +420,6 @@ function oUF:SetActiveStyle(name)
 	if(not styles[name]) then return error('Style [%s] does not exist.', name) end
 
 	style = name
-end
-
---[[ oUF:GetActiveStyle()
-Used to get the active style.
-
-* self - the global oUF object
---]]
-function oUF:GetActiveStyle()
-	return style
 end
 
 do
@@ -626,9 +621,9 @@ do
 
 		local isPetHeader = template:match('PetHeader')
 		local name = overrideName or generateName(nil, ...)
-		local header = CreateFrame('Frame', name, PetBattleFrameHider, template)
+		local header = CreateFrame('Frame', name, UIParent, template)
 
-		header:SetAttribute('template', 'SecureUnitButtonTemplate, SecureHandlerStateTemplate, SecureHandlerEnterLeaveTemplate, SecureHandlerShowHideTemplate')
+		header:SetAttribute('template', 'SecureUnitButtonTemplate, SecureHandlerStateTemplate, SecureHandlerEnterLeaveTemplate')
 		for i = 1, select('#', ...), 2 do
 			local att, val = select(i, ...)
 			if(not att) then break end
@@ -644,7 +639,7 @@ do
 
 		-- We set it here so layouts can't directly override it.
 		header:SetAttribute('initialConfigFunction', initialConfigFunction)
-		header:SetAttribute('_initialAttributeNames', '_onenter,_onleave,refreshUnitChange,_onstate-vehicleui')
+		header:SetAttribute('_initialAttributeNames', '_onenter,_onleave,refreshUnitChange')
 		header:SetAttribute('_initialAttribute-_onenter', [[
 			local snippet = self:GetAttribute('clickcast_onenter')
 			if(snippet) then
@@ -663,14 +658,6 @@ do
 				RegisterStateDriver(self, 'vehicleui', '[@' .. unit .. ',unithasvehicleui]vehicle; novehicle')
 			else
 				UnregisterStateDriver(self, 'vehicleui')
-			end
-		]])
-		header:SetAttribute('_initialAttribute-_onstate-vehicleui', [[
-			local unit = self:GetAttribute('unit')
-			if(newstate == 'vehicle' and unit and UnitPlayerOrPetInRaid(unit) and not UnitTargetsVehicleInRaidUI(unit)) then
-				self:SetAttribute('toggleForVehicle', false)
-			else
-				self:SetAttribute('toggleForVehicle', true)
 			end
 		]])
 		header:SetAttribute('oUF-headerType', isPetHeader and 'pet' or 'group')
@@ -711,17 +698,17 @@ oUF implements some of its own attributes. These can be supplied by the layout, 
 
 * oUF-enableArenaPrep - can be used to toggle arena prep support. Defaults to true (boolean)
 --]]
-function oUF:Spawn(unit, overrideName, noHandle)
+function oUF:Spawn(unit, overrideName)
 	argcheck(unit, 2, 'string')
 	if(not style) then return error('Unable to create frame. No styles have been registered.') end
 
 	unit = unit:lower()
 
 	local name = overrideName or generateName(unit)
-	local object = CreateFrame('Button', name, PetBattleFrameHider, 'SecureUnitButtonTemplate')
+	local object = CreateFrame('Button', name, UIParent, 'SecureUnitButtonTemplate')
 	Private.UpdateUnits(object, unit)
 
-	if not noHandle then self:DisableBlizzard(unit) end
+	self:DisableBlizzard(unit)
 	walkObject(object, unit)
 
 	object:SetAttribute('unit', unit)

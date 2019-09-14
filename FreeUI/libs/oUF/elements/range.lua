@@ -49,8 +49,10 @@ local function Update(self, event)
 	local inRange, checkedRange
 	local connected = UnitIsConnected(unit)
 	if(connected) then
-		inRange, checkedRange = UnitInRange(unit)
-		if(checkedRange and not inRange) then
+		local inRange = CheckInteractDistance(unit, 4) -- 28Y, WORKAROUND FOR CLASSIC, BECAUSE UnitInRange ALWAYS RETURN FALSE, FALSE
+		--inRange, checkedRange = UnitInRange(unit)
+		--if(checkedRange and not inRange) then
+		if not inRange then
 			self:SetAlpha(element.outsideAlpha)
 		else
 			self:SetAlpha(element.insideAlpha)

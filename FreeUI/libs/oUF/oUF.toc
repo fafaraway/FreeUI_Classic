@@ -1,7 +1,8 @@
-## Interface: 80100
+## Interface: 11302
 ## Title: oUF
 ## Author: Haste, lightspark, p3lim, Rainrider
-## Version: 9.2.0
+## WoW-Classic-Compatibility-Update: Tukz
+## Version: @project-version@
 ## Notes: Unit frame framework. Does nothing by itself.
 ## OptionalDeps: Clique
 ## X-oUF: oUF
