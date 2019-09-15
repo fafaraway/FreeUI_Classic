@@ -5,6 +5,7 @@ C['general'] = {
 	['uiScale'] = 1,
 	['uiScaleAuto'] = true,
 
+	['autoDismount'] = true,
 	['enhancedMenu'] = true,
 	['mailButton'] = true, 				
 	['alreadyKnown'] = true,
@@ -199,24 +200,11 @@ C['unitframe'] = {
 		['debuffbyPlayer'] = true,
 		['rangeCheck'] = true,
 
-		['classPower'] = true,
-			['classPower_height'] = 2,
-
-		['totems'] = true,
-
 		['clickCast'] = true,
 			['clickCastfilter'] = false,
 
 		['power_height'] = 3,
 		['altpower_height'] = 2,
-
-		['enableFCT'] = true,
-			['playerFCT'] = true,
-			['targetFCT'] = true,
-			['petFCT'] = true,
-			['hotsDots'] = true,
-			['autoAttack'] = true,
-			['overHealing'] = false,
 		
 		['enableCastbar'] = true,
 			['castbar_separatePlayer'] = false,
@@ -287,21 +275,13 @@ C['unitframe'] = {
 		['raid_height'] = 32,
 		['raid_height_healer'] = 32,
 		['raid_gap'] = 5,
-
-		['boss_pos'] = {'LEFT', 'oUF_Target', 'RIGHT', 120, 160},
-		['boss_pos_healer'] = {'LEFT', 'oUF_Target', 'RIGHT', 120, 160},
-		['boss_width'] = 166,
-		['boss_width_healer'] = 166,
-		['boss_height'] = 20,
-		['boss_height_healer'] = 20,
-		['boss_gap'] = 60,
 }
 
 C['quest'] = {
 	['questTracker'] = true,
-	['quickQuest'] = true,
+	['quickQuest'] = false,
 	['notifier'] = true,
-		['progressNotify'] = true,
+		['progressNotify'] = false,
 		['completeRing'] = true,
 }
 
