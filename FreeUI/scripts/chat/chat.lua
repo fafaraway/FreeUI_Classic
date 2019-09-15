@@ -62,7 +62,6 @@ local cycles = {
 	{ chatType = 'SAY', use = function() return 1 end },
 	{ chatType = 'PARTY', use = function() return IsInGroup() end },
 	{ chatType = 'RAID', use = function() return IsInRaid() end },
-	{ chatType = 'INSTANCE_CHAT', use = function() return IsPartyLFG() end },
 	{ chatType = 'GUILD', use = function() return IsInGuild() end },
 	{ chatType = 'CHANNEL', use = function(_, editbox)
 		if GetCVar('portal') ~= 'CN' then return false end
@@ -84,7 +83,7 @@ local cycles = {
 	{ chatType = 'SAY', use = function() return 1 end },
 }
 
-local function UpdateTabChannelSwitch()
+function CHAT:UpdateTabChannelSwitch()
 	if strsub(tostring(self:GetText()), 1, 1) == '/' then return end
 	local currChatType = self:GetAttribute('chatType')
 	for i, curr in ipairs(cycles) do
@@ -227,8 +226,8 @@ function CHAT:OnLogin()
 	F.HideOption(InterfaceOptionsSocialPanelChatStyle)
 	CombatLogQuickButtonFrame_CustomTexture:SetTexture(nil)
 
-	hooksecurefunc("FloatingChatFrame_OnMouseScroll", CHAT.QuickMouseScroll)
-	hooksecurefunc('ChatEdit_CustomTabPressed', UpdateTabChannelSwitch)
+	hooksecurefunc('FloatingChatFrame_OnMouseScroll', CHAT.QuickMouseScroll)
+	hooksecurefunc('ChatEdit_CustomTabPressed', CHAT.UpdateTabChannelSwitch)
 
 	HideForever(ChatFrameMenuButton)
 	--HideForever(QuickJoinToastButton)
