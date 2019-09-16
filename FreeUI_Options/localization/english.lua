@@ -60,6 +60,8 @@ L.general_subCategory_uiscale = "UI scale"
 L.general_uiScaleAuto = "Force optimal UI scale"
 L.general_uiScaleAuto_tooltip = "Automatically apply the best UI scale for current resolution."
 L.general_uiScale = "Customize UI scale"
+L.general_autoDismount = "Auto dismount"
+L.general_autoDismount_tooltip = "Automatically dismount when you attack cast or use item."
 
 
 

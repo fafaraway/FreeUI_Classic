@@ -44,6 +44,8 @@ L.general_subCategory_uiscale = "界面缩放"
 L.general_uiScaleAuto = "强制界面缩放"
 L.general_uiScaleAuto_tooltip = "自动为当前分辨率使用最合适的界面缩放值。"
 L.general_uiScale = "自定义缩放"
+L.general_autoDismount = "自动下马"
+L.general_autoDismount_tooltip = "施法/攻击/使用物品时自动下马。"
 
 
 

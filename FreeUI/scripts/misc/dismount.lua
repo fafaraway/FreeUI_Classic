@@ -5,6 +5,8 @@ local MISC = F:GetModule('Misc')
 -- Based on Letmecast by Anilusion
 
 function MISC:AutoDismount()
+	if not C.general.autoDismount then return end
+	
 	local f = CreateFrame('Frame')
 	f:Hide()
 	

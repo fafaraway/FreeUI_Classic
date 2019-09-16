@@ -145,8 +145,11 @@ do
 	local PVPSound = ns.CreateCheckBox(general, 'PVPSound')
 	PVPSound:SetPoint('LEFT', marker, 'RIGHT', 160, 0)
 
+	local autoDismount = ns.CreateCheckBox(general, 'autoDismount')
+	autoDismount:SetPoint('TOPLEFT', marker, 'BOTTOMLEFT', 0, -8)
+
 	local camerasub = ns.addSubCategory(general, ns.localization.general_subCategory_camera)
-	camerasub:SetPoint('TOPLEFT', marker, 'BOTTOMLEFT', 0, -16)
+	camerasub:SetPoint('TOPLEFT', autoDismount, 'BOTTOMLEFT', 0, -16)
 
 	local cameraZoomSpeed = ns.CreateNumberSlider(general, 'cameraZoomSpeed', 1, 5, 1, 5, 1, true)
 	cameraZoomSpeed:SetPoint('TOPLEFT', camerasub, 'BOTTOMLEFT', 24, -32)
