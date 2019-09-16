@@ -12,9 +12,7 @@ local function CreatePlayerStyle(self)
 
 	UNITFRAME:AddBackDrop(self)
 	UNITFRAME:AddHealthBar(self)
-
 	UNITFRAME:AddPowerBar(self)
-
 	UNITFRAME:AddHealthValue(self)
 	UNITFRAME:AddPowerValue(self)
 	UNITFRAME:AddPortrait(self)
@@ -23,7 +21,6 @@ local function CreatePlayerStyle(self)
 	UNITFRAME:AddRaidTargetIndicator(self)
 	UNITFRAME:AddStatusIndicator(self)
 	UNITFRAME:AddPVPText(self)
-	UNITFRAME:AddFCT(self)
 end
 
 local function CreatePetStyle(self)
@@ -32,7 +29,6 @@ local function CreatePetStyle(self)
 
 	UNITFRAME:AddBackDrop(self)
 	UNITFRAME:AddHealthBar(self)
-
 	UNITFRAME:AddPowerBar(self)
 	UNITFRAME:AddPortrait(self)
 	UNITFRAME:AddCastBar(self)
@@ -47,19 +43,16 @@ local function CreateTargetStyle(self)
 
 	UNITFRAME:AddBackDrop(self)
 	UNITFRAME:AddHealthBar(self)
-
 	UNITFRAME:AddPowerBar(self)
 	UNITFRAME:AddPortrait(self)
 	UNITFRAME:AddNameText(self)
 	UNITFRAME:AddHealthValue(self)
 	UNITFRAME:AddPowerValue(self)
 	UNITFRAME:AddLevelText(self)
-
 	UNITFRAME:AddCastBar(self)
 	UNITFRAME:AddAuras(self)
 	UNITFRAME:AddRaidTargetIndicator(self)
 	UNITFRAME:AddRangeCheck(self)
-	UNITFRAME:AddFCT(self)
 end
 
 local function CreateTargetTargetStyle(self)
@@ -79,7 +72,6 @@ local function CreatePartyStyle(self)
 
 	UNITFRAME:AddBackDrop(self)
 	UNITFRAME:AddHealthBar(self)
-
 	UNITFRAME:AddPowerBar(self)
 	UNITFRAME:AddPortrait(self)
 	UNITFRAME:AddDispel(self)
@@ -91,8 +83,6 @@ local function CreatePartyStyle(self)
 	UNITFRAME:AddLeaderText(self)
 	UNITFRAME:AddResurrectIndicator(self)
 	UNITFRAME:AddReadyCheckIndicator(self)
-	UNITFRAME:AddGroupRoleIndicator(self)
-
 	UNITFRAME:AddSelectedBorder(self)
 end
 
@@ -101,7 +91,6 @@ local function CreateRaidStyle(self)
 
 	UNITFRAME:AddBackDrop(self)
 	UNITFRAME:AddHealthBar(self)
-
 	UNITFRAME:AddPowerBar(self)
 	UNITFRAME:AddDispel(self)
 	UNITFRAME:AddNameText(self)
@@ -112,8 +101,6 @@ local function CreateRaidStyle(self)
 	UNITFRAME:AddLeaderText(self)
 	UNITFRAME:AddResurrectIndicator(self)
 	UNITFRAME:AddReadyCheckIndicator(self)
-	UNITFRAME:AddGroupRoleIndicator(self)
-
 	UNITFRAME:AddSelectedBorder(self)
 end
 

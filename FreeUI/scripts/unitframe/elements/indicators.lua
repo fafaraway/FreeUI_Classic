@@ -55,28 +55,3 @@ function UNITFRAME:AddReadyCheckIndicator(self)
 	readyCheckIndicator:SetSize(16, 16)
 	self.ReadyCheckIndicator = readyCheckIndicator
 end
-
-function UNITFRAME:AddGroupRoleIndicator(self)
-	local UpdateLFD = function(self, event)
-		local lfdrole = self.GroupRoleIndicator
-		local role = UnitGroupRolesAssigned(self.unit)
-
-		if role == 'DAMAGER' then
-			lfdrole:SetTextColor(1, .1, .1, 1)
-			lfdrole:SetText('.')
-		elseif role == 'TANK' then
-			lfdrole:SetTextColor(.3, .4, 1, 1)
-			lfdrole:SetText('x')
-		elseif role == 'HEALER' then
-			lfdrole:SetTextColor(0, 1, 0, 1)
-			lfdrole:SetText('+')
-		else
-			lfdrole:SetTextColor(0, 0, 0, 0)
-		end
-	end
-
-	local groupRoleIndicator = F.CreateFS(self.Health, 'pixel', '', nil, true)
-	groupRoleIndicator:SetPoint('BOTTOM', self.Health, 1, 1)
-	groupRoleIndicator.Override = UpdateLFD
-	self.GroupRoleIndicator = groupRoleIndicator
-end
