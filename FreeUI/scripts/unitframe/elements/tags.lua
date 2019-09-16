@@ -7,6 +7,7 @@ local cfg = C.unitframe
 local tags = FreeUI.oUF.Tags.Methods
 local tagEvents = FreeUI.oUF.Tags.Events
 local tagSharedEvents = FreeUI.oUF.Tags.SharedEvents
+local LibClassicMobHealth = LibStub("LibClassicMobHealth-1.0")
 
 local function usub(str, len)
 	local i = 1
@@ -56,32 +57,10 @@ tags['free:name'] = function(unit)
 	else
 		return ShortenName(unit, 6)
 	end
-
 end
 tagEvents['free:name'] = 'UNIT_NAME_UPDATE UNIT_TARGET PLAYER_TARGET_CHANGED'
 
-tags['free:health'] = function(unit)
-	if not UnitIsConnected(unit) or UnitIsDead(unit) or UnitIsGhost(unit) then return end
-	
-	local cur = UnitHealth(unit)
-	local r, g, b = unpack(FreeUI.oUF.colors.reaction[UnitReaction(unit, 'player') or 5])
 
-	return format('|cff%02x%02x%02x%s|r', r * 255, g * 255, b * 255, F.Numb(cur))
-end
-tagEvents['free:health'] = 'UNIT_CONNECTION UNIT_HEALTH_FREQUENT UNIT_MAXHEALTH'
-
-tags['free:percentage'] = function(unit)
-	if not UnitIsConnected(unit) or UnitIsDead(unit) or UnitIsGhost(unit) then return end
-
-	local cur, max = UnitHealth(unit), UnitHealthMax(unit)
-	local r, g, b = ColorGradient(cur, max, 0.69, 0.31, 0.31, 0.65, 0.63, 0.35, 0.33, 0.59, 0.33)
-	r, g, b = r * 255, g * 255, b * 255
-
-	if cur ~= max then
-		return format('|cff%02x%02x%02x%d%%|r', r, g, b, floor(cur / max * 100 + 0.5))
-	end
-end
-tagEvents['free:percentage'] = 'UNIT_CONNECTION UNIT_HEALTH_FREQUENT UNIT_MAXHEALTH'
 
 tags['free:power'] = function(unit)
 	local cur, max = UnitPower(unit), UnitPowerMax(unit)
@@ -158,6 +137,46 @@ function UNITFRAME:AddNameText(self)
 	end
 end
 
+tags['free:LCMH'] = function(unit)
+	if not UnitIsConnected(unit) or UnitIsDead(unit) or UnitIsGhost(unit) then return end
+	
+	local LibCurrentHP, LibMaxHP, IsFound = LibClassicMobHealth:GetUnitHealth(unit)
+	local HP = (IsFound and LibCurrentHP) or min
+	local MaxHP = (IsFound and LibMaxHP) or max
+
+	local r, g, b = unpack(FreeUI.oUF.colors.reaction[UnitReaction(unit, 'player') or 5])
+
+	if (IsFound) and (LibCurrentHP ~= LibMaxHP) then
+		return format('|cff%02x%02x%02x%s|r', r * 255, g * 255, b * 255, F.Numb(LibCurrentHP))
+	else
+		return ''
+	end
+end
+tagEvents['free:LCMH'] = 'UNIT_CONNECTION UNIT_HEALTH_FREQUENT UNIT_MAXHEALTH'
+
+tags['free:health'] = function(unit)
+	if not UnitIsConnected(unit) or UnitIsDead(unit) or UnitIsGhost(unit) then return end
+	
+	local cur = UnitHealth(unit)
+	local r, g, b = unpack(FreeUI.oUF.colors.reaction[UnitReaction(unit, 'player') or 5])
+
+	return format('|cff%02x%02x%02x%s|r', r * 255, g * 255, b * 255, F.Numb(cur))
+end
+tagEvents['free:health'] = 'UNIT_CONNECTION UNIT_HEALTH_FREQUENT UNIT_MAXHEALTH'
+
+tags['free:percentage'] = function(unit)
+	if not UnitIsConnected(unit) or UnitIsDead(unit) or UnitIsGhost(unit) then return end
+
+	local cur, max = UnitHealth(unit), UnitHealthMax(unit)
+	local r, g, b = ColorGradient(cur, max, 0.69, 0.31, 0.31, 0.65, 0.63, 0.35, 0.33, 0.59, 0.33)
+	r, g, b = r * 255, g * 255, b * 255
+
+	if cur ~= max then
+		return format('|cff%02x%02x%02x%d%%|r', r, g, b, floor(cur / max * 100 + 0.5))
+	end
+end
+tagEvents['free:percentage'] = 'UNIT_CONNECTION UNIT_HEALTH_FREQUENT UNIT_MAXHEALTH'
+
 function UNITFRAME:AddHealthValue(self)
 	local healthValue = F.CreateFS(self.Health, 'pixel', '', nil, true)
 	healthValue:SetPoint('BOTTOMLEFT', self, 'TOPLEFT', 0, 3)
@@ -165,17 +184,7 @@ function UNITFRAME:AddHealthValue(self)
 	if self.unitStyle == 'player' then
 		self:Tag(healthValue, '[free:dead][free:health]')
 	elseif self.unitStyle == 'target' then
-		self:Tag(healthValue, '[free:dead][free:offline][free:health] [free:percentage]')
-	elseif self.unitStyle == 'boss' then
-		healthValue:ClearAllPoints()
-		healthValue:SetPoint('BOTTOMRIGHT', self, 'TOPRIGHT', 0, 3)
-		healthValue:SetJustifyH('RIGHT')
-		self:Tag(healthValue, '[free:dead][free:health]')
-	elseif self.unitStyle == 'arena' then
-		healthValue:ClearAllPoints()
-		healthValue:SetPoint('BOTTOMRIGHT', self, 'TOPRIGHT', 0, 3)
-		healthValue:SetJustifyH('RIGHT')
-		self:Tag(healthValue, '[free:dead][free:offline][free:health]')
+		self:Tag(healthValue, '[free:dead][free:offline][free:LCMH] [free:percentage]')
 	end
 
 	self.HealthValue = healthValue
