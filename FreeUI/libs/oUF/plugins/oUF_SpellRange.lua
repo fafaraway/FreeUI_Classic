@@ -1,7 +1,3 @@
-local F, C = unpack(select(2, ...))
-
-if not C.unitframe.enable then return end
-
 --[[****************************************************************************
 * oUF_SpellRange by Saiket                                                   *
 * oUF_SpellRange.lua - Improved range element for oUF.                       *
@@ -37,7 +33,6 @@ local _, playerClass = UnitClass('player')
 -- Note: Spells probably shouldn't have minimum ranges!
 
 local HelpIDs = ({
-	-- DEATHKNIGHT = {},
 	DRUID = { 2782,88423 },     -- Remove Corruption, Nature's Cure (40yd) - Lvl 18
 	-- HUNTER = {},
 	-- MAGE = { },
@@ -51,8 +46,6 @@ local HelpIDs = ({
 })[playerClass]
 
 local HarmIDs = ({
-	DEATHKNIGHT = { 49576 },    -- Death Grip (30yd) - Starter
-	DEMONHUNTER = { 204157 }, -- Throw Glaive
 	DRUID = { 5176 },           -- Moonfire (40yd) - Lvl 10
 	HUNTER = {
 		75,                     -- Auto Shot (40yd) - Starter

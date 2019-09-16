@@ -1,7 +1,3 @@
-local F, C = unpack(select(2, ...))
-if not C.unitframe.enable then return end
-if not C.unitframe.dispellable then return end
-
 -- Dispellable by Rainrider
 
 local _, ns = ...
