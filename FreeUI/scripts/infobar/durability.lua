@@ -62,13 +62,15 @@ local function gradientColor(perc)
 end
 
 
-function INFOBAR:ReanchorDurabilityFrame()
+function INFOBAR:DurabilityIndicatorMover()
+	local f = CreateFrame('Frame', 'FreeUIDurabilityMover', UIParent)
+	f:SetSize(50, 50)
+	F.Mover(f, L['MOVER_DURABILITY_INDICATOR'], 'DurabilityFrame', {'TOP', UIParent, 'TOP', 0, -200})
+
 	hooksecurefunc(DurabilityFrame, 'SetPoint', function(self, _, parent)
 		if parent == 'MinimapCluster' or parent == MinimapCluster then
-			self:SetScale(1)
 			self:ClearAllPoints()
-			self:SetClampedToScreen(true)
-			self:SetPoint('TOP', UIParent, 'TOP', 0, -200)
+			self:SetPoint('CENTER', f)
 		end
 	end)
 end
@@ -202,7 +204,7 @@ function INFOBAR:Durability()
 		GameTooltip:Hide()
 	end)
 
-	self:ReanchorDurabilityFrame()
+	self:DurabilityIndicatorMover()
 
 	F:RegisterEvent('MERCHANT_SHOW', merchantShow)
 end
