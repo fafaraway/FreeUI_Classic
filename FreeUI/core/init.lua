@@ -20,6 +20,9 @@ local defaultSettings = {
 	tempAnchor = {},
 	clickCast = {},
 	installComplete = false,
+	inventory = {
+		favouriteItems = {},
+	},
 }
 
 local accountSettings = {

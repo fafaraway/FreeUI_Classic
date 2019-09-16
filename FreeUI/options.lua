@@ -124,7 +124,7 @@ C['inventory'] = {
 			['gearSetFilter'] = false,
 			['tradeGoodsFilter'] = true,
 			['questItemFilter'] = true,
-			['mechagonItemFilter'] = true,
+		['favouriteItems'] = {},
 }
 
 C['infobar'] = {
