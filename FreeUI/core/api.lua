@@ -538,8 +538,8 @@ function F:ReskinCheck(default)
 	hl:SetPoint('BOTTOMRIGHT', -7, 7)
 	hl:SetVertexColor(r, g, b, .25)
 
-	self:HookScript("OnEnter", checkOnEnter)
-	self:HookScript("OnLeave", checkOnLeave)
+	self:HookScript('OnEnter', checkOnEnter)
+	self:HookScript('OnLeave', checkOnLeave)
 
 	local tex = F.CreateGradient(self)
 	tex:SetPoint('TOPLEFT', 7, -7)
@@ -679,16 +679,11 @@ function F:ReskinExpandOrCollapse()
 end
 
 function F:SetBD(x, y, x2, y2)
-	local bg = CreateFrame('Frame', nil, self)
-	if not x then
-		bg:SetPoint('TOPLEFT')
-		bg:SetPoint('BOTTOMRIGHT')
-	else
+	local bg = F.CreateBDFrame(self)
+	if x then
 		bg:SetPoint('TOPLEFT', x, y)
 		bg:SetPoint('BOTTOMRIGHT', x2, y2)
 	end
-	bg:SetFrameLevel(self:GetFrameLevel() - 1)
-	F.CreateBD(bg)
 	F.CreateSD(bg)
 
 	return bg
@@ -857,14 +852,19 @@ end
 local function tooltipOnEnter(self)
 	GameTooltip:SetOwner(self, self.anchor)
 	GameTooltip:ClearLines()
+	if self.title then
+		GameTooltip:AddLine(self.title)
+	end
 	if tonumber(self.text) then
 		GameTooltip:SetSpellByID(self.text)
-	else
+	elseif self.text then
 		local r, g, b = 1, 1, 1
 		if self.color == 'class' then
 			r, g, b = C.r, C.g, C.b
 		elseif self.color == 'system' then
 			r, g, b = 1, .8, 0
+		elseif self.color == 'info' then
+			r, g, b = .6, .8, 1
 		end
 		GameTooltip:AddLine(self.text, r, g, b, 1)
 	end
