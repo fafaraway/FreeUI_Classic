@@ -3,6 +3,7 @@
 	<Script file='CallbackHandler-1.0\CallbackHandler-1.0.lua'/>
 	<Script file='LibSharedMedia-3.0\LibSharedMedia-3.0.lua'/>
 	<Script file='LibClassicCasterino\LibClassicCasterino.lua'/>
+	<Script file='LibClassicMobHealth\LibClassicMobHealth.lua'/>
 	<Include file='LibClassicDurations\LibClassicDurations.xml'/>
 	<Include file='LibPlayerSpells-1.0\lib.xml'/>
 	<Include file='cargBags\cargBags.xml'/>
