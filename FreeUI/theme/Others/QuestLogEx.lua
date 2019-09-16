@@ -1,6 +1,35 @@
 local F, C = unpack(select(2, ...))
 local APPEARANCE = F:GetModule('appearance')
 
+
+local gsub, next = gsub, next
+local IsModifiedClick, ChatEdit_GetActiveWindow, ChatEdit_InsertLink = IsModifiedClick, ChatEdit_GetActiveWindow, ChatEdit_InsertLink
+
+function APPEARANCE:MoveCodexButtons(frame)
+	if not CodexQuest then return end
+
+	local buttonShow = CodexQuest.buttonShow
+	buttonShow:SetParent(frame)
+	buttonShow:ClearAllPoints()
+	buttonShow:SetPoint('BOTTOMLEFT', frame, 'TOPLEFT', 5, 10)
+	buttonShow:SetWidth(55)
+	buttonShow:SetText(SHOW)
+
+	local buttonHide = CodexQuest.buttonHide
+	buttonHide:SetParent(frame)
+	buttonHide:ClearAllPoints()
+	buttonHide:SetPoint('LEFT', buttonShow, 'RIGHT', 5, 0)
+	buttonHide:SetWidth(55)
+	buttonHide:SetText(HIDE)
+
+	local buttonReset = CodexQuest.buttonReset
+	buttonReset:SetParent(frame)
+	buttonReset:ClearAllPoints()
+	buttonReset:SetPoint('LEFT', buttonHide, 'RIGHT', 5, 0)
+	buttonReset:SetWidth(55)
+	buttonReset:SetText(RESET)
+end
+
 function APPEARANCE:ReskinQuestTemplate(frame)
 	F.ReskinPortraitFrame(frame)
 	F.StripTextures(frame.count)
@@ -33,6 +62,9 @@ function APPEARANCE:ReskinQuestTemplate(frame)
 		local bu = frame[name]
 		if bu then F.Reskin(bu) end
 	end
+
+	-- Move ClassicCodex
+	APPEARANCE:MoveCodexButtons(frame.detail)
 end
 
 function APPEARANCE:ReskinClassicQuestLog()
@@ -88,6 +120,7 @@ function APPEARANCE:ReskinQuestLogEx()
 	QuestLogExDetailMinimizeButton:ClearAllPoints()
 	QuestLogExDetailMinimizeButton:SetPoint('RIGHT', QuestLogExDetailCloseButton, 'LEFT', -2, 0)
 
+	F.ReskinScroll(QuestLogExListScrollFrameScrollBar)
 	F.ReskinScroll(QuestLogExDetailScrollFrameScrollBar)
 	F.Reskin(QuestLogExFrameAbandonButton)
 	F.Reskin(QuestLogExFramePushQuestButton)
