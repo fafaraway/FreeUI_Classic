@@ -261,7 +261,7 @@ do
 	local alert = ns.addSubCategory(notification, ns.localization.notification_subCategory_combat)
 	alert:SetPoint('TOPLEFT', autoSellJunk, 'BOTTOMLEFT', -16, -16)
 
-	local interrupt = ns.CreateCheckBox(notification, 'interrupt')
+	--[[local interrupt = ns.CreateCheckBox(notification, 'interrupt')
 	interrupt:SetPoint('TOPLEFT', alert, 'BOTTOMLEFT', 0, -8)
 
 	local interruptAnnounce = ns.CreateCheckBox(notification, 'interruptAnnounce')
@@ -295,7 +295,7 @@ do
 	local lowMana = ns.CreateNumberSlider(notification, 'lowMana', 0.1, 1, 0.1, 1, 0.1, true)
 	lowMana:SetPoint('TOPLEFT', lowHealth, 'BOTTOMLEFT', 0, -32)
 
-	emergency.children = {lowHealth, lowMana}
+	emergency.children = {lowHealth, lowMana}--]]
 end
 
 -- Infobar
@@ -531,34 +531,8 @@ do
 	local clickCast = ns.CreateCheckBox(unitframe, 'clickCast')
 	clickCast:SetPoint('TOPLEFT', classPower, 'BOTTOMLEFT', 0, -8)
 
-	local fct = ns.addSubCategory(unitframe, ns.localization.unitframe_subCategory_fct)
-	fct:SetPoint('TOPLEFT', clickCast, 'BOTTOMLEFT', 0, -16)
-
-	local enableFCT = ns.CreateCheckBox(unitframe, 'enableFCT')
-	enableFCT:SetPoint('TOPLEFT', fct, 'BOTTOMLEFT', 0, -8)
-
-	local playerFCT = ns.CreateCheckBox(unitframe, 'playerFCT')
-	playerFCT:SetPoint('TOPLEFT', enableFCT, 'BOTTOMLEFT', 16, -8)
-
-	local targetFCT = ns.CreateCheckBox(unitframe, 'targetFCT')
-	targetFCT:SetPoint('LEFT', playerFCT, 'RIGHT', 160, 0)
-
-	local petFCT = ns.CreateCheckBox(unitframe, 'petFCT')
-	petFCT:SetPoint('TOPLEFT', playerFCT, 'BOTTOMLEFT', 0, -8)
-
-	local hotsDots = ns.CreateCheckBox(unitframe, 'hotsDots')
-	hotsDots:SetPoint('LEFT', petFCT, 'RIGHT', 160, 0)
-
-	local autoAttack = ns.CreateCheckBox(unitframe, 'autoAttack')
-	autoAttack:SetPoint('TOPLEFT', petFCT, 'BOTTOMLEFT', 0, -8)
-
-	local overHealing = ns.CreateCheckBox(unitframe, 'overHealing')
-	overHealing:SetPoint('LEFT', autoAttack, 'RIGHT', 160, 0)
-
-	enableFCT.children = {playerFCT, targetFCT, petFCT, hotsDots, autoAttack, overHealing}
-
 	local castbar = ns.addSubCategory(unitframe, ns.localization.unitframe_subCategory_castbar)
-	castbar:SetPoint('TOPLEFT', autoAttack, 'BOTTOMLEFT', -16, -16)
+	castbar:SetPoint('TOPLEFT', clickCast, 'BOTTOMLEFT', 0, -16)
 
 	local enableCastbar = ns.CreateCheckBox(unitframe, 'enableCastbar')
 	enableCastbar:SetPoint('TOPLEFT', castbar, 'BOTTOMLEFT', 0, -8)
@@ -588,7 +562,6 @@ do
 		feature:SetShown(shown)
 		extra:SetShown(shown)
 		castbar:SetShown(shown)
-		fct:SetShown(shown)
 
 		transMode:SetShown(shown)
 		portrait:SetShown(shown)
@@ -609,14 +582,6 @@ do
 		
 		enableCastbar:SetShown(shown)
 		castbar_separatePlayer:SetShown(shown)
-
-		enableFCT:SetShown(shown)
-		playerFCT:SetShown(shown)
-		targetFCT:SetShown(shown)
-		petFCT:SetShown(shown)
-		hotsDots:SetShown(shown)
-		autoAttack:SetShown(shown)
-		overHealing:SetShown(shown)
 	end
 
 	enable:HookScript('OnClick', toggleUFOptions)

@@ -30,7 +30,7 @@ alertBagsFull = function(self)
 
 	if totalFree == 0 then
 		if shouldAlertBags then
-			F.Notification(L['NOTIFICATION_BAG'], L['NOTIFICATION_BAG_FULL'], ToggleBackpack, 'Interface\\Icons\\inv_misc_bag_08')
+			F.Notification(L['NOTIFICATION_BAG'], L['NOTIFICATION_BAG_FULL'], ToggleBackpack, 'Interface\\ICONS\\INV_Misc_Bag_09_Black')
 			shouldAlertBags = false
 		else
 			self:SetScript('OnUpdate', delayBagCheck)
@@ -45,7 +45,7 @@ local function alertMail()
 	if hasMail ~= newMail then
 		hasMail = newMail
 		if hasMail then
-			F.Notification(L['NOTIFICATION_MAIL'], L['NOTIFICATION_NEW_MAIL'], nil, 'Interface\\Icons\\inv_letter_15', .08, .92, .08, .92)
+			F.Notification(L['NOTIFICATION_MAIL'], L['NOTIFICATION_NEW_MAIL'], nil, 'Interface\\ICONS\\INV_Letter_11', .08, .92, .08, .92)
 		end
 	end
 end

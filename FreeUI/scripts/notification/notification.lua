@@ -216,10 +216,8 @@ function NOTIFICATION:OnLogin()
 	end)
 
 	self:Events()
-	self:Interrupt()
-	self:Dispel()
+	self:CombatAlert()
 	self:VitalSpells()
 	self:Resurrect()
 	self:Sapped()
-	self:Emergency()
 end

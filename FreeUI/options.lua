@@ -95,19 +95,28 @@ C['notification'] = {
 		['questProgress'] = true,
 		['onlyCompleteRing'] = true,
 
-	['interrupt'] = true,
-		['interruptAnnounce'] = true,
-	['dispel'] = true,
-		['dispelAnnounce'] = true,
-	['rare'] = true,
-		['rareSound'] = true,
+	['combatAlert'] = true,
+		['enterCombat']	= true,
+		['interrupt'] = true,
+			['interruptAnnounce'] = true,
+			['interruptSound'] = true,
+		['dispel'] = true,
+			['dispelAnnounce'] = true,
+			['dispelSound'] = true,
+		['execute'] = true,
+			['executeSound'] = true,
+			['executeThreshold']= 0.2,
+		['emergency'] = true,
+			['lowHPSound'] = true,
+			['lowHPThreshold'] = 0.5,
+			['lowMPSound'] = true,
+			['lowMPThreshold'] = 0.3,
+
 	['vitalSpells'] = true,
 	['resurrect'] = true,
 	['sapped'] = true,
 	['buff'] = true,
-	['emergency'] = true,
-		['lowHealth'] = 0.5,
-		['lowMana'] = 0.3,
+
 }
 
 C['inventory'] = {
@@ -199,6 +208,9 @@ C['unitframe'] = {
 		['dispellable'] = true,
 		['debuffbyPlayer'] = true,
 		['rangeCheck'] = true,
+
+		['comboPoints'] = true,
+			['comboPointsHeight'] = 4,
 
 		['clickCast'] = true,
 			['clickCastfilter'] = false,
