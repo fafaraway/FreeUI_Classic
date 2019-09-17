@@ -237,12 +237,11 @@ tags['free:classification'] = function(unit)
 	if(class == 'elite') then
 		return '|cffCC3300+|r'
 	elseif(class == 'rare') then
-		return '|cffFF99FFRare|r'
+		return '|cffFF99FFR|r'
 	elseif(class == 'rareelite') then
-		return '|cffFF0099Rare+|r'
+		return '|cffFF0099R+|r'
 	elseif(class == 'worldboss') then
-		--return '|cffff2735Boss|r'
-		return ''
+		return '|cffff2735B|r'
 	elseif(class == 'minus') then
 		return '|cff888888-|r'
 	end
