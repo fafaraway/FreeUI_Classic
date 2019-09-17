@@ -1,7 +1,10 @@
 local F, C, L = unpack(select(2, ...))
 local TOOLTIP = F:GetModule('Tooltip')
 
-local strmatch, format, tonumber, select = string.match, string.format, tonumber, select
+
+local strmatch, format, tonumber, select, type, strfind = string.match, string.format, tonumber, select, type, string.find
+local MerchantFrame = MerchantFrame
+local GetMouseFocus, GetItemInfo = GetMouseFocus, GetItemInfo
 local UnitAura, GetItemCount, GetItemInfo, GetUnitName, GetCurrencyListLink = UnitAura, GetItemCount, GetItemInfo, GetUnitName, GetCurrencyListLink
 local BAGSLOT, BANK = BAGSLOT, BANK
 
@@ -23,9 +26,9 @@ function TOOLTIP:AddLineForID(id, linkType, noadd)
 		local text = line:GetText()
 		if text and text == linkType then return end
 	end
-	if not noadd and IsShiftKeyDown() then self:AddLine(' ') end
+	if not noadd and IsAltKeyDown() then self:AddLine(' ') end
 
-	if IsShiftKeyDown() then
+	if IsAltKeyDown() then
 		self:AddDoubleLine(linkType, format(C.InfoColor..'%s|r', id))
 	end
 
@@ -33,19 +36,35 @@ function TOOLTIP:AddLineForID(id, linkType, noadd)
 		local bagCount = GetItemCount(id)
 		local bankCount = GetItemCount(id, true) - GetItemCount(id)
 		local itemStackCount = select(8, GetItemInfo(id))
-		local itemSellPrice = select(11, GetItemInfo(id))
 
-		if bankCount > 0 and IsShiftKeyDown() then
+		if bankCount > 0 and IsAltKeyDown() then
 			self:AddDoubleLine(BAGSLOT..'/'..BANK..':', C.InfoColor..bagCount..'/'..bankCount)
-		elseif bagCount > 0 and IsShiftKeyDown() then
+		elseif bagCount > 0 and IsAltKeyDown() then
 			self:AddDoubleLine(BAGSLOT..':', C.InfoColor..bagCount)
 		end
-		if itemStackCount and itemStackCount > 1 and IsShiftKeyDown() then
+		if itemStackCount and itemStackCount > 1 and IsAltKeyDown() then
 			self:AddDoubleLine(L['TOOLTIP_STACK_CAP']..':', C.InfoColor..itemStackCount)
 		end
 
-		if itemSellPrice and itemSellPrice ~= 0 and IsShiftKeyDown() then
-			self:AddDoubleLine(L['TOOLTIP_SELL_PRICE']..':', '|cffffffff'..GetMoneyString(itemSellPrice)..'|r')
+		local container = GetMouseFocus()
+		if container and container.GetName then
+			local name = container:GetName() or ''
+			local itemLink = select(2, self:GetItem())
+			if itemLink then
+				local itemSellPrice = select(11, GetItemInfo(itemLink))
+				if itemSellPrice and itemSellPrice > 0 and IsAltKeyDown() then
+					local name = container:GetName()
+					local object = container:GetObjectType()
+					local count
+					if object == 'Button' then
+						count = container.count
+					elseif object == 'CheckButton' then
+						count = container.count or tonumber(container.Count:GetText())
+					end
+					local vendorPrice = (type(count) == 'number' and count or 1) * itemSellPrice
+					self:AddDoubleLine(L['TOOLTIP_SELL_PRICE']..':', '|cffffffff'..GetMoneyString(vendorPrice)..'|r')
+				end
+			end
 		end
 	end
 
