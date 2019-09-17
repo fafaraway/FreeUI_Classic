@@ -21,7 +21,7 @@ function module:AddPowerBar(self)
 	power:SetPoint('RIGHT')
 	power:SetPoint('TOP', self.Health, 'BOTTOM', 0, -C.Mult)
 	power:SetStatusBarTexture(C.media.sbTex)
-	power:SetHeight(cfg.power_height*C.Mult)
+	power:SetHeight(cfg.powerHeight*C.Mult)
 	F.SmoothBar(power)
 	power.frequentUpdates = true
 

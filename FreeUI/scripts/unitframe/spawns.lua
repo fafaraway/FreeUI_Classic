@@ -22,6 +22,7 @@ local function CreatePlayerStyle(self)
 	UNITFRAME:AddStatusIndicator(self)
 	UNITFRAME:AddPVPText(self)
 	UNITFRAME:AddComboPointsBar(self)
+	UNITFRAME:AddEnergyTicker(self)
 end
 
 local function CreatePetStyle(self)

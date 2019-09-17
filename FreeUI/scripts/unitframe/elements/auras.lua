@@ -443,7 +443,7 @@ function UNITFRAME:AddDebuffs(self)
 	else
 		debuffs.initialAnchor = 'CENTER'
 		debuffs['growth-x'] = 'RIGHT'
-		debuffs:SetPoint('BOTTOM', 0, cfg.power_height - 1)
+		debuffs:SetPoint('BOTTOM', 0, cfg.powerHeight - 1)
 		debuffs.size = 16
 		debuffs.num = 2
 		debuffs.disableCooldown = true

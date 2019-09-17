@@ -209,15 +209,14 @@ C['unitframe'] = {
 		['debuffbyPlayer'] = true,
 		['rangeCheck'] = true,
 
+		['powerHeight'] = 4,
+		['energyTicker'] = true,
 		['comboPoints'] = true,
 			['comboPointsHeight'] = 4,
 
 		['clickCast'] = true,
 			['clickCastfilter'] = false,
 
-		['power_height'] = 3,
-		['altpower_height'] = 2,
-		
 		['enableCastbar'] = true,
 			['castbar_separatePlayer'] = false,
 			['castbar_CastingColor'] = {110/255, 176/255, 216/255},

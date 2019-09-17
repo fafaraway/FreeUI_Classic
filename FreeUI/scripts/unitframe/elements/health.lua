@@ -56,8 +56,8 @@ function module:AddHealthBar(self)
 	health:SetPoint('TOP')
 	health:SetPoint('LEFT')
 	health:SetPoint('RIGHT')
-	health:SetPoint('BOTTOM', 0, C.Mult + cfg.power_height)
-	health:SetHeight(self:GetHeight() - cfg.power_height - C.Mult)
+	health:SetPoint('BOTTOM', 0, C.Mult + cfg.powerHeight)
+	health:SetHeight(self:GetHeight() - cfg.powerHeight - C.Mult)
 	F.SmoothBar(health)
 	health.frequentUpdates = true
 
