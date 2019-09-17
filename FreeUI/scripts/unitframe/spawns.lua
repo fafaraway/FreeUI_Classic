@@ -21,6 +21,7 @@ local function CreatePlayerStyle(self)
 	UNITFRAME:AddRaidTargetIndicator(self)
 	UNITFRAME:AddStatusIndicator(self)
 	UNITFRAME:AddPVPText(self)
+	UNITFRAME:AddComboPointsBar(self)
 end
 
 local function CreatePetStyle(self)
