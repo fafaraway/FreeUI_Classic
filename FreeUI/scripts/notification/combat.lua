@@ -29,7 +29,7 @@ combatAlert.bg:SetTexture([[Interface\LevelUp\LevelUpTex]])
 combatAlert.bg:SetPoint('BOTTOM')
 combatAlert.bg:SetSize(326, 103)
 combatAlert.bg:SetTexCoord(0.00195313, 0.63867188, 0.03710938, 0.23828125)
-combatAlert.bg:SetVertexColor(1, 0, 0, 1)
+combatAlert.bg:SetVertexColor(0, 0, 0, .75)
 
 combatAlert.lineTop = combatAlert:CreateTexture(nil, 'BACKGROUND')
 combatAlert.lineTop:SetDrawLayer('BACKGROUND', 2)
@@ -38,12 +38,14 @@ combatAlert.lineTop:SetPoint('TOP')
 combatAlert.lineTop:SetSize(418, 7)
 combatAlert.lineTop:SetTexCoord(0.00195313, 0.81835938, 0.01953125, 0.03320313)
 
+
 combatAlert.lineBottom = combatAlert:CreateTexture(nil, 'BACKGROUND')
 combatAlert.lineBottom:SetDrawLayer('BACKGROUND', 2)
 combatAlert.lineBottom:SetTexture([[Interface\LevelUp\LevelUpTex]])
 combatAlert.lineBottom:SetPoint('BOTTOM')
 combatAlert.lineBottom:SetSize(418, 7)
 combatAlert.lineBottom:SetTexCoord(0.00195313, 0.81835938, 0.01953125, 0.03320313)
+
 
 combatAlert.text = F.CreateFS(combatAlert, {C.font.damage, 40}, '', 'yellow', {0, 0, 0, 0, 2, -2}, 'BOTTOM', 0, 12)
 combatAlert.text:SetJustifyH('CENTER')
@@ -68,13 +70,19 @@ combatAlert:SetScript('OnShow', function(self)
 	end)
 end)
 
-local function showAlert(text)
+local function showAlert(color, text)
+	combatAlert.lineTop:SetVertexColor(color[1], color[2], color[3], color[4])
+	combatAlert.lineBottom:SetVertexColor(color[1], color[2], color[3], color[4])
 	CombatAlert.text:SetText(text)
+	
 	CombatAlert:Show()
 end
 
-local function showSpecialAlert(name, spell)
+local function showSpecialAlert(color, name, spell)
+	combatAlert.lineTop:SetVertexColor(color[1], color[2], color[3], color[4])
+	combatAlert.lineBottom:SetVertexColor(color[1], color[2], color[3], color[4])
 	CombatAlert.text:SetText(L['NOTIFICATION_INTERRUPTED']..name..' '..spell)
+
 	CombatAlert:Show()
 end
 
@@ -118,7 +126,7 @@ function NOTIFICATION:CombatAlert()
 			if not cfg.enterCombat then return end
 
 			-- enter combat alert
-			showAlert(C.InfoColor..L['NOTIFICATION_ENTER_COMBAT'])
+			showAlert({1, 0, 0, .75}, C.RedColor..L['NOTIFICATION_ENTER_COMBAT'])
 			flag = 0
 		end
 
@@ -126,7 +134,7 @@ function NOTIFICATION:CombatAlert()
 			if not cfg.enterCombat then return end
 
 			-- leave combat alert
-			showAlert(C.GreenColor..L['NOTIFICATION_LEAVE_COMBAT'])
+			showAlert({0, 1, 0, .75}, C.GreenColor..L['NOTIFICATION_LEAVE_COMBAT'])
 			flag = 0
 		end
 
@@ -142,7 +150,7 @@ function NOTIFICATION:CombatAlert()
 					PlaySoundFile(lowHPSound)
 				end
 
-				showAlert(C.RedColor..L['NOTIFICATION_LOW_HEALTH'])
+				showAlert({1, 0, 0, .75}, C.RedColor..L['NOTIFICATION_LOW_HEALTH'])
 				flag = 1
 			-- execute alert
 			elseif isTarget and isBoss and canAttack and isTargetAlive and isExeClass and isExeHP and flag == 0 then
@@ -150,7 +158,7 @@ function NOTIFICATION:CombatAlert()
 					PlaySoundFile(executeSound)
 				end
 
-				showAlert(C.OrangeColor..L['NOTIFICATION_EXECUTE_PHASE'])
+				showAlert({.9, .4, .2, .75}, C.OrangeColor..L['NOTIFICATION_EXECUTE_PHASE'])
 				flag = 1
 			end
 		end
@@ -162,7 +170,7 @@ function NOTIFICATION:CombatAlert()
 					PlaySoundFile(lowMPSound)
 				end
 
-		  		showAlert(C.BlueColor..L['NOTIFICATION_LOW_MANA'])
+		  		showAlert({.3, .6, .8, .75}, C.BlueColor..L['NOTIFICATION_LOW_MANA'])
 				flag = 1
 			end
 		end
@@ -177,7 +185,7 @@ function NOTIFICATION:CombatAlert()
 			-- interrupt alert
 			if eventType == 'SPELL_INTERRUPT' and ((sourceGUID == UnitGUID('player')) or (sourceGUID == UnitGUID('pet'))) then
 				if cfg.interruptAlert then
-					showSpecialAlert(destName, extraskillName)
+					showSpecialAlert({.7, .3, .8, .75}, destName, extraskillName)
 				end
 
 				if cfg.interruptAnnounce and inInstance and IsInGroup() then
@@ -192,7 +200,7 @@ function NOTIFICATION:CombatAlert()
 			-- dispel alert
 			if eventType == 'SPELL_DISPEL' and ((sourceGUID == UnitGUID('player')) or (sourceGUID == UnitGUID('pet'))) then
 				if cfg.dispelAlert then
-					showSpecialAlert(destName, extraskillName)
+					showSpecialAlert({.7, .3, .8, .75}, destName, extraskillName)
 				end
 
 				if cfg.dispelAnnounce and inInstance and IsInGroup() then

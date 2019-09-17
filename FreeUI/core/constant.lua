@@ -41,6 +41,7 @@ C.RedColor = '|cffd30e45'
 C.GreenColor = '|cff169244'
 C.BlueColor = '|cff4b92cc'
 C.OrangeColor = '|cffe86132'
+C.PurpleColor = '|cffd6a2e8'
 
 C.LineString = C.GreyColor..'---------------'
 C.LeftButton = ' |TInterface\\TUTORIALFRAME\\UI-TUTORIAL-FRAME:13:11:0:-1:512:512:12:66:230:307|t '
