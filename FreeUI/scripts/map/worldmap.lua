@@ -134,7 +134,19 @@ function MAP:WorldMapScale()
 	F.CreateMF(WorldMapFrame, nil, true)
 	self.UpdateMapScale(WorldMapFrame)
 	hooksecurefunc(WorldMapFrame, 'HandleUserActionToggleSelf', self.UpdateMapAnchor)
+	
+	-- Default elements
 	WorldMapFrame.BlackoutFrame:Hide()
+	WorldMapFrame:SetFrameStrata('MEDIUM')
+	WorldMapFrame.BorderFrame:SetFrameStrata('MEDIUM')
+	WorldMapFrame.BorderFrame:SetFrameLevel(1)
+	WorldMapFrame:SetAttribute('UIPanelLayout-area', 'center')
+	WorldMapFrame:SetAttribute('UIPanelLayout-enabled', false)
+	WorldMapFrame:SetAttribute('UIPanelLayout-allowOtherPanels', true)
+	WorldMapFrame.HandleUserActionToggleSelf = function()
+		if WorldMapFrame:IsShown() then WorldMapFrame:Hide() else WorldMapFrame:Show() end
+	end
+	tinsert(UISpecialFrames, 'WorldMapFrame')
 end
 
 local function isMouseOverMap()
