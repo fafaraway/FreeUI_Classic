@@ -37,8 +37,10 @@ C.r, C.g, C.b = C.ClassColors[C.Class].r, C.ClassColors[C.Class].g, C.ClassColor
 C.MyColor = format('|cff%02x%02x%02x', C.r*255, C.g*255, C.b*255)
 C.InfoColor = '|cffe9c55d'
 C.GreyColor = '|cff808080'
-C.RedColor = '|cffff2735'
-C.GreenColor = '|cff3a9d36'
+C.RedColor = '|cffd30e45'
+C.GreenColor = '|cff169244'
+C.BlueColor = '|cff4b92cc'
+C.OrangeColor = '|cffe86132'
 
 C.LineString = C.GreyColor..'---------------'
 C.LeftButton = ' |TInterface\\TUTORIALFRAME\\UI-TUTORIAL-FRAME:13:11:0:-1:512:512:12:66:230:307|t '
