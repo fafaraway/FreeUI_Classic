@@ -295,7 +295,7 @@ function MISC:ColorPicker()
 		-- label
 		local label = box:CreateFontString('ColorPPBoxLabel'..rgb, 'ARTWORK', 'GameFontNormalSmall')
 		label:SetTextColor(1, 1, 1)
-		F.SetFS(label)
+		F.SetFS(label, 'pixel')
 		label:SetPoint('RIGHT', 'ColorPPBox'..rgb, 'LEFT', -5, 0)
 		if i == 4 then
 			label:SetText('#')
@@ -327,11 +327,11 @@ function MISC:ColorPicker()
 	ColorPPBoxG:SetPoint('RIGHT', 'ColorPPBoxB', 'LEFT', -25, 0)
 	ColorPPBoxR:SetPoint('RIGHT', 'ColorPPBoxG', 'LEFT', -25, 0)
 
-	F.SetFS(ColorPPBoxR)
-	F.SetFS(ColorPPBoxG)
-	F.SetFS(ColorPPBoxB)
-	F.SetFS(ColorPPBoxH)
-	F.SetFS(ColorPPBoxA)
+	F.SetFS(ColorPPBoxR, 'pixel')
+	F.SetFS(ColorPPBoxG, 'pixel')
+	F.SetFS(ColorPPBoxB, 'pixel')
+	F.SetFS(ColorPPBoxH, 'pixel')
+	F.SetFS(ColorPPBoxA, 'pixel')
 
 	-- define the order of tab cursor movement
 	ColorPPBoxR:SetScript('OnTabPressed', function(self) ColorPPBoxG:SetFocus() end)
