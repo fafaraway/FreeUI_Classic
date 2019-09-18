@@ -106,19 +106,20 @@ C['notification'] = {
 			['dispelAnnounce'] = true,
 			['dispelSound'] = true,
 		['execute'] = true,
+			['executeAlert'] = true,
 			['executeSound'] = true,
 			['executeThreshold']= 0.2,
 		['emergency'] = true,
+			['lowHPAlert'] = true,
 			['lowHPSound'] = true,
 			['lowHPThreshold'] = 0.5,
+			['lowMPAlert'] = true,
 			['lowMPSound'] = true,
 			['lowMPThreshold'] = 0.3,
 
 	['vitalSpells'] = true,
 	['resurrect'] = true,
 	['sapped'] = true,
-	['buff'] = true,
-
 }
 
 C['inventory'] = {

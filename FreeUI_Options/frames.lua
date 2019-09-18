@@ -261,6 +261,75 @@ do
 	local alert = ns.addSubCategory(notification, ns.localization.notification_subCategory_combat)
 	alert:SetPoint('TOPLEFT', autoSellJunk, 'BOTTOMLEFT', -16, -16)
 
+	local enterCombat = ns.CreateCheckBox(notification, 'enterCombat')
+	enterCombat:SetPoint('TOPLEFT', alert, 'BOTTOMLEFT', 0, -8)
+
+	local sapped = ns.CreateCheckBox(notification, 'sapped')
+	sapped:SetPoint('LEFT', enterCombat, 'RIGHT', 160, 0)
+
+	local vitalSpells = ns.CreateCheckBox(notification, 'vitalSpells')
+	vitalSpells:SetPoint('TOPLEFT', enterCombat, 'BOTTOMLEFT', 0, -8)
+
+	local resurrect = ns.CreateCheckBox(notification, 'resurrect')
+	resurrect:SetPoint('LEFT', vitalSpells, 'RIGHT', 160, 0)
+
+	local interrupt = ns.CreateCheckBox(notification, 'interrupt')
+	interrupt:SetPoint('TOPLEFT', vitalSpells, 'BOTTOMLEFT', 0, -8)
+
+	local interruptAlert = ns.CreateCheckBox(notification, 'interruptAlert')
+	interruptAlert:SetPoint('TOPLEFT', interrupt, 'BOTTOMLEFT', 16, -8)
+
+	local interruptSound = ns.CreateCheckBox(notification, 'interruptSound')
+	interruptSound:SetPoint('TOPLEFT', interruptAlert, 'BOTTOMLEFT', 0, -8)
+
+	local interruptAnnounce = ns.CreateCheckBox(notification, 'interruptAnnounce')
+	interruptAnnounce:SetPoint('TOPLEFT', interruptSound, 'BOTTOMLEFT', 0, -8)
+
+	interrupt.children = {interruptAlert, interruptSound, interruptAnnounce}
+
+	local dispel = ns.CreateCheckBox(notification, 'dispel')
+	dispel:SetPoint('LEFT', interrupt, 'RIGHT', 160, 0)
+
+	local dispelAlert = ns.CreateCheckBox(notification, 'dispelAlert')
+	dispelAlert:SetPoint('TOPLEFT', dispel, 'BOTTOMLEFT', 16, -8)
+
+	local dispelSound = ns.CreateCheckBox(notification, 'dispelSound')
+	dispelSound:SetPoint('TOPLEFT', dispelAlert, 'BOTTOMLEFT', 0, -8)
+
+	local dispelAnnounce = ns.CreateCheckBox(notification, 'dispelAnnounce')
+	dispelAnnounce:SetPoint('TOPLEFT', dispelSound, 'BOTTOMLEFT', 0, -8)
+
+	dispel.children = {dispelAlert, dispelSound, dispelAnnounce}
+
+	local emergency = ns.CreateCheckBox(notification, 'emergency')
+	emergency:SetPoint('TOPLEFT', interruptAnnounce, 'BOTTOMLEFT', -16, -8)
+
+	local lowHPAlert = ns.CreateCheckBox(notification, 'lowHPAlert')
+	lowHPAlert:SetPoint('TOPLEFT', emergency, 'BOTTOMLEFT', 16, -8)
+
+	local lowHPSound = ns.CreateCheckBox(notification, 'lowHPSound')
+	lowHPSound:SetPoint('TOPLEFT', lowHPAlert, 'BOTTOMLEFT', 0, -8)
+
+	local lowMPAlert = ns.CreateCheckBox(notification, 'lowMPAlert')
+	lowMPAlert:SetPoint('TOPLEFT', lowHPSound, 'BOTTOMLEFT', 0, -8)
+
+	local lowMPSound = ns.CreateCheckBox(notification, 'lowMPSound')
+	lowMPSound:SetPoint('TOPLEFT', lowMPAlert, 'BOTTOMLEFT', 0, -8)
+
+	emergency.children = {lowHPAlert, lowHPSound, lowMPAlert, lowMPSound}
+
+	local execute = ns.CreateCheckBox(notification, 'execute')
+	execute:SetPoint('LEFT', emergency, 'RIGHT', 160, 0)
+
+	local executeAlert = ns.CreateCheckBox(notification, 'executeAlert')
+	executeAlert:SetPoint('TOPLEFT', execute, 'BOTTOMLEFT', 16, -8)
+
+	local executeSound = ns.CreateCheckBox(notification, 'executeSound')
+	executeSound:SetPoint('TOPLEFT', executeAlert, 'BOTTOMLEFT', 0, -8)
+
+	execute.children = {executeAlert, executeSound}
+
+
 	--[[local interrupt = ns.CreateCheckBox(notification, 'interrupt')
 	interrupt:SetPoint('TOPLEFT', alert, 'BOTTOMLEFT', 0, -8)
 

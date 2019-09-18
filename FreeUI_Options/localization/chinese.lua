@@ -97,24 +97,54 @@ L.notification_autoRepair_tooltip = "自动修理装备后触发通知框提示�
 L.notification_autoSellJunk = "自动出售垃圾"
 L.notification_autoSellJunk_tooltip = "自动出售垃圾物品后触发通知框提示获得金币。"
 L.notification_subCategory_combat = "战斗相关"
+L.notification_enterCombat = "进入战斗"
+L.notification_enterCombat_tooltip = "进入/离开战斗时显示提示。"
 L.notification_interrupt = "打断"
-L.notification_interrupt_tooltip = "成功打断时播放声音提示。"
+L.notification_interrupt_tooltip = "打断。"
+L.notification_interruptAlert = "提示"
+L.notification_interruptAlert_tooltip = "成功打断时显示提示。"
+L.notification_interruptSound = "声音"
+L.notification_interruptSound_tooltip = "成功打断时播放声音提示。"
 L.notification_interruptAnnounce = "通知"
 L.notification_interruptAnnounce_tooltip = "成功打断时说话通知队友（只在副本中启用）。"
 L.notification_dispel = "驱散"
-L.notification_dispel_tooltip = "成功驱散时播放声音提示。"
+L.notification_dispel_tooltip = "驱散。"
+L.notification_dispelAlert = "提示"
+L.notification_dispelAlert_tooltip = "成功驱散时显示提示。"
+L.notification_dispelSound = "声音"
+L.notification_dispelSound_tooltip = "成功驱散时播放声音提示。"
 L.notification_dispelAnnounce = "通知"
 L.notification_dispelAnnounce_tooltip = "成功驱散时说话通知队友（只在副本中启用）。"
+
+
+
+L.notification_emergency = "紧急状态"
+L.notification_emergency_tooltip = "紧急状态。"
+L.notification_lowHPAlert = "低血量提示"
+L.notification_lowHPAlert_tooltip = "低血量时显示提示。"
+L.notification_lowHPSound = "低血量声音警告"
+L.notification_lowHPSound_tooltip = "低血量时播放声音警告。"
+L.notification_lowMPAlert = "低蓝量提示"
+L.notification_lowMPAlert_tooltip = "低蓝量时显示提示。"
+L.notification_lowMPSound = "低蓝量声音警告"
+L.notification_lowMPSound_tooltip = "低蓝量时播放声音警告。"
+
+L.notification_execute = "斩杀"
+L.notification_execute_tooltip = "斩杀。"
+L.notification_executeAlert = "斩杀提示"
+L.notification_executeAlert_tooltip = "进入斩杀阶段时显示提示。"
+L.notification_executeSound = "斩杀声音警告"
+L.notification_executeSound_tooltip = "进入斩杀阶段时播放声音警告。"
+
+
+
 L.notification_vitalSpells = "技能/事件"
 L.notification_vitalSpells_tooltip = "通告一些重要的技能/事件（食物/大餐/传送门/修理机器人）。"
 L.notification_resurrect = "战复"
 L.notification_resurrect_tooltip = "通告战复相关信息。"
 L.notification_sapped = "闷棍"
 L.notification_sapped_tooltip = "被闷棍时通告队友。"
-L.notification_emergency = "玩家状态"
-L.notification_emergency_tooltip = "玩家血量/蓝量低于特定值时报警。"
-L.notification_lowHealth = "血量阈值"
-L.notification_lowMana = "蓝量阈值"
+
 
 
 

@@ -114,14 +114,53 @@ L.notification_autoRepair_tooltip = "Show a notification when you finished autom
 L.notification_autoSellJunk = "Auto sell junk"
 L.notification_autoSellJunk_tooltip = "Show a notification when you finished automatically sell junks."
 L.notification_subCategory_combat = "Combat"
+
+
+
+L.notification_enterCombat = "Enter combat"
+L.notification_enterCombat_tooltip = "Shows alert when you enter or leave combat."
+
 L.notification_interrupt = "Interrupt"
-L.notification_interrupt_tooltip = "Play a sound when you successfully interrupt."
+L.notification_interrupt_tooltip = "Interrupt."
+L.notification_interruptAlert = "Alert"
+L.notification_interruptAlert_tooltip = "Shows alert when you successfully interrupt."
+L.notification_interruptSound = "Sound"
+L.notification_interruptSound_tooltip = "Plays a sound when you successfully interrupt."
 L.notification_interruptAnnounce = "Announcement"
-L.notification_interruptAnnounce_tooltip = "Announce when you successfully interrupt, only inside dungeons."
+L.notification_interruptAnnounce_tooltip = "Announce when you successfully interrupt(only inside dungeons)."
+
 L.notification_dispel = "Dispel"
-L.notification_dispel_tooltip = "Play a sound when you successfully dispel."
+L.notification_dispel_tooltip = "Dispel."
+L.notification_dispelAlert = "Alert"
+L.notification_dispelAlert_tooltip = "Shows alert when you successfully dispel."
+L.notification_dispelSound = "Sound"
+L.notification_dispelSound_tooltip = "Plays a sound when you successfully dispel."
 L.notification_dispelAnnounce = "Announcement"
-L.notification_dispelAnnounce_tooltip = "Announce when you successfully dispel, only inside dungeons."
+L.notification_dispelAnnounce_tooltip = "Announce when you successfully dispel(only inside dungeons)."
+
+
+L.notification_emergency = "Emergency"
+L.notification_emergency_tooltip = "Emergency."
+L.notification_lowHPAlert = "Low health alert"
+L.notification_lowHPAlert_tooltip = "Shows alert when your health is low."
+L.notification_lowHPSound = "Low health sound"
+L.notification_lowHPSound_tooltip = "Plays a sound when your health is low."
+L.notification_lowMPAlert = "Low mana alert"
+L.notification_lowMPAlert_tooltip = "Shows alert when your mana is low."
+L.notification_lowMPSound = "Low mana sound"
+L.notification_lowMPSound_tooltip = "Plays a sound when your mana is low."
+
+L.notification_execute = "斩杀"
+L.notification_execute_tooltip = "斩杀。"
+L.notification_executeAlert = "斩杀提示"
+L.notification_executeAlert_tooltip = "进入斩杀阶段时显示提示。"
+L.notification_executeSound = "斩杀声音警告"
+L.notification_executeSound_tooltip = "进入斩杀阶段时播放声音警告。"
+
+
+
+
+
 L.notification_vitalSpells = "Vital spells"
 L.notification_vitalSpells_tooltip = "Announce some important spells."
 L.notification_resurrect = "Battle resurrect"

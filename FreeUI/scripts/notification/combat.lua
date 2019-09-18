@@ -145,20 +145,20 @@ function NOTIFICATION:CombatAlert()
 
 		if event == 'UNIT_HEALTH' or event == 'UNIT_MAXHEALTH' then
 			-- low health alert
-			if isPlayer and isPlayerAlive and isLowHP and flag == 0 then
-				--[[if cfg.emergency and cfg.lowHPSound then
-					PlaySoundFile(lowHPSound)
-				end--]]
-
+			if cfg.emergency and cfg.lowHPAlert and isPlayer and isPlayerAlive and isLowHP and flag == 0 then
 				showAlert({201/255, 10/255, 28/255, .75}, C.RedColor..L['NOTIFICATION_LOW_HEALTH'])
+				
 				flag = 1
+			end
+
 			-- execute alert
-			elseif isTarget and isBoss and canAttack and isTargetAlive and isExeClass and isExeHP and flag == 0 then
-				if cfg.execute and cfg.executeSound then
+			if cfg.execute and cfg.executeAlert and isTarget and isBoss and canAttack and isTargetAlive and isExeClass and isExeHP and flag == 0 then
+				showAlert({232/255, 97/255, 50/255, .75}, C.OrangeColor..L['NOTIFICATION_EXECUTE_PHASE'])
+
+				if cfg.executeSound then
 					PlaySoundFile(executeSound)
 				end
 
-				showAlert({232/255, 97/255, 50/255, .75}, C.OrangeColor..L['NOTIFICATION_EXECUTE_PHASE'])
 				flag = 1
 			end
 		end
@@ -226,7 +226,10 @@ function NOTIFICATION:Emergency()
 			if (UnitHealth('player') / UnitHealthMax('player')) < cfg.lowHPThreshold then
 				if not playedHp then
 					playedHp = true
-					PlaySoundFile(lowHPSound)
+
+					if cfg.emergency and cfg.lowHPSound then
+						PlaySoundFile(lowHPSound)
+					end
 				end
 			else
 				playedHp = false
@@ -235,7 +238,10 @@ function NOTIFICATION:Emergency()
 			if (UnitPower('player') / UnitPowerMax('player')) < cfg.lowMPThreshold then
 				if not playedMp then
 					playedMp = true
-					PlaySoundFile(lowMPSound)
+
+					if cfg.emergency and cfg.lowMPSound then
+						PlaySoundFile(lowMPSound)
+					end
 				end
 			else
 				playedMp = false
