@@ -98,9 +98,11 @@ C['notification'] = {
 	['combatAlert'] = true,
 		['enterCombat']	= true,
 		['interrupt'] = true,
+			['interruptAlert'] = true,
 			['interruptAnnounce'] = true,
 			['interruptSound'] = true,
 		['dispel'] = true,
+			['dispelAlert'] = true,
 			['dispelAnnounce'] = true,
 			['dispelSound'] = true,
 		['execute'] = true,
@@ -206,7 +208,7 @@ C['unitframe'] = {
 		['portrait'] = true,
 
 		['dispellable'] = true,
-		['debuffbyPlayer'] = true,
+		['debuffbyPlayer'] = false,
 		['rangeCheck'] = true,
 
 		['powerHeight'] = 4,

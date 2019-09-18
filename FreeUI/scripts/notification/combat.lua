@@ -126,7 +126,7 @@ function NOTIFICATION:CombatAlert()
 			if not cfg.enterCombat then return end
 
 			-- enter combat alert
-			showAlert({1, 0, 0, .75}, C.RedColor..L['NOTIFICATION_ENTER_COMBAT'])
+			showAlert({233/255, 197/255, 93/255, .75}, C.InfoColor..L['NOTIFICATION_ENTER_COMBAT'])
 			flag = 0
 		end
 
@@ -134,7 +134,7 @@ function NOTIFICATION:CombatAlert()
 			if not cfg.enterCombat then return end
 
 			-- leave combat alert
-			showAlert({0, 1, 0, .75}, C.GreenColor..L['NOTIFICATION_LEAVE_COMBAT'])
+			showAlert({142/255, 218/255, 98/255, .75}, C.GreenColor..L['NOTIFICATION_LEAVE_COMBAT'])
 			flag = 0
 		end
 
@@ -146,19 +146,19 @@ function NOTIFICATION:CombatAlert()
 		if event == 'UNIT_HEALTH' or event == 'UNIT_MAXHEALTH' then
 			-- low health alert
 			if isPlayer and isPlayerAlive and isLowHP and flag == 0 then
-				if cfg.lowHPSound then
+				--[[if cfg.emergency and cfg.lowHPSound then
 					PlaySoundFile(lowHPSound)
-				end
+				end--]]
 
-				showAlert({1, 0, 0, .75}, C.RedColor..L['NOTIFICATION_LOW_HEALTH'])
+				showAlert({201/255, 10/255, 28/255, .75}, C.RedColor..L['NOTIFICATION_LOW_HEALTH'])
 				flag = 1
 			-- execute alert
 			elseif isTarget and isBoss and canAttack and isTargetAlive and isExeClass and isExeHP and flag == 0 then
-				if cfg.executeSound then
+				if cfg.execute and cfg.executeSound then
 					PlaySoundFile(executeSound)
 				end
 
-				showAlert({.9, .4, .2, .75}, C.OrangeColor..L['NOTIFICATION_EXECUTE_PHASE'])
+				showAlert({232/255, 97/255, 50/255, .75}, C.OrangeColor..L['NOTIFICATION_EXECUTE_PHASE'])
 				flag = 1
 			end
 		end
@@ -166,11 +166,11 @@ function NOTIFICATION:CombatAlert()
 		-- low mana alert
 		if event == 'UNIT_POWER_UPDATE' or event == 'UNIT_MAXPOWER' then
 			if isPlayer and isMana and isLowMP and flag == 0 then
-				if cfg.lowMPSound then
+				--[[if cfg.emergency and cfg.lowMPSound then
 					PlaySoundFile(lowMPSound)
-				end
+				end--]]
 
-		  		showAlert({.3, .6, .8, .75}, C.BlueColor..L['NOTIFICATION_LOW_MANA'])
+		  		showAlert({112/255, 191/255, 225/255, .75}, C.BlueColor..L['NOTIFICATION_LOW_MANA'])
 				flag = 1
 			end
 		end
@@ -183,9 +183,9 @@ function NOTIFICATION:CombatAlert()
 			if not sourceGUID or sourceName == destName then return end
 
 			-- interrupt alert
-			if eventType == 'SPELL_INTERRUPT' and ((sourceGUID == UnitGUID('player')) or (sourceGUID == UnitGUID('pet'))) then
+			if cfg.interrupt and eventType == 'SPELL_INTERRUPT' and ((sourceGUID == UnitGUID('player')) or (sourceGUID == UnitGUID('pet'))) then
 				if cfg.interruptAlert then
-					showSpecialAlert({.7, .3, .8, .75}, destName, extraskillName)
+					showSpecialAlert({165/255, 113/255, 223/255, .75}, destName, extraskillName)
 				end
 
 				if cfg.interruptAnnounce and inInstance and IsInGroup() then
@@ -198,9 +198,9 @@ function NOTIFICATION:CombatAlert()
 			end
 
 			-- dispel alert
-			if eventType == 'SPELL_DISPEL' and ((sourceGUID == UnitGUID('player')) or (sourceGUID == UnitGUID('pet'))) then
+			if cfg.dispel and eventType == 'SPELL_DISPEL' and ((sourceGUID == UnitGUID('player')) or (sourceGUID == UnitGUID('pet'))) then
 				if cfg.dispelAlert then
-					showSpecialAlert({.7, .3, .8, .75}, destName, extraskillName)
+					showSpecialAlert({165/255, 113/255, 223/255, .75}, destName, extraskillName)
 				end
 
 				if cfg.dispelAnnounce and inInstance and IsInGroup() then
@@ -213,4 +213,38 @@ function NOTIFICATION:CombatAlert()
 			end
 		end
 	end)
+end
+
+function NOTIFICATION:Emergency()
+	if not cfg.emergency then return end
+
+	local f = CreateFrame('Frame')
+	f:SetScript('OnEvent', function(self, event, unit, pType)
+		if unit ~= 'player' then return end
+
+		if event == 'UNIT_HEALTH' or event == 'UNIT_MAXHEALTH' then
+			if (UnitHealth('player') / UnitHealthMax('player')) < cfg.lowHPThreshold then
+				if not playedHp then
+					playedHp = true
+					PlaySoundFile(lowHPSound)
+				end
+			else
+				playedHp = false
+			end
+		elseif (event == 'UNIT_POWER_UPDATE' or event == 'UNIT_MAXPOWER') and pType == 'MANA' then
+			if (UnitPower('player') / UnitPowerMax('player')) < cfg.lowMPThreshold then
+				if not playedMp then
+					playedMp = true
+					PlaySoundFile(lowMPSound)
+				end
+			else
+				playedMp = false
+			end
+		end
+	end)
+
+	f:RegisterEvent('UNIT_HEALTH')
+	f:RegisterEvent('UNIT_POWER_UPDATE')
+	f:RegisterEvent('UNIT_MAXHEALTH')
+	f:RegisterEvent('UNIT_MAXPOWER')
 end
