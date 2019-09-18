@@ -330,33 +330,7 @@ do
 	execute.children = {executeAlert, executeSound}
 
 
-	--[[local interrupt = ns.CreateCheckBox(notification, 'interrupt')
-	interrupt:SetPoint('TOPLEFT', alert, 'BOTTOMLEFT', 0, -8)
-
-	local interruptAnnounce = ns.CreateCheckBox(notification, 'interruptAnnounce')
-	interruptAnnounce:SetPoint('TOPLEFT', interrupt, 'BOTTOMLEFT', 16, -8)
-
-	interrupt.children = {interruptAnnounce}
-
-	local dispel = ns.CreateCheckBox(notification, 'dispel')
-	dispel:SetPoint('LEFT', interrupt, 'RIGHT', 160, 0)
-
-	local dispelAnnounce = ns.CreateCheckBox(notification, 'dispelAnnounce')
-	dispelAnnounce:SetPoint('TOPLEFT', dispel, 'BOTTOMLEFT', 16, -8)
-
-	dispel.children = {dispelAnnounce}
-
-	local vitalSpells = ns.CreateCheckBox(notification, 'vitalSpells')
-	vitalSpells:SetPoint('TOPLEFT', interruptAnnounce, 'BOTTOMLEFT', -16, -8)
-
-	local resurrect = ns.CreateCheckBox(notification, 'resurrect')
-	resurrect:SetPoint('LEFT', vitalSpells, 'RIGHT', 160, 0)
-
-	local sapped = ns.CreateCheckBox(notification, 'sapped')
-	sapped:SetPoint('TOPLEFT', vitalSpells, 'BOTTOMLEFT', 0, -8)
-
-	local emergency = ns.CreateCheckBox(notification, 'emergency')
-	emergency:SetPoint('TOPLEFT', sapped, 'BOTTOMLEFT', 0, -8)
+	--[[
 
 	local lowHealth = ns.CreateNumberSlider(notification, 'lowHealth', 0.1, 1, 0.1, 1, 0.1, true)
 	lowHealth:SetPoint('TOPLEFT', emergency, 'BOTTOMLEFT', 24, -24)
@@ -364,7 +338,7 @@ do
 	local lowMana = ns.CreateNumberSlider(notification, 'lowMana', 0.1, 1, 0.1, 1, 0.1, true)
 	lowMana:SetPoint('TOPLEFT', lowHealth, 'BOTTOMLEFT', 0, -32)
 
-	emergency.children = {lowHealth, lowMana}--]]
+	--]]
 end
 
 -- Infobar
@@ -554,6 +528,12 @@ do
 
 	local basic = ns.addSubCategory(aura, ns.localization.aura_subCategory_basic)
 	basic:SetPoint('TOPLEFT', aura.subText, 'BOTTOMLEFT', 0, -8)
+
+	local pixelFont = ns.CreateCheckBox(aura, 'pixelFont')
+	pixelFont:SetPoint('TOPLEFT', basic, 'BOTTOMLEFT', 0, -8)
+
+	local reminder = ns.CreateCheckBox(aura, 'reminder')
+	reminder:SetPoint('LEFT', pixelFont, 'RIGHT', 160, 0)
 end
 
 -- Unitframe

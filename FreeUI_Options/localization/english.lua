@@ -269,7 +269,12 @@ L.loot_fasterLoot_tooltip = "Instantly loot, no more waiting for the loot window
 
 
 L.aura = "Aura"
-L.aura_subText = "These options control auras."
+L.aura_subText = "These options control aura related settings."
+L.aura_subCategory_basic = "Basic"
+L.aura_pixelFont = "Pixel font"
+L.aura_pixelFont_tooltip = "Use pixel font on buff frame."
+L.aura_reminder = "Buff reminder"
+L.aura_reminder_tooltip = "Buffs reminder(stamina/intellect)."
 
 
 

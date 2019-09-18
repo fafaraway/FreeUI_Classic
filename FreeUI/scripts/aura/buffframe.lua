@@ -7,6 +7,7 @@ local BuffFrame = BuffFrame
 local buffsPerRow, buffSize, margin, offset = 10, 42, 6, 8
 local debuffsPerRow, debuffSize = 10, 50
 local parentFrame, buffAnchor, debuffAnchor
+local cfg = C.aura
 
 local function restyleIcons(bu, isDebuff)
 	if not bu or bu.styled then return end
@@ -26,13 +27,13 @@ local function restyleIcons(bu, isDebuff)
 	local duration = _G[name..'Duration']
 	duration:ClearAllPoints()
 	duration:SetPoint('TOP', bu, 'BOTTOM', 2, 2)
-	F.SetFS(duration, 'pixel')
+	F.SetFS(duration, (cfg.pixelFont and 'pixel') or {C.font.normal, 11, 'OUTLINE'})
 
 	local count = _G[name..'Count']
 	count:ClearAllPoints()
 	count:SetParent(bu)
 	count:SetPoint('TOPRIGHT', bu, 'TOPRIGHT', -1, -3)
-	F.SetFS(count, 'pixel')
+	F.SetFS(count, (cfg.pixelFont and 'pixel') or {C.font.normal, 11, 'OUTLINE'})
 
 	bu:SetSize(iconSize, iconSize)
 	bu.HL = bu:CreateTexture(nil, 'HIGHLIGHT')

@@ -245,7 +245,11 @@ L.loot_fasterLoot_tooltip = "加快拾取速度。"
 
 L.aura = "光环"
 L.aura_subText = "这些选项控制大部分和光环相关的设置。"
-
+L.aura_subCategory_basic = "基本设定"
+L.aura_pixelFont = "像素字体"
+L.aura_pixelFont_tooltip = "右上角的光环栏使用像素字体。"
+L.aura_reminder = "光环提醒"
+L.aura_reminder_tooltip = "提醒你缺失的光环(法师智力牧师耐力)。"
 
 
 L.quest = "任务"

@@ -318,5 +318,6 @@ C['loot'] = {
 }
 
 C['aura'] = {
+	['pixelFont'] = true,
 	['reminder'] = true,
 }
