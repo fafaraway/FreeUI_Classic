@@ -522,14 +522,17 @@ do
 	local rangeCheck = ns.CreateCheckBox(unitframe, 'rangeCheck')
 	rangeCheck:SetPoint('LEFT', dispellable, 'RIGHT', 160, 0)
 
-	local classPower = ns.CreateCheckBox(unitframe, 'classPower')
-	classPower:SetPoint('TOPLEFT', dispellable, 'BOTTOMLEFT', 0, -8)
+	local comboPoints = ns.CreateCheckBox(unitframe, 'comboPoints')
+	comboPoints:SetPoint('TOPLEFT', dispellable, 'BOTTOMLEFT', 0, -8)
 
-	local totems = ns.CreateCheckBox(unitframe, 'totems')
-	totems:SetPoint('LEFT', classPower, 'RIGHT', 160, 0)
+	local energyTicker = ns.CreateCheckBox(unitframe, 'energyTicker')
+	energyTicker:SetPoint('LEFT', comboPoints, 'RIGHT', 160, 0)
 
 	local clickCast = ns.CreateCheckBox(unitframe, 'clickCast')
-	clickCast:SetPoint('TOPLEFT', classPower, 'BOTTOMLEFT', 0, -8)
+	clickCast:SetPoint('TOPLEFT', comboPoints, 'BOTTOMLEFT', 0, -8)
+
+	local onlyShowPlayer = ns.CreateCheckBox(unitframe, 'onlyShowPlayer')
+	onlyShowPlayer:SetPoint('LEFT', clickCast, 'RIGHT', 160, 0)
 
 	local castbar = ns.addSubCategory(unitframe, ns.localization.unitframe_subCategory_castbar)
 	castbar:SetPoint('TOPLEFT', clickCast, 'BOTTOMLEFT', 0, -16)
@@ -576,9 +579,10 @@ do
 
 		dispellable:SetShown(shown)
 		rangeCheck:SetShown(shown)
-		classPower:SetShown(shown)
-		totems:SetShown(shown)
+		energyTicker:SetShown(shown)
+		onlyShowPlayer:SetShown(shown)
 		clickCast:SetShown(shown)
+		comboPoints:SetShown(shown)
 		
 		enableCastbar:SetShown(shown)
 		castbar_separatePlayer:SetShown(shown)

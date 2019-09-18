@@ -208,7 +208,7 @@ C['unitframe'] = {
 		['portrait'] = true,
 
 		['dispellable'] = true,
-		['debuffbyPlayer'] = false,
+		['onlyShowPlayer'] = false,
 		['rangeCheck'] = true,
 
 		['powerHeight'] = 4,
