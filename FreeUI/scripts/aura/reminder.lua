@@ -12,6 +12,8 @@ local ReminderBuffs = {
 	MAGE = {
 		{	spells = {
 				[1459] = true,
+				[8096] = true,  -- 智力卷轴
+				[23028] = true, -- 奥术光辉
 			},
 			depend = 1459,
 			combat = true,
@@ -22,6 +24,8 @@ local ReminderBuffs = {
 	PRIEST = {
 		{	spells = {
 				[1243] = true,
+				[8099] = true,  -- 耐力卷轴
+				[21562] = true, -- 坚韧祷言
 			},
 			depend = 1243,
 			combat = true,
@@ -34,11 +38,16 @@ local ReminderBuffs = {
 local groups = ReminderBuffs[C.Class]
 
 function AURA:Reminder_ConvertToName(cfg)
+	local cache = {}
 	for spellID in pairs(cfg.spells) do
 		local name = GetSpellInfo(spellID)
 		if name then
-			cfg.spells[name] = true
+			cache[name] = true
 		end
+	end
+	
+	for name in pairs(cache) do
+		cfg.spells[name] = true
 	end
 end
 
