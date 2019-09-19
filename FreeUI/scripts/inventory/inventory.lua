@@ -3,14 +3,14 @@ local INVENTORY = F:RegisterModule('Inventory')
 
 
 local cargBags = FreeUI.cargBags
-local ipairs, strmatch, unpack = ipairs, string.match, unpack
+local ipairs, strmatch, unpack, pairs, ceil = ipairs, string.match, unpack, pairs, math.ceil
 local BAG_ITEM_QUALITY_COLORS = BAG_ITEM_QUALITY_COLORS
 local LE_ITEM_QUALITY_POOR, LE_ITEM_QUALITY_RARE = LE_ITEM_QUALITY_POOR, LE_ITEM_QUALITY_RARE
 local LE_ITEM_CLASS_WEAPON, LE_ITEM_CLASS_ARMOR, LE_ITEM_CLASS_QUIVER = LE_ITEM_CLASS_WEAPON, LE_ITEM_CLASS_ARMOR, LE_ITEM_CLASS_QUIVER
-local GetContainerNumSlots, GetContainerItemInfo, PickupContainerItem = GetContainerNumSlots, GetContainerItemInfo, PickupContainerItem
+local GetContainerNumSlots, GetContainerItemInfo, PickupContainerItem, GetContainerItemID = GetContainerNumSlots, GetContainerItemInfo, PickupContainerItem, GetContainerItemID
 local C_NewItems_IsNewItem, C_Timer_After = C_NewItems.IsNewItem, C_Timer.After
 local IsControlKeyDown, IsAltKeyDown, DeleteCursorItem = IsControlKeyDown, IsAltKeyDown, DeleteCursorItem
-local SortBankBags, SortBags, InCombatLockdown = SortBankBags, SortBags, InCombatLockdown
+local SortBankBags, SortBags, InCombatLockdown, ClearCursor = SortBankBags, SortBags, InCombatLockdown, ClearCursor
 
 local sortCache = {}
 function INVENTORY:ReverseSort()
@@ -19,6 +19,7 @@ function INVENTORY:ReverseSort()
 		for slot = 1, numSlots do
 			local texture, _, locked = GetContainerItemInfo(bag, slot)
 			if (slot <= numSlots/2) and texture and not locked and not sortCache['b'..bag..'s'..slot] then
+				ClearCursor()
 				PickupContainerItem(bag, slot)
 				PickupContainerItem(bag, numSlots+1 - slot)
 				sortCache['b'..bag..'s'..slot] = true
@@ -145,10 +146,10 @@ function INVENTORY:CreateBagToggle()
 	bu:SetScript('OnClick', function()
 		ToggleFrame(self.BagBar)
 		if self.BagBar:IsShown() then
-			bu:SetBackdropBorderColor(1, 1, 1)
+			self.Icon:SetVertexColor(1, 0, 0, 1)
 			PlaySound(SOUNDKIT.IG_BACKPACK_OPEN)
 		else
-			bu:SetBackdropBorderColor(0, 0, 0)
+			self.Icon:SetVertexColor(1, 1, 1, 1)
 			PlaySound(SOUNDKIT.IG_BACKPACK_CLOSE)
 		end
 	end)
@@ -194,19 +195,28 @@ function INVENTORY:CreateDeleteButton()
 	bu:SetScript('OnClick', function(self)
 		deleteEnable = not deleteEnable
 		if deleteEnable then
-			self:SetBackdropBorderColor(1, 0, 0)
+			self.Icon:SetVertexColor(1, 0, 0, 1)
 			self.text = enabledText
-			UIErrorsFrame:AddMessage(C.RedColor..L['INVENTORY_DELETE_MODE_ENABLED'])
-			print(C.RedColor..L['INVENTORY_DELETE_MODE_ENABLED'])
+
+			print(C.RedColor..L['INVENTORY_DELETE_MODE_ENABLED_NOTIFY'])
+
+			if C.notification.enableBanner then
+				F.Notification(L['NOTIFICATION_BAG'], C.RedColor..L['INVENTORY_DELETE_MODE_ENABLED_NOTIFY'], 'Interface\\ICONS\\INV_Misc_Bag_08')
+			end
 		else
-			self:SetBackdropBorderColor(0, 0, 0)
-			self.text = ''
-			UIErrorsFrame:AddMessage(C.GreenColor..L['INVENTORY_DELETE_MODE_DISABLED'])
-			print(C.GreenColor..L['INVENTORY_DELETE_MODE_DISABLED'])
+			self.Icon:SetVertexColor(1, 1, 1, 1)
+			self.text = nil
+
+			print(C.GreenColor..L['INVENTORY_DELETE_MODE_DISABLED_NOTIFY'])
+
+			if C.notification.enableBanner then
+				F.Notification(L['NOTIFICATION_BAG'], C.GreenColor..L['INVENTORY_DELETE_MODE_DISABLED_NOTIFY'], 'Interface\\ICONS\\INV_Misc_Bag_08')
+			end
 		end
+		self:GetScript('OnEnter')(self)
 	end)
 
-	bu.title = '|TInterface\\OptionsFrame\\UI-OptionsFrame-NewFeatureIcon:0:0:0:0|t'..L['INVENTORY_DELETE_MODE']
+	bu.title = L['INVENTORY_DELETE_MODE']
 	F.AddTooltip(bu, 'ANCHOR_TOP')
 
 	return bu
@@ -229,11 +239,11 @@ function INVENTORY:CreateFavouriteButton()
 	bu:SetScript('OnClick', function(self)
 		favouriteEnable = not favouriteEnable
 		if favouriteEnable then
-			self:SetBackdropBorderColor(1, .8, 0)
+			self.Icon:SetVertexColor(1, 0, 0, 1)
 			self.text = enabledText
 		else
-			self:SetBackdropBorderColor(0, 0, 0)
-			self.text = ''
+			self.Icon:SetVertexColor(1, 1, 1, 1)
+			self.text = nil
 		end
 		self:GetScript('OnEnter')(self)
 	end)
@@ -259,9 +269,78 @@ local function favouriteOnClick(self)
 	end
 end
 
-local function buttonOnClick(self)
+function INVENTORY:ButtonOnClick(btn)
+	if btn ~= 'LeftButton' then return end
 	deleteButtonOnClick(self)
 	favouriteOnClick(self)
+end
+
+function INVENTORY:GetContainerEmptySlot(bagID)
+	for slotID = 1, GetContainerNumSlots(bagID) do
+		if not GetContainerItemID(bagID, slotID) then
+			return slotID
+		end
+	end
+end
+
+function INVENTORY:GetEmptySlot(name)
+	if name == 'Main' then
+		for bagID = 0, 4 do
+			local slotID = INVENTORY:GetContainerEmptySlot(bagID)
+			if slotID then
+				return bagID, slotID
+			end
+		end
+	elseif name == 'Bank' then
+		local slotID = INVENTORY:GetContainerEmptySlot(-1)
+		if slotID then
+			return -1, slotID
+		end
+		for bagID = 5, 11 do
+			local slotID = INVENTORY:GetContainerEmptySlot(bagID)
+			if slotID then
+				return bagID, slotID
+			end
+		end
+	end
+end
+
+function INVENTORY:FreeSlotOnDrop()
+	local bagID, slotID = INVENTORY:GetEmptySlot(self.__name)
+	if slotID then
+		PickupContainerItem(bagID, slotID)
+	end
+end
+
+local freeSlotContainer = {
+	['Main'] = true,
+	['Bank'] = true,
+}
+
+function INVENTORY:CreateFreeSlots()
+	if not C.inventory.combineFreeSlots then return end
+
+	local name = self.name
+	if not freeSlotContainer[name] then return end
+
+	local slot = CreateFrame('Button', name..'FreeSlot', self)
+	slot:SetSize(self.iconSize, self.iconSize)
+	slot:SetHighlightTexture(C.media.bdTex)
+	slot:GetHighlightTexture():SetVertexColor(1, 1, 1, .25)
+	local bg = F.CreateBDFrame(slot)
+
+	slot:SetScript('OnMouseUp', INVENTORY.FreeSlotOnDrop)
+	slot:SetScript('OnReceiveDrag', INVENTORY.FreeSlotOnDrop)
+	F.AddTooltip(slot, 'ANCHOR_RIGHT', L['INVENTORY_FREE_SLOTS'])
+	slot.__name = name
+
+	local tag = self:SpawnPlugin('TagDisplay', '[space]', slot)
+	F.SetFS(tag, 'pixel')
+	tag:SetTextColor(C.r, C.g, C.b)
+	tag:SetPoint('BOTTOMRIGHT', 2, 2)
+	tag.__name = name
+
+	self.freeSlot = slot
 end
 
 
@@ -284,6 +363,7 @@ function INVENTORY:OnLogin()
 
 	local f = {}
 	INVENTORY.AmmoBags = {}
+	INVENTORY.SpecialBags = {}
 	local onlyBags, bagAmmo, bagEquipment, bagConsumble, bagTradeGoods, bagQuestItem, bagsJunk, onlyBank, bankAmmo, bankLegendary, bankEquipment, bankConsumble, onlyReagent, bagFavourite, bankFavourite = self:GetFilters()
 
 	function Backpack:OnInit()
@@ -368,7 +448,7 @@ function INVENTORY:OnLogin()
 
 		self.Quest = F.CreateFS(self, 'pixel', '!', 'yellow', true, 'TOPLEFT', 2, -2)
 
-		self.Favourite = self:CreateTexture(nil, 'ARTWORK')
+		self.Favourite = self:CreateTexture(nil, 'ARTWORK', nil, 2)
 		self.Favourite:SetAtlas('collections-icon-favorites')
 		self.Favourite:SetSize(24, 24)
 		self.Favourite:SetPoint('TOPLEFT', -6, 2)
@@ -404,9 +484,7 @@ function INVENTORY:OnLogin()
 
 		self.ShowNewItems = true
 
-		if deleteButton then
-			self:HookScript('OnClick', buttonOnClick)
-		end
+		self:HookScript('OnClick', INVENTORY.ButtonOnClick)
 	end
 
 	function MyButton:ItemOnEnter()
@@ -474,9 +552,30 @@ function INVENTORY:OnLogin()
 	function MyContainer:OnContentsChanged()
 		self:SortButtons('bagSlot')
 
+		local columns = self.Settings.Columns
 		local offset = 30
-		local width, height = self:LayoutButtons('grid', self.Settings.Columns, 5, 5, -offset + 5)
-		self:SetSize(width + 10, height + offset)
+		local spacing = 5
+		local xOffset = 5
+		local yOffset = -offset + spacing
+		local width, height = self:LayoutButtons('grid', columns, spacing, xOffset, yOffset)
+		if self.freeSlot then
+			local numSlots = #self.buttons + 1
+			local row = ceil(numSlots / columns)
+			local col = numSlots % columns
+			if col == 0 then col = columns end
+			local xPos = (col-1) * (iconSize + spacing)
+			local yPos = -1 * (row-1) * (iconSize + spacing)
+
+			self.freeSlot:ClearAllPoints()
+			self.freeSlot:SetPoint('TOPLEFT', self, 'TOPLEFT', xPos+xOffset, yPos+yOffset)
+
+			if height < 0 then
+				width, height = columns * (iconSize+spacing)-spacing, iconSize
+			elseif col == 1 then
+				height = height + iconSize + spacing
+			end
+		end
+		self:SetSize(width + xOffset*2, height + offset)
 
 		INVENTORY:UpdateAnchors(f.main, {f.ammoItem, f.equipment, f.bagFavourite, f.consumble, f.tradegoods, f.questitem, f.junk})
 		INVENTORY:UpdateAnchors(f.bank, {f.bankAmmoItem, f.bankEquipment, f.bankLegendary, f.bankFavourite, f.bankConsumble})
@@ -509,7 +608,7 @@ function INVENTORY:OnLogin()
 			label = AUCTION_CATEGORY_QUEST_ITEMS
 		elseif name == 'Junk' then
 			label = BAG_FILTER_JUNK
-		elseif strmatch(name, "Favourite") then
+		elseif strmatch(name, 'Favourite') then
 			label = PREFERENCES
 		end
 		if label then
@@ -545,6 +644,9 @@ function INVENTORY:OnLogin()
 		end
 
 		self:HookScript('OnShow', F.RestoreMF)
+
+		self.iconSize = iconSize
+		INVENTORY.CreateFreeSlots(self)
 	end
 
 	local BagButton = Backpack:GetClass('BagButton', true, 'BagButton')
@@ -576,6 +678,8 @@ function INVENTORY:OnLogin()
 		end
 
 		INVENTORY.AmmoBags[self.bagID] = (classID == LE_ITEM_CLASS_QUIVER)
+		local bagFamily = select(2, GetContainerNumFreeSlots(self.bagID))
+		INVENTORY.SpecialBags[self.bagID] = bagFamily ~= 0
 	end
 
 	-- Fixes

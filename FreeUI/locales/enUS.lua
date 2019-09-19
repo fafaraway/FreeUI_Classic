@@ -131,12 +131,11 @@ L['INVENTORY_SORT'] = 'Sort items'
 L['INVENTORY_RESET'] = 'Reset position'
 L['INVENTORY_BAGS'] = 'Open bags bar'
 L['INVENTORY_EQUIPEMENTSET'] = 'EquipmentSet Items'
-L['INVENTORY_DELETE_MODE_ENABLED'] = 'Item quickly delete mode enabled! You can destroy container item by holding CTRL+ALT. The item quality must be lower then rare (blue).'
-L['INVENTORY_DELETE_MODE_DISABLED'] = 'Item quickly delete mode disabled.'
-L['INVENTORY_DELETE_MODE'] = 'Enable quickly delete mode'
-L['INVENTORY_MECHAGON_STUFF'] = 'Mechagon stuff'
+L['INVENTORY_DELETE_MODE_ENABLED'] = 'Item quickly delete enabled! \nYou can destroy container item by holding CTRL+ALT. The item quality must be lower than rare (blue).'
+L['INVENTORY_DELETE_MODE'] = 'Quickly delete'
 L['INVENTORY_FAVOURITE_MODE_ENABLED'] = '\nYou can now star items.\nIf \'Bags Category\' enabled, the item you starred will add to Preferences filter slots.\nThis is not available to trash.'
-L['INVENTORY_FAVOURITE_MODE'] = 'Favourite mode'
+L['INVENTORY_FAVOURITE_MODE'] = 'Favourite items'
+L['INVENTORY_FREE_SLOTS'] = 'Free slots'
 
 
 -- mover

@@ -131,12 +131,13 @@ L['INVENTORY_SORT'] = '整理物品'
 L['INVENTORY_RESET'] = '重置窗口位置'
 L['INVENTORY_BAGS'] = '打开背包栏'
 L['INVENTORY_EQUIPEMENTSET'] = '装备配置方案'
-L['INVENTORY_DELETE_MODE_ENABLED'] = '背包物品快速摧毁功能已启用！你可以按住 CTRL+ALT 键，直接点击摧毁背包中低于蓝色精良品质的物品。'
-L['INVENTORY_DELETE_MODE_DISABLED'] = '背包物品快速摧毁功能已禁用。'
+L['INVENTORY_DELETE_MODE_ENABLED_NOTIFY'] = '物品快速摧毁功能已启用！'
+L['INVENTORY_DELETE_MODE_DISABLED_NOTIFY'] = '物品快速摧毁功能已关闭！'
+L['INVENTORY_DELETE_MODE_ENABLED'] = '背包物品快速摧毁功能已启用！\n你可以按住 CTRL+ALT 键，直接点击摧毁背包中低于蓝色精良品质的物品。'
 L['INVENTORY_DELETE_MODE'] = '快速摧毁'
-L['INVENTORY_MECHAGON_STUFF'] = '麦卡贡'
 L['INVENTORY_FAVOURITE_MODE_ENABLED'] = '\n你现在可以点击标记物品。\n若启用了物品分类存放，还可以将其添加到偏好选择分类中。\n此操作对垃圾物品无效。'
-L['INVENTORY_FAVOURITE_MODE'] = '设置偏好模式'
+L['INVENTORY_FAVOURITE_MODE'] = '偏好选择'
+L['INVENTORY_FREE_SLOTS'] = '剩余背包空间'
 
 
 -- mover

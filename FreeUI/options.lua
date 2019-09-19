@@ -132,11 +132,11 @@ C['inventory'] = {
 		['itemLevel'] = false,
 		['newitemFlash'] = true,
 		['deleteButton'] = true,
+		['combineFreeSlots'] = true,
 		['useCategory'] = true,
 			['gearSetFilter'] = false,
 			['tradeGoodsFilter'] = true,
 			['questItemFilter'] = true,
-		['favouriteItems'] = {},
 }
 
 C['infobar'] = {
@@ -144,6 +144,7 @@ C['infobar'] = {
 		['barHeight'] = 20,
 		['anchorTop'] = true,
 		['mouseover'] = true,
+		['usePixelFont'] = true,
 		['stats'] = true,
 		['friends'] = true,
 		['gold'] = true,
@@ -297,6 +298,7 @@ C['quest'] = {
 	['notifier'] = true,
 		['progressNotify'] = false,
 		['completeRing'] = true,
+	['rewardHightlight'] = true,
 }
 
 C['cooldown'] = {
@@ -318,6 +320,6 @@ C['loot'] = {
 }
 
 C['aura'] = {
-	['pixelFont'] = true,
+	['usePixelFont'] = true,
 	['reminder'] = true,
 }
