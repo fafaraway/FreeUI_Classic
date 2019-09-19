@@ -1,5 +1,5 @@
 local F, C = unpack(select(2, ...))
-local QUEST = F:RegisterModule('Quest')
+local QUEST, cfg = F:RegisterModule('Quest'), C.quest
 
 
 local tinsert = tinsert
@@ -116,8 +116,72 @@ hooksecurefunc('GossipFrameUpdate', function()
 	)
 end)
 
+function QUEST:QuestRewardHighlight()
+	if not cfg.rewardHightlight then return end
+
+	local f = CreateFrame('Frame')
+	local highlightFunc
+
+	local last = 0
+	local startIndex = 1
+
+	local maxPrice = 0
+	local maxPriceIndex = 0
+
+	local function onUpdate(self, elapsed)
+		last = last + elapsed
+		if last >= 0.05 then
+			self:SetScript('OnUpdate', nil)
+			last = 0
+
+			if QuestInfoRewardsFrameQuestInfoItem1:IsVisible() then
+				highlightFunc()
+			end
+		end
+	end
+
+	highlightFunc = function()
+		local numChoices = GetNumQuestChoices()
+		if numChoices < 2 then return end
+
+		for i = startIndex, numChoices do
+			local link = GetQuestItemLink('choice', i)
+			if link then
+				local _, _, _, _, _, _, _, _, _, _, vendorPrice = GetItemInfo(link)
+
+				if vendorPrice > maxPrice then
+					maxPrice = vendorPrice
+					maxPriceIndex = i
+				end
+			else
+				startIndex = i
+				f:SetScript('OnUpdate', onUpdate)
+				return
+			end
+		end
+
+		if maxPriceIndex > 0 then
+			local infoItem = _G['QuestInfoRewardsFrameQuestInfoItem'..maxPriceIndex]
+
+			QuestInfoItemHighlight:ClearAllPoints()
+			QuestInfoItemHighlight:SetPoint('TOP', infoItem)
+			QuestInfoItemHighlight:Show()
+
+			infoItem.bg:SetBackdropColor(0.8, 0.8, 0.8, .25)
+		end
+
+		startIndex = 1
+		maxPrice = 0
+		maxPriceIndex = 0
+	end
+
+	f:SetScript('OnEvent', highlightFunc)
+	f:RegisterEvent('QUEST_COMPLETE')
+end
+
 
 function QUEST:OnLogin()
 	self:QuestTracker()
 	self:QuestNotifier()
+	self:QuestRewardHighlight()
 end
