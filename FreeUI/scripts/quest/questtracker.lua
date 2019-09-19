@@ -24,6 +24,9 @@ function QUEST:QuestTracker()
 		end
 	end)
 
+	local headerString = QUEST_LOG.." %s/%s"
+	local MAX_QUESTLOG_QUESTS = MAX_QUESTLOG_QUESTS or 20
+
 	local header = CreateFrame('Frame', nil, frame)
 	header:SetAllPoints(frame)
 	header:Hide()
@@ -39,8 +42,6 @@ function QUEST:QuestTracker()
 	-- Show quest color and level
 	local function Showlevel(self)
 		local numEntries, numQuests = GetNumQuestLogEntries()
-
-		header.text:SetText(QUEST_LOG..' '..numQuests..'/'..MAX_QUESTLOG_QUESTS)
 
 		for i = 1, QUESTS_DISPLAYED, 1 do
 			local questIndex = i + FauxScrollFrame_GetOffset(QuestLogListScrollFrame)
@@ -65,9 +66,6 @@ function QUEST:QuestTracker()
 		end
 	end
 	hooksecurefunc('QuestLog_Update', Showlevel)
-
-
-	
 
 	for i = 1, 30 do
 		local Line = _G["QuestWatchLine"..i]
@@ -140,6 +138,8 @@ function QUEST:QuestTracker()
 
 	hooksecurefunc('QuestWatch_Update', function()
 		header:SetShown(tracker:IsShown())
+		local numQuests = select(2, GetNumQuestLogEntries())
+		header.text:SetFormattedText(headerString, numQuests, MAX_QUESTLOG_QUESTS)
 
 		local watchTextIndex = 1
 		for i = 1, GetNumQuestWatches() do

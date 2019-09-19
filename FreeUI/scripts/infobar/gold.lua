@@ -52,7 +52,7 @@ local function stopSelling(tell)
 	if sellCount > 0 and tell then
 		print(C.GreenColor..L['INFOBAR_AUTO_SELL_JUNK']..'|r: '..GetMoneyString(sellCount))
 		if C.notification.enableBanner and C.notification.autoSellJunk then
-			F.Notification(L['NOTIFICATION_SELL'], C.GreenColor..L['INFOBAR_AUTO_SELL_JUNK']..'|r: '..GetMoneyString(sellCount), 'Interface\\Icons\\INV_Misc_Coin_02')
+			F.Notification(L['NOTIFICATION_SELL'], C.GreenColor..L['INFOBAR_AUTO_SELL_JUNK']..'|r: '..GetMoneyString(sellCount), 'Interface\\ICONS\\INV_Misc_Coin_02')
 		end
 	end
 

@@ -7,144 +7,11 @@ local cfg, myClass = C.unitframe, C.Class
 local LCD = F.LibClassicDurations
 
 local ignoredDebuffs = {
-	[  6788] = myClass ~= 'PRIEST',		-- Weakened Soul
-	[ 25771] = myClass ~= 'PALADIN',	-- Forbearance
-
-	[ 57724] = true, 	-- Sated
-	[ 57723] = true,  	-- Exhaustion
-	[ 80354] = true,  	-- Temporal Displacement
-	[ 41425] = true,  	-- Hypothermia
-	[ 95809] = true,  	-- Insanity
-	[ 36032] = true,  	-- Arcane Blast
-	[ 26013] = true,  	-- Deserter
-	[ 95223] = true,  	-- Recently Mass Resurrected
-	[ 97821] = true,  	-- Void-Touched (death knight resurrect)
-	[ 36893] = true,  	-- Transporter Malfunction
-	[ 36895] = true,  	-- Transporter Malfunction
-	[ 36897] = true,  	-- Transporter Malfunction
-	[ 36899] = true,  	-- Transporter Malfunction
-	[ 36900] = true,  	-- Soul Split: Evil!
-	[ 36901] = true,  	-- Soul Split: Good
-	[ 25163] = true,  	-- Disgusting Oozeling Aura
-	[ 85178] = true,  	-- Shrink (Deviate Fish)
-	[  8064] = true,   	-- Sleepy (Deviate Fish)
-	[  8067] = true,   	-- Party Time! (Deviate Fish)
-	[ 24755] = true,  	-- Tricked or Treated (Hallow's End)
-	[ 42966] = true, 	-- Upset Tummy (Hallow's End)
-	[ 89798] = true, 	-- Master Adventurer Award (Maloriak kill title)
-	[  6788] = true,   	-- Weakened Soul
-	[ 92331] = true, 	-- Blind Spot (Jar of Ancient Remedies)
-	[ 71041] = true, 	-- Dungeon Deserter
-	[ 26218] = true,  	-- Mistletoe
-	[117870] = true,	-- Touch of the Titans
-	[173658] = true, 	-- Delvar Ironfist defeated
-	[173659] = true, 	-- Talonpriest Ishaal defeated
-	[173661] = true, 	-- Vivianne defeated
-	[173679] = true, 	-- Leorajh defeated
-	[173649] = true, 	-- Tormmok defeated
-	[173660] = true, 	-- Aeda Brightdawn defeated
-	[173657] = true, 	-- Defender Illona defeated
-	[206151] = true, 	-- 挑战者的负担
-	[260738] = true, 	-- 艾泽里特残渣
-	[279737] = true,	-- 准备作战 (海岛)
-	[264689] = true,	-- 疲倦
-	[289423] = true,	-- 死亡的重担
-	[283430] = true,	-- 工程学专精
+	
 }
 
 local importantBuffs = {
-	-- Immunities
-	[196555] = true,	-- Netherwalk (Demon Hunter)
-	[186265] = true,	-- Aspect of the Turtle (Hunter)
-	[ 45438] = true,	-- Ice Block (Mage)
-	[125174] = true,	-- Touch of Karma (Monk)
-	[228050] = true,	-- Divine Shield (Prot Paladin PVP)
-	[   642] = true,	-- Divine Shield (Paladin)
-	[199448] = true,	-- Blessing of Ultimate Sacrifice (Paladin)
-	[  1022] = true,	-- Blessing of Protection (Paladin)
-	[ 47788] = true,	-- Guardian Spirit (Priest)
-	[ 31224] = true,	-- Cloak of Shadows (Rogue)
-	[210918] = true,	-- Ethereal Form (Shaman)
 
-	-- Defensive buffs
-	-- Warrior
-	[190456] = true,	-- Ignore Pain
-	[118038] = true,	-- Die by the Sword
-	[   871] = true,	-- Shield Wall
-	[213915] = true,	-- Mass Spell Reflection
-	[ 23920] = true,	-- Spell Reflection (Prot)
-	[216890] = true,	-- Spell Reflection (Arms/Fury)
-	[184364] = true,	-- Enraged Regeneration
-	[ 97463] = true,	-- Rallying Cry
-	[ 12975] = true,	-- Last Stand
-
-	-- Death Knight
-	[ 48707] = true,	-- Anti-Magic Shell
-	[ 48792] = true,	-- Icebound Fortitude
-	[287081] = true,	-- Lichborne
-	[ 55233] = true,	-- Vampiric Blood
-	[194679] = true,	-- Rune Tap
-	[145629] = true,	-- Anti-Magic Zone
-	[ 81256] = true,	-- Dancing Rune Weapon
-
-	-- Paladin
-	[204018] = true,	-- Blessing of Spellwarding
-	[  6940] = true,	-- Blessing of Sacrifice
-	[   498] = true,	-- Divine Protection
-	[ 31850] = true,	-- Ardent Defender
-	[ 86659] = true,	-- Guardian of Ancient Kings
-	[205191] = true,	-- Eye for an Eye
-
-	-- Shaman
-	[108271] = true,	-- Astral Shift
-	[118337] = true,	-- Harden Skin
-
-    -- Hunter
-	[ 53480] = true,	-- Roar of Sacrifice
-	[264735] = true,	-- Survival of the Fittest (Pet Ability)
-	[281195] = true,	-- Survival of the Fittest (Lone Wolf)
-
-	-- Demon Hunter
-	[206804] = true,	-- Rain from Above
-	[187827] = true,	-- Metamorphosis (Vengeance)
-	[212800] = true,	-- Blur
-	[263648] = true,	-- Soul Barrier
-
-	-- Druid
-	[102342] = true,	-- Ironbark
-	[ 22812] = true,	-- Barkskin
-	[ 61336] = true,	-- Survival Instincts
-
-	-- Rogue
-	[ 45182] = true,	-- Cheating Death
-	[  5277] = true,	-- Evasion
-	[199754] = true,	-- Riposte
-	[  1966] = true,	-- Feint
-
-	-- Monk
-	[120954] = true,	-- Fortifying Brew (Brewmaster)
-	[243435] = true,	-- Fortifying Brew (Mistweaver)
-	[201318] = true,	-- Fortifying Brew (Windwalker)
-	[115176] = true,	-- Zen Meditation
-	[116849] = true,	-- Life Cocoon
-	[122278] = true,	-- Dampen Harm
-	[122783] = true,	-- Diffuse Magic
-
-	-- Mage
-	[198111] = true,	-- Temporal Shield
-	[113862] = true,	-- Greater Invisibility
-
-	-- Priest
-	[ 47585] = true,	-- Dispersion
-	[ 33206] = true,	-- Pain Suppression
-	[213602] = true,	-- Greater Fade
-	[ 81782] = true,	-- Power Word: Barrier
-	[271466] = true,	-- Luminous Barrier
-
-	-- Warlock
-	[104773] = true, 	-- Unending Resolve
-	[108416] = true, 	-- Dark Pact
-	[212195] = true,	-- Nether Ward
 }
 
 local classBuffs = {
@@ -183,12 +50,6 @@ local classBuffs = {
 		[   974] = true,	-- 大地之盾
 		[207400] = true,	-- 先祖活力
 	},
-	['MONK'] = {
-		[119611] = true,	-- 复苏之雾
-		[116849] = true,	-- 作茧缚命
-		[124682] = true,	-- 氤氲之雾
-		[191840] = true,	-- 精华之泉
-	},
 	['ROGUE'] = {
 		[ 57934] = true,	-- 嫁祸
 	},
@@ -202,9 +63,8 @@ local classBuffs = {
 	['WARLOCK'] = {
 		[ 20707] = true,	-- 灵魂石
 	},
-	['DEMONHUNTER'] = {},
+
 	['MAGE'] = {},
-	['DEATHKNIGHT'] = {},
 }
 
 local function PostCreateIcon(element, button)
@@ -303,12 +163,6 @@ local function CustomFilter(element, unit, button, name, _, _, _, _, _, caster, 
 		else
 			return true
 		end
-	elseif style == 'boss' then
-		if (button.isDebuff and not button.isPlayer) then
-			return false
-		else
-			return true
-		end
 	elseif style == 'party' or style == 'raid' then
 		if (button.isDebuff and not ignoredDebuffs[spellID]) then
 			return true
@@ -321,7 +175,6 @@ local function CustomFilter(element, unit, button, name, _, _, _, _, _, caster, 
 		return true
 	end
 end
-UNITFRAME.CustomFilter = CustomFilter
 
 local function PostUpdateGapIcon(_, _, icon)
 	if icon.bg and icon.bg:IsShown() then
@@ -347,17 +200,13 @@ function UNITFRAME:AddAuras(self)
 		Auras['spacing-x'] = 5
 		num = 36
 		perrow = 6
-	elseif self.unitStyle == 'pet' or self.unitStyle == 'boss' then
+	elseif self.unitStyle == 'pet' then
 		Auras.initialAnchor = 'TOPLEFT'
 		Auras:SetPoint('TOP', self, 'BOTTOM', 0, -6)
 		Auras['growth-y'] = 'DOWN'
 		Auras['spacing-x'] = 5
-	elseif self.unitStyle == 'pet' then
 		num = 9
 		perrow = 3
-	elseif self.unitStyle == 'boss' then
-		num = 20
-		perrow = 5
 	end
 
 	Auras.numTotal = num
@@ -383,7 +232,6 @@ end
 function UNITFRAME:AddBuffs(self)
 	local buffs = CreateFrame('Frame', nil, self)
 	buffs.initialAnchor = 'CENTER'
-	--buffs:SetPoint('TOP', 0, -2)
 	buffs['growth-x'] = 'RIGHT'
 	buffs.spacing = 3
 	buffs.num = 3

@@ -15,7 +15,7 @@ tinsert(C.themes["FreeUI"], function()
 
 		local _, point = self:GetPoint()
 		if point then
-			point.bg:SetBackdropColor(r, g, b, .2)
+			point.bg:SetBackdropColor(r, g, b, .25)
 		end
 	end
 
