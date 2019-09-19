@@ -45,7 +45,7 @@ local function alertMail()
 	if hasMail ~= newMail then
 		hasMail = newMail
 		if hasMail then
-			F.Notification(L['NOTIFICATION_MAIL'], L['NOTIFICATION_NEW_MAIL'], nil, 'Interface\\ICONS\\INV_Letter_11', .08, .92, .08, .92)
+			F.Notification(L['NOTIFICATION_MAIL'], L['NOTIFICATION_NEW_MAIL'], nil, 'Interface\\ICONS\\INV_Letter_11')
 		end
 	end
 end
