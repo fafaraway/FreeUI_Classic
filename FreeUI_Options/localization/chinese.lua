@@ -161,11 +161,12 @@ L.infobar_talent = "天赋"
 L.infobar_talent_tooltip = "显示当前天赋选择。\n左键打开天赋面板。"
 L.infobar_friends = "好友"
 L.infobar_friends_tooltip = "显示好友在线信息。\n左键打开好友列表，右键添加好友。"
-L.infobar_currencies = "金币"
-L.infobar_currencies_tooltip = "显示金币状态以及相关统计。\n左键开启自动出售垃圾功能，右键重置金币统计。"
+L.infobar_gold = "金币"
+L.infobar_gold_tooltip = "显示金币状态以及相关统计。\n左键开启自动出售垃圾功能，右键重置金币统计。"
 L.infobar_durability = "装备耐久"
 L.infobar_durability_tooltip = "显示身上装备的耐久度信息。\n左键开启自动修理功能。"
-
+L.infobar_usePixelFont = "像素字体"
+L.infobar_usePixelFont_tooltip = "信息条使用像素字体。"
 
 
 L.actionbar = "动作条"
@@ -268,7 +269,8 @@ L.quest_progressNotify = "进度广播"
 L.quest_progressNotify_tooltip = "组队时自动广播自己的任务进度状态。"
 L.quest_completeRing = "完成提示"
 L.quest_completeRing_tooltip = "任务完成时播放一个音效提示。"
-
+L.quest_rewardHightlight = "任务奖励高亮"
+L.quest_rewardHightlight_tooltip = "高亮高价值的任务奖励。"
 
 
 
@@ -341,7 +343,7 @@ L.tooltip_tipIcon_tooltip = "鼠标提示显示相应的物品图标。"
 L.tooltip_linkHover = "装备链接"
 L.tooltip_linkHover_tooltip = "鼠标悬停聊天栏的装备链接时显示鼠标提示。"
 L.tooltip_extraInfo = "显示额外的信息"
-L.tooltip_extraInfo_tooltip = "鼠标提示显示额外的信息比如技能/物品的id。"
+L.tooltip_extraInfo_tooltip = "按住 alt 键显示额外的信息比如物品售价/统计等。"
 L.tooltip_targetBy = "选中目标信息"
 L.tooltip_targetBy_tooltip = "组队时显示敌方单位被多少队友选中。"
 

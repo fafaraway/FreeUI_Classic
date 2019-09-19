@@ -27,13 +27,13 @@ local function restyleIcons(bu, isDebuff)
 	local duration = _G[name..'Duration']
 	duration:ClearAllPoints()
 	duration:SetPoint('TOP', bu, 'BOTTOM', 2, 2)
-	F.SetFS(duration, (cfg.pixelFont and 'pixel') or {C.font.normal, 11, 'OUTLINE'})
+	F.SetFS(duration, (cfg.usePixelFont and 'pixel') or {C.font.normal, 11, 'OUTLINE'}, nil, nil, (not cfg.usePixelFont))
 
 	local count = _G[name..'Count']
 	count:ClearAllPoints()
 	count:SetParent(bu)
 	count:SetPoint('TOPRIGHT', bu, 'TOPRIGHT', -1, -3)
-	F.SetFS(count, (cfg.pixelFont and 'pixel') or {C.font.normal, 11, 'OUTLINE'})
+	F.SetFS(count, (cfg.usePixelFont and 'pixel') or {C.font.normal, 11, 'OUTLINE'}, nil, nil, (not cfg.usePixelFont))
 
 	bu:SetSize(iconSize, iconSize)
 	bu.HL = bu:CreateTexture(nil, 'HIGHLIGHT')

@@ -187,10 +187,12 @@ L.infobar_talent = "Talent"
 L.infobar_talent_tooltip = "Show spent points on talent."
 L.infobar_friends = "Friends"
 L.infobar_friends_tooltip = "Show friends informations."
-L.infobar_currencies = "Gold"
-L.infobar_currencies_tooltip = "Show gold and count.\nLeft click to enable auto sell junk."
+L.infobar_gold = "Gold"
+L.infobar_gold_tooltip = "Show gold and count.\nLeft click to enable auto sell junk."
 L.infobar_durability = "Durability"
 L.infobar_durability_tooltip = "Show gears durability.\nLeft click to enable auto repair."
+L.infobar_usePixelFont = "Pixel font"
+L.infobar_usePixelFont_tooltip = "Use pixel font on infobar."
 
 
 
@@ -289,8 +291,10 @@ L.quest_notifier = "Notifier"
 L.quest_notifier_tooltip = "Quest notifier."
 L.quest_progressNotify = "Announcement"
 L.quest_progressNotify_tooltip = "Announce quest progress when you in a group."
-L.quest_completeRing = "Play sound"
-L.quest_completeRing_tooltip = "Play a sound when you finished a quest."
+L.quest_completeRing = "Complete ring"
+L.quest_completeRing_tooltip = "Plays a sound when you have finished a quest."
+L.quest_rewardHightlight = "Reward hightlight"
+L.quest_rewardHightlight_tooltip = "Highlights the quest reward with highest vendor price."
 
 
 
@@ -361,7 +365,7 @@ L.tooltip_tipIcon_tooltip = "Show item icon on tooltip."
 L.tooltip_linkHover = "Hover link"
 L.tooltip_linkHover_tooltip = "Show tooltip when mouseover item link on chat frame."
 L.tooltip_extraInfo = "Extra info"
-L.tooltip_extraInfo_tooltip = "Show extra informations."
+L.tooltip_extraInfo_tooltip = "Show extra informations by hold alt key(item count/price/id)."
 L.tooltip_targetBy = "Targeted info"
 L.tooltip_targetBy_tooltip = "Show targeted infomations."
 

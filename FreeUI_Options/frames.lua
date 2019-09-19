@@ -355,29 +355,33 @@ do
 	local mouseover = ns.CreateCheckBox(infobar, 'mouseover')
 	mouseover:SetPoint('TOPLEFT', enable, 'BOTTOMLEFT', 16, -8)
 
-	local stats = ns.CreateCheckBox(infobar, 'stats')
-	stats:SetPoint('LEFT', mouseover, 'RIGHT', 160, 0)
+	local usePixelFont = ns.CreateCheckBox(infobar, 'usePixelFont')
+	usePixelFont:SetPoint('LEFT', mouseover, 'RIGHT', 160, 0)
 
-	local currencies = ns.CreateCheckBox(infobar, 'currencies')
-	currencies:SetPoint('TOPLEFT', mouseover, 'BOTTOMLEFT', 0, -8)
+	local stats = ns.CreateCheckBox(infobar, 'stats')
+	stats:SetPoint('TOPLEFT', mouseover, 'BOTTOMLEFT', 0, -8)
+
+	local gold = ns.CreateCheckBox(infobar, 'gold')
+	gold:SetPoint('LEFT', stats, 'RIGHT', 160, 0)
 
 	local friends = ns.CreateCheckBox(infobar, 'friends')
-	friends:SetPoint('LEFT', currencies, 'RIGHT', 160, 0)
-
-	local durability = ns.CreateCheckBox(infobar, 'durability')
-	durability:SetPoint('TOPLEFT', currencies, 'BOTTOMLEFT', 0, -8)
+	friends:SetPoint('TOPLEFT', stats, 'BOTTOMLEFT', 0, -8)
 
 	local talent = ns.CreateCheckBox(infobar, 'talent')
-	talent:SetPoint('LEFT', durability, 'RIGHT', 160, 0)
+	talent:SetPoint('LEFT', friends, 'RIGHT', 160, 0)
+
+	local durability = ns.CreateCheckBox(infobar, 'durability')
+	durability:SetPoint('TOPLEFT', friends, 'BOTTOMLEFT', 0, -8)
 
 	local function toggleInfoBarOptions()
 		local shown = enable:GetChecked()
 		mouseover:SetShown(shown)
 		stats:SetShown(shown)
-		currencies:SetShown(shown)
+		gold:SetShown(shown)
 		friends:SetShown(shown)
 		durability:SetShown(shown)
 		talent:SetShown(shown)
+		usePixelFont:SetShown(shown)
 	end
 
 	enable:HookScript('OnClick', toggleInfoBarOptions)
@@ -781,6 +785,9 @@ do
 	completeRing:SetPoint('TOPLEFT', progressNotify, 'BOTTOMLEFT', 0, -8)
 
 	notifier.children = {progressNotify, completeRing}
+
+	local rewardHightlight = ns.CreateCheckBox(quest, 'rewardHightlight')
+	rewardHightlight:SetPoint('LEFT', notifier, 'RIGHT', 160, 0)
 end
 
 -- Tooltip

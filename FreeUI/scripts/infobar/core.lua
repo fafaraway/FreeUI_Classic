@@ -2,6 +2,8 @@
 local INFOBAR = F:RegisterModule('Infobar')
 
 
+local cfg = C.infobar
+
 local barAlpha, buttonAlpha
 if C.infobar.mouseover then
 	barAlpha = 0.25
@@ -133,7 +135,7 @@ function INFOBAR:addButton(text, position, width, clickFunc)
 		bu:SetAlpha(0)
 	end
 
-	local buText = F.CreateFS(bu, 'pixel', text, nil, true, 'CENTER', 0, 0)
+	local buText = F.CreateFS(bu, (cfg.usePixelFont and 'pixel') or {C.font.normal, 11, 'OUTLINE'}, text, nil, (not cfg.usePixelFont), 'CENTER', 0, 0)
 	bu.Text = buText
 
 	bu:SetScript('OnMouseUp', clickFunc)
