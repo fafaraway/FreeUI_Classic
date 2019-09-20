@@ -235,6 +235,7 @@ C['unitframe'] = {
 			['groupNames'] = false,
 			['groupColourSmooth'] = true,
 			['groupFilter'] = 8,
+			['debuffWatch'] = true,
 
 		['player_pos'] = {'TOP', UIParent, 'CENTER', 0, -300},
 		['player_pos_healer'] = {'RIGHT', UIParent, 'CENTER', -100, -200},

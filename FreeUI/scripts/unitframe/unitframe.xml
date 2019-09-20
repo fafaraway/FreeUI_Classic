@@ -10,6 +10,7 @@
 	<Script file='elements\indicators.lua'/>
 	<Script file='elements\portrait.lua'/>
 	<Script file='elements\power.lua'/>
+	<Script file='elements\debuffwatch.lua'/>
 	<Script file='elements\range.lua'/>
 	<Script file='elements\tags.lua'/>
 	
