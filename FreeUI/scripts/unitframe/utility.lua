@@ -12,15 +12,15 @@ local LCD = F.LibClassicDurations
 local cfg = C.unitframe
 local oUF = FreeUI.oUF
 
-oUF.colors.power.MANA = {111/255, 185/255, 237/255}
-oUF.colors.power.ENERGY = {1, 222/255, 80/255}
+oUF.colors.power.MANA = {0.47, 0.83, 0.88}
+oUF.colors.power.ENERGY = {0.88, 0.79, 0.25}
 
 oUF.colors.debuffType = {
-	Curse = {.8, 0, 1},
-	Disease = {.8, .6, 0},
-	Magic = {0, .8, 1},
-	Poison = {0, .8, 0},
-	none = {0, 0, 0}
+	['Curse'] = {.8, 0, 1},
+	['Disease'] = {.8, .6, 0},
+	['Magic'] = {0, .8, 1},
+	['Poison'] = {0, .8, 0},
+	['none'] = {0, 0, 0}
 }
 
 oUF.colors.reaction = {
@@ -33,6 +33,29 @@ oUF.colors.reaction = {
 	[7] = {87/255, 255/255, 93/255}, 	-- Exceptionally friendly
 	[8] = {87/255, 255/255, 93/255}, 	-- Exalted
 }
+
+--oUF.colors.class = {
+--	['DRUID']       = { 0.87, 0.41, 0.18 },
+--	['HUNTER']      = { 0.13, 0.61, 0.21 },
+--	['MAGE']        = { 0.38, 0.64, 0.87 },
+--	['PALADIN']     = { 1.00, 0.23, 0.35 },
+--	['PRIEST']      = { 0.85, 0.85, 0.85 },
+--	['ROGUE']       = { 1.00, 0.83, 0.24 },
+--	['SHAMAN']      = { 0.27, 0.28, 0.74 },
+--	['WARLOCK']     = { 0.63, 0.55, 0.82 },
+--	['WARRIOR']     = { 0.63, 0.56, 0.51 },
+--}
+
+local rcc = RAID_CLASS_COLORS
+oUF.colors.class.ROGUE = {rcc['ROGUE']['r'], rcc['ROGUE']['g'], rcc['ROGUE']['b']}
+oUF.colors.class.DRUID = {rcc['DRUID']['r'], rcc['DRUID']['g'], rcc['DRUID']['b']}
+oUF.colors.class.HUNTER = {rcc['HUNTER']['r'], rcc['HUNTER']['g'], rcc['HUNTER']['b']}
+oUF.colors.class.MAGE = {rcc['MAGE']['r'], rcc['MAGE']['g'], rcc['MAGE']['b']}
+oUF.colors.class.PALADIN = {rcc['PALADIN']['r'], rcc['PALADIN']['g'], rcc['PALADIN']['b']}
+oUF.colors.class.PRIEST = {rcc['PRIEST']['r'], rcc['PRIEST']['g'], rcc['PRIEST']['b']}
+oUF.colors.class.SHAMAN = {rcc['SHAMAN']['r'], rcc['SHAMAN']['g'], rcc['SHAMAN']['b']}
+oUF.colors.class.WARLOCK = {rcc['WARLOCK']['r'], rcc['WARLOCK']['g'], rcc['WARLOCK']['b']}
+oUF.colors.class.WARRIOR = {rcc['WARRIOR']['r'], rcc['WARRIOR']['g'], rcc['WARRIOR']['b']}
 
 function UNITFRAME:createBarMover(bar, text, value, anchor)
 	local mover = F.Mover(bar, text, value, anchor, bar:GetHeight()+bar:GetWidth()+5, bar:GetHeight()+5)
