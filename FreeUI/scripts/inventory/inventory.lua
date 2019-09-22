@@ -142,16 +142,18 @@ function INVENTORY:CreateRestoreButton(f)
 end
 
 function INVENTORY:CreateBagToggle()
-	local bu = F.CreateButton(self, 17, 17, true, C.AssetsPath..'BagToggle', 'BOTTOMRIGHT')
+	local bu = F.CreateButton(self, 17, 17, true, C.AssetsPath..'BagToggle')
 	bu:SetScript('OnClick', function()
 		ToggleFrame(self.BagBar)
 		if self.BagBar:IsShown() then
-			self.Icon:SetVertexColor(1, 0, 0, 1)
+			bu.Icon:SetVertexColor(1, 0, 0, 1)
 			PlaySound(SOUNDKIT.IG_BACKPACK_OPEN)
 		else
-			self.Icon:SetVertexColor(1, 1, 1, 1)
+			bu.Icon:SetVertexColor(1, 1, 1, 1)
 			PlaySound(SOUNDKIT.IG_BACKPACK_CLOSE)
 		end
+
+		bu:GetScript('OnEnter')(self)
 	end)
 
 	bu.title = L['INVENTORY_BAGS']

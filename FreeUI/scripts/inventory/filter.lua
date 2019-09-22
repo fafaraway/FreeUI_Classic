@@ -36,6 +36,7 @@ end
 
 local function isItemAmmo(item)
 	if not C.inventory.useCategory then return end
+	if C.Class ~= 'HUNTER' then return end
 	return item.equipLoc == 'INVTYPE_AMMO' or INVENTORY.AmmoBags[item.bagID]
 end
 
