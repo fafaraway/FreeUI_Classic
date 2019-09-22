@@ -194,7 +194,7 @@ C['chat'] = {
 		['timeStamp'] = false,
 			['timeStampColor'] = {.5, .5, .5},
 		['filters'] = true,
-			['keywordsList'] = '',
+			['keywordsList'] = '诚招 招收 诚邀 收人 邮寄 秒拉 带血色 菜刀队 aa AA',
 			['blockAddonAlert'] = true,
 				['addonBlockList'] = {
 					'任务进度提示', '%[接受任务%]', '%(任务完成%)', '<大脚', '【爱不易】', 'EUI[:_]', '打断:.+|Hspell', 'PS 死亡: .+>', '%*%*.+%*%*', '<iLvl>', ('%-'):rep(20),
