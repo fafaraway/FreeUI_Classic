@@ -10,27 +10,34 @@ local FACTION_BAR_COLORS = FACTION_BAR_COLORS
 local NUM_FACTIONS_DISPLAYED = NUM_FACTIONS_DISPLAYED
 local REPUTATION_PROGRESS_FORMAT = REPUTATION_PROGRESS_FORMAT
 
-local function UpdateBar(bar)
-	local rest = bar.restBar
+function MAP:UpdateExpRepBar()
+	local rest = self.restBar
 	if rest then rest:Hide() end
 
 	if UnitLevel('player') < MAX_PLAYER_LEVEL then
 		local xp, mxp, rxp = UnitXP('player'), UnitXPMax('player'), GetXPExhaustion()
-		bar:SetStatusBarColor(79/250, 167/250, 74/250)
-		bar:SetMinMaxValues(0, mxp)
-		bar:SetValue(xp)
-		bar:Show()
+		self:SetStatusBarColor(79/250, 167/250, 74/250)
+		self:SetMinMaxValues(0, mxp)
+		self:SetValue(xp)
+		self:Show()
 		if rxp then
 			rest:SetMinMaxValues(0, mxp)
 			rest:SetValue(min(xp + rxp, mxp))
 			rest:Show()
 		end
+	elseif GetWatchedFactionInfo() then
+		local _, standing, barMin, barMax, value, factionID = GetWatchedFactionInfo()
+		if standing == MAX_REPUTATION_REACTION then barMin, barMax, value = 0, 1, 1 end
+		self:SetStatusBarColor(FACTION_BAR_COLORS[standing].r, FACTION_BAR_COLORS[standing].g, FACTION_BAR_COLORS[standing].b, .85)
+		self:SetMinMaxValues(barMin, barMax)
+		self:SetValue(value)
+		self:Show()
 	else
-		bar:Hide()
+		self:Hide()
 	end
 end
 
-local function UpdateTooltip(bar)
+function MAP:UpdateExpRepTooltip()
 	GameTooltip:SetOwner(Minimap, 'ANCHOR_NONE')
 	GameTooltip:SetPoint('TOPRIGHT', Minimap, 'TOPLEFT', -4, -(C.map.miniMapSize/8*C.Mult)-6)
 	
@@ -42,6 +49,8 @@ local function UpdateTooltip(bar)
 		if rxp then
 			GameTooltip:AddDoubleLine(TUTORIAL_TITLE26, '+'..rxp..' ('..floor(rxp/mxp*100)..'%)', 1, 1, 1, 1, 1, 1)
 		end
+
+		GameTooltip:AddLine(' ')
 	end
 
 	if GetWatchedFactionInfo() then
@@ -51,9 +60,8 @@ local function UpdateTooltip(bar)
 			value = barMax - 1
 		end
 		local standingtext = GetText('FACTION_STANDING_LABEL'..standing, UnitSex('player'))
-		GameTooltip:AddLine(' ')
-		GameTooltip:AddLine(name, 62/250, 175/250, 227/250)
 		
+		GameTooltip:AddLine(name, 62/250, 175/250, 227/250)
 		GameTooltip:AddDoubleLine(standingtext, value - barMin..' / '..barMax - barMin..' ('..floor((value - barMin)/(barMax - barMin)*100)..'%)', 1, 1, 1, 1, 1, 1)
 	end
 
@@ -74,8 +82,8 @@ function MAP:SetupScript(bar)
 	for _, event in pairs(bar.eventList) do
 		bar:RegisterEvent(event)
 	end
-	bar:SetScript('OnEvent', UpdateBar)
-	bar:SetScript('OnEnter', UpdateTooltip)
+	bar:SetScript('OnEvent', MAP.UpdateExpRepBar)
+	bar:SetScript('OnEnter', MAP.UpdateExpRepTooltip)
 	bar:SetScript('OnLeave', F.HideTooltip)
 end
 
