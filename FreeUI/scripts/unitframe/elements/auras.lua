@@ -16,54 +16,30 @@ local importantBuffs = {
 
 local classBuffs = {
 	['PRIEST'] = {
-		[194384] = true,	-- 救赎
-		[214206] = true,	-- 救赎(PvP)
-		[ 41635] = true,	-- 愈合导言
-		[193065] = true,	-- 忍辱负重
 		[   139] = true,	-- 恢复
 		[    17] = true,	-- 真言术盾
-		[ 47788] = true,	-- 守护之魂
-		[ 33206] = true,	-- 痛苦压制
+		[  6788] = true,	-- 虚弱灵魂
 	},
 	['DRUID'] = {
 		[   774] = true,	-- 回春
-		[155777] = true,	-- 萌芽
 		[  8936] = true,	-- 愈合
-		[ 33763] = true,	-- 生命绽放
-		[ 48438] = true,	-- 野性成长
-		[207386] = true,	-- 春暖花开
-		[102351] = true,	-- 结界
-		[102352] = true,	-- 结界(HoT)
-		[200389] = true,	-- 栽培
 	},
 	['PALADIN'] = {
-		[ 53563] = true,	-- 道标
-		[156910] = true,	-- 信仰道标
-		[200025] = true,	-- 美德道标
 		[  1022] = true,	-- 保护
 		[  1044] = true,	-- 自由
 		[  6940] = true,	-- 牺牲
-		[223306] = true,	-- 赋予信仰
 	},
 	['SHAMAN'] = {
-		[ 61295] = true,	-- 激流
-		[   974] = true,	-- 大地之盾
-		[207400] = true,	-- 先祖活力
 	},
 	['ROGUE'] = {
-		[ 57934] = true,	-- 嫁祸
 	},
 	['WARRIOR'] = {
-		[114030] = true,	-- 警戒
 	},
 	['HUNTER'] = {
-		[ 34477] = true,	-- 误导
-		[ 90361] = true,	-- 灵魂治愈
 	},
 	['WARLOCK'] = {
 		[ 20707] = true,	-- 灵魂石
 	},
-
 	['MAGE'] = {},
 }
 
@@ -157,7 +133,13 @@ end
 local function CustomFilter(element, unit, button, name, _, _, _, _, _, caster, isStealable, _, spellID)
 	local style = element.__owner.unitStyle
 
-	if style == 'target' then
+	if style == 'player' then
+		if button.isDebuff then
+			return true
+		else
+			return false
+		end
+	elseif style == 'target' then
 		if (cfg.debuffbyPlayer and button.isDebuff and not button.isPlayer) then
 			return false
 		else
@@ -193,10 +175,17 @@ function UNITFRAME:AddAuras(self)
 	local num, perrow = 0, 0
 	local Auras = CreateFrame('Frame', nil, self)
 
-	if self.unitStyle == 'target' then
+	if self.unitStyle == 'player' then
 		Auras.initialAnchor = 'BOTTOMLEFT'
-		Auras:SetPoint('BOTTOM', self, 'TOP', 0, 24)
+		Auras:SetPoint('BOTTOM', self, 'TOP', 0, 26)
 		Auras['growth-y'] = 'UP'
+		Auras['spacing-x'] = 5
+		num = 36
+		perrow = 6
+	elseif self.unitStyle == 'target' then
+		Auras.initialAnchor = 'TOPLEFT'
+		Auras:SetPoint('TOP', self, 'BOTTOM', 0, -7)
+		Auras['growth-y'] = 'DOWN'
 		Auras['spacing-x'] = 5
 		num = 36
 		perrow = 6

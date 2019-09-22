@@ -10,9 +10,9 @@ local function PostUpdatePower(power, unit, cur, max, min)
 		power:SetValue(0)
 	end
 
-	if C.Class == 'ROGUE' and style == 'player' then
-		power:SetStatusBarColor(213/255, 192/255, 105/255)
-	end
+	--[[if C.Class == 'ROGUE' and style == 'player' then
+		power:SetStatusBarColor(181/255, 107/255, 72/255)
+	end--]]
 end
 
 function module:AddPowerBar(self)

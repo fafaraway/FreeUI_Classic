@@ -135,7 +135,7 @@ local function PostCastStart(self, unit)
 
 	-- Fix for empty icon
 	if self.Icon and not self.Icon:GetTexture() then
-		self.Icon:SetTexture(136243)
+		self.Icon:SetTexture('Interface\\ICONS\\Trade_Engineering')
 	end
 
 
