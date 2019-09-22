@@ -4,11 +4,11 @@ local oUF = ns.oUF
 local GetComboPoints = GetComboPoints
 
 local Colors = {
-	[1] = {.69, .31, .31, 1},
-	[2] = {.65, .42, .31, 1},
-	[3] = {.65, .63, .35, 1},
-	[4] = {.50, .63, .35, 1},
-	[5] = {.33, .63, .33, 1},
+	[1] = {193/255, 65/255, 68/255, 1},
+	[2] = {193/255, 65/255, 68/255, 1},
+	[3] = {193/255, 65/255, 68/255, 1},
+	[4] = {193/255, 65/255, 68/255, 1},
+	[5] = {185/255, 48/255, 15/255, 1},
 }
 
 local Update = function(self, event, unit, powerType)
@@ -31,7 +31,7 @@ local Update = function(self, event, unit, powerType)
 			if i <= points then
 				cpb[i]:SetAlpha(1)
 			else
-				cpb[i]:SetAlpha(.3)
+				cpb[i]:SetAlpha(.1)
 			end
 		end
 	end
