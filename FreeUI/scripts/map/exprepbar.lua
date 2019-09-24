@@ -49,8 +49,6 @@ function MAP:UpdateExpRepTooltip()
 		if rxp then
 			GameTooltip:AddDoubleLine(TUTORIAL_TITLE26, '+'..rxp..' ('..floor(rxp/mxp*100)..'%)', 1, 1, 1, 1, 1, 1)
 		end
-
-		GameTooltip:AddLine(' ')
 	end
 
 	if GetWatchedFactionInfo() then
@@ -60,6 +58,10 @@ function MAP:UpdateExpRepTooltip()
 			value = barMax - 1
 		end
 		local standingtext = GetText('FACTION_STANDING_LABEL'..standing, UnitSex('player'))
+		
+		if UnitLevel('player') < MAX_PLAYER_LEVEL then
+			GameTooltip:AddLine(' ')
+		end
 		
 		GameTooltip:AddLine(name, 62/250, 175/250, 227/250)
 		GameTooltip:AddDoubleLine(standingtext, value - barMin..' / '..barMax - barMin..' ('..floor((value - barMin)/(barMax - barMin)*100)..'%)', 1, 1, 1, 1, 1, 1)

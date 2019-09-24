@@ -40,7 +40,8 @@ local classBuffs = {
 	['WARLOCK'] = {
 		[ 20707] = true,	-- 灵魂石
 	},
-	['MAGE'] = {},
+	['MAGE'] = {
+	},
 }
 
 local function PostCreateIcon(element, button)
