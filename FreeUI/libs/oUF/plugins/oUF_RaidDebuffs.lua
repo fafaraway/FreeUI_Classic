@@ -1,3 +1,4 @@
+local F, C = unpack(select(2, ...))
 local _, ns = ...
 local oUF = ns.oUF or oUF
 local addon = {}
@@ -93,15 +94,17 @@ do
 	DispellFilter = dispellClasses[select(2, UnitClass('player'))] or {}
 end
 
-local function OnUpdate(self, elapsed)
+--[[local function OnUpdate(self, elapsed)
 	self.elapsed = (self.elapsed or 0) + elapsed
 
 	if (self.elapsed >= 0.1) then
 		local timeLeft = self.endTime - GetTime()
 	
 		if (timeLeft > 0) then
-			local text = T.FormatTime(timeLeft)
-			self.time:SetText(text)
+			self:SetScript("OnUpdate", F.CooldownOnUpdate)
+			self.time:Show()
+			--local text = timeLeft
+			--self.time:SetText(text)
 		else
 			self:SetScript('OnUpdate', nil)
 			self.time:Hide()
@@ -109,7 +112,7 @@ local function OnUpdate(self, elapsed)
 	
 		self.elapsed = 0
 	end
-end
+end--]]
 
 local function UpdateDebuff(self, name, icon, count, debuffType, duration, endTime, spellId, stackThreshold)
 	local f = self.RaidDebuffs
@@ -129,15 +132,15 @@ local function UpdateDebuff(self, name, icon, count, debuffType, duration, endTi
 			end
 		end
 		
-		if f.time then
+		if f.timer then
 			if duration and (duration > 0) then
 				f.endTime = endTime
 				f.nextUpdate = 0
-				f:SetScript('OnUpdate', OnUpdate)
-				f.time:Show()
+				f:SetScript('OnUpdate', F.CooldownOnUpdate)
+				f.timer:Show()
 			else
 				f:SetScript('OnUpdate', nil)
-				f.time:Hide()
+				f.timer:Hide()
 			end
 		end
 		

@@ -11,7 +11,20 @@ local ignoredDebuffs = {
 }
 
 local importantBuffs = {
-
+	[ 11958] = true,	-- 寒冰屏障
+	[ 12042] = true,	-- 奥术强化
+	[   498] = true,	-- 圣佑术
+	[   642] = true,	-- 圣盾术
+	[  1022] = true,	-- 保护
+	[  1044] = true,	-- 自由
+	[  6940] = true,	-- 牺牲
+	[ 10060] = true,	-- 能量灌注
+	[ 27827] = true,	-- 救赎之魂
+	[   586] = true,	-- 渐隐术
+	[  5277] = true,	-- 闪避
+	[ 13750] = true,	-- 冲动
+	[ 13877] = true,	-- 剑刃乱舞
+	[   871] = true,	-- 盾墙
 }
 
 local classBuffs = {
@@ -25,9 +38,6 @@ local classBuffs = {
 		[  8936] = true,	-- 愈合
 	},
 	['PALADIN'] = {
-		[  1022] = true,	-- 保护
-		[  1044] = true,	-- 自由
-		[  6940] = true,	-- 牺牲
 	},
 	['SHAMAN'] = {
 	},

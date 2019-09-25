@@ -166,31 +166,3 @@ C.PixelFont = {C.font.pixel, 8, 'OUTLINEMONOCHROME'}
 
 
 
-local LSM = LibStub('LibSharedMedia-3.0')
-
-local cn, tw, western = LSM.LOCALE_BIT_zhCN, LSM.LOCALE_BIT_zhTW, LSM.LOCALE_BIT_western
-
-LSM:Register(LSM.MediaType.BACKGROUND, 'FreeUI_Background', 	C.media.bdTex)
-
-LSM:Register(LSM.MediaType.STATUSBAR, 'FreeUI_Statusbar', 		C.media.sbTex)
-
-LSM:Register(LSM.MediaType.FONT, 'FreeUI_PixelAlt', 			C.AssetsPath..'font\\supereffective.ttf', cn + tw + western)
-LSM:Register(LSM.MediaType.FONT, 'FreeUI_Pixel', 				C.AssetsPath..'font\\pixel.ttf', cn + tw + western)
-LSM:Register(LSM.MediaType.FONT, 'FreeUI_Normal', 				C.font.normal, cn + tw + western)
-LSM:Register(LSM.MediaType.FONT, 'FreeUI_Header', 				C.font.header, cn + tw + western)
-LSM:Register(LSM.MediaType.FONT, 'FreeUI_Chat', 				C.font.chat, cn + tw + western)
-
-LSM:Register(LSM.MediaType.SOUND, 'FreeUI_Buzz', 				C.AssetsPath..'sound\\buzz.ogg')
-LSM:Register(LSM.MediaType.SOUND, 'FreeUI_Buzz', 				C.AssetsPath..'sound\\buzz.ogg')
-LSM:Register(LSM.MediaType.SOUND, 'FreeUI_Ding', 				C.AssetsPath..'sound\\ding.ogg')
-LSM:Register(LSM.MediaType.SOUND, 'FreeUI_Execute', 			C.AssetsPath..'sound\\execute.ogg')
-LSM:Register(LSM.MediaType.SOUND, 'FreeUI_LowHealth', 			C.AssetsPath..'sound\\lowhealth.ogg')
-LSM:Register(LSM.MediaType.SOUND, 'FreeUI_LowMana', 			C.AssetsPath..'sound\\lowmana.ogg')
-LSM:Register(LSM.MediaType.SOUND, 'FreeUI_Miss', 				C.AssetsPath..'sound\\miss.mp3')
-LSM:Register(LSM.MediaType.SOUND, 'FreeUI_Proc', 				C.AssetsPath..'sound\\proc.ogg')
-LSM:Register(LSM.MediaType.SOUND, 'FreeUI_Interrupt', 			C.AssetsPath..'sound\\interrupt.ogg')
-LSM:Register(LSM.MediaType.SOUND, 'FreeUI_Notification', 		C.AssetsPath..'sound\\notification.mp3')
-LSM:Register(LSM.MediaType.SOUND, 'FreeUI_Warning', 			C.AssetsPath..'sound\\warning.ogg')
-LSM:Register(LSM.MediaType.SOUND, 'FreeUI_WhisperNormal', 		C.AssetsPath..'sound\\whisper_normal.ogg')
-LSM:Register(LSM.MediaType.SOUND, 'FreeUI_WhisperBN', 			C.AssetsPath..'sound\\whisper_bn.ogg')
-LSM:Register(LSM.MediaType.SOUND, 'FreeUI_Forthehorde', 		C.AssetsPath..'sound\\forthehorde.mp3')

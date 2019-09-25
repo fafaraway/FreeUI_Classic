@@ -1,6 +1,4 @@
 <Ui xmlns='http://www.blizzard.com/wow/ui/'>
-	<Include file='libs\libs.xml'/>
-
 	<Script file='core\init.lua'/>
 
 	<Script file='locales\enUS.lua'/>
@@ -16,6 +14,8 @@
 	<Script file='core\install.lua'/>
 	<Script file='core\mover.lua'/>
 	<Script file='core\slash.lua'/>
+
+	<Include file='libs\libs.xml'/>
 
 	<Include file='scripts\actionbar\actionbar.xml'/>
 	<Include file='scripts\aura\aura.xml'/>
