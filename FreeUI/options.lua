@@ -208,9 +208,9 @@ C['unitframe'] = {
 		['colourSmooth'] = false,
 		['healer'] = false,
 		['portrait'] = true,
-
+		['GCDSpark'] = true,
 		['dispellable'] = true,
-		['onlyShowPlayer'] = false,
+		['debuffbyPlayer'] = false,
 		['rangeCheck'] = true,
 
 		['powerHeight'] = 4,
@@ -235,7 +235,8 @@ C['unitframe'] = {
 			['groupNames'] = false,
 			['groupColourSmooth'] = true,
 			['groupFilter'] = 8,
-			['debuffWatch'] = true,
+			['aurasClickThrough'] = true,
+			['debuffsWatch'] = true,
 
 		['player_pos'] = {'TOP', UIParent, 'CENTER', 0, -300},
 		['player_pos_healer'] = {'RIGHT', UIParent, 'CENTER', -100, -200},
