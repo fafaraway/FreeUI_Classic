@@ -1,16 +1,15 @@
+local _, ns = ...
+local oUF = ns.oUF
 local F, C, L = unpack(select(2, ...))
-local UNITFRAME = F:RegisterModule('Unitframe')
+local UNITFRAME, cfg = F:RegisterModule('Unitframe'), C.unitframe
 
+
+C.LibClassicDurations = LibStub('LibClassicDurations')
+C.LibClassicDurations:RegisterFrame('FreeUI')
 
 local format, floor, abs, min = string.format, math.floor, math.abs, math.min
 local pairs, next = pairs, next
-
-F.LibClassicDurations = LibStub('LibClassicDurations')
-F.LibClassicDurations:RegisterFrame('FreeUI')
-local LCD = F.LibClassicDurations
-
-local cfg = C.unitframe
-local oUF = FreeUI.oUF
+local LCD = C.LibClassicDurations
 
 oUF.colors.power.MANA = {0.47, 0.83, 0.88}
 oUF.colors.power.ENERGY = {0.88, 0.79, 0.25}
@@ -34,28 +33,16 @@ oUF.colors.reaction = {
 	[8] = {87/255, 255/255, 93/255}, 	-- Exalted
 }
 
---oUF.colors.class = {
---	['DRUID']       = { 0.87, 0.41, 0.18 },
---	['HUNTER']      = { 0.13, 0.61, 0.21 },
---	['MAGE']        = { 0.38, 0.64, 0.87 },
---	['PALADIN']     = { 1.00, 0.23, 0.35 },
---	['PRIEST']      = { 0.85, 0.85, 0.85 },
---	['ROGUE']       = { 1.00, 0.83, 0.24 },
---	['SHAMAN']      = { 0.27, 0.28, 0.74 },
---	['WARLOCK']     = { 0.63, 0.55, 0.82 },
---	['WARRIOR']     = { 0.63, 0.56, 0.51 },
---}
-
-local rcc = RAID_CLASS_COLORS
-oUF.colors.class.ROGUE = {rcc['ROGUE']['r'], rcc['ROGUE']['g'], rcc['ROGUE']['b']}
-oUF.colors.class.DRUID = {rcc['DRUID']['r'], rcc['DRUID']['g'], rcc['DRUID']['b']}
-oUF.colors.class.HUNTER = {rcc['HUNTER']['r'], rcc['HUNTER']['g'], rcc['HUNTER']['b']}
-oUF.colors.class.MAGE = {rcc['MAGE']['r'], rcc['MAGE']['g'], rcc['MAGE']['b']}
-oUF.colors.class.PALADIN = {rcc['PALADIN']['r'], rcc['PALADIN']['g'], rcc['PALADIN']['b']}
-oUF.colors.class.PRIEST = {rcc['PRIEST']['r'], rcc['PRIEST']['g'], rcc['PRIEST']['b']}
-oUF.colors.class.SHAMAN = {rcc['SHAMAN']['r'], rcc['SHAMAN']['g'], rcc['SHAMAN']['b']}
-oUF.colors.class.WARLOCK = {rcc['WARLOCK']['r'], rcc['WARLOCK']['g'], rcc['WARLOCK']['b']}
-oUF.colors.class.WARRIOR = {rcc['WARRIOR']['r'], rcc['WARRIOR']['g'], rcc['WARRIOR']['b']}
+local RCC = RAID_CLASS_COLORS
+oUF.colors.class.ROGUE = {RCC['ROGUE']['r'], RCC['ROGUE']['g'], RCC['ROGUE']['b']}
+oUF.colors.class.DRUID = {RCC['DRUID']['r'], RCC['DRUID']['g'], RCC['DRUID']['b']}
+oUF.colors.class.HUNTER = {RCC['HUNTER']['r'], RCC['HUNTER']['g'], RCC['HUNTER']['b']}
+oUF.colors.class.MAGE = {RCC['MAGE']['r'], RCC['MAGE']['g'], RCC['MAGE']['b']}
+oUF.colors.class.PALADIN = {RCC['PALADIN']['r'], RCC['PALADIN']['g'], RCC['PALADIN']['b']}
+oUF.colors.class.PRIEST = {RCC['PRIEST']['r'], RCC['PRIEST']['g'], RCC['PRIEST']['b']}
+oUF.colors.class.SHAMAN = {RCC['SHAMAN']['r'], RCC['SHAMAN']['g'], RCC['SHAMAN']['b']}
+oUF.colors.class.WARLOCK = {RCC['WARLOCK']['r'], RCC['WARLOCK']['g'], RCC['WARLOCK']['b']}
+oUF.colors.class.WARRIOR = {RCC['WARRIOR']['r'], RCC['WARRIOR']['g'], RCC['WARRIOR']['b']}
 
 function UNITFRAME:createBarMover(bar, text, value, anchor)
 	local mover = F.Mover(bar, text, value, anchor, bar:GetHeight()+bar:GetWidth()+5, bar:GetHeight()+5)
@@ -167,29 +154,17 @@ function UNITFRAME:AddSelectedBorder(self)
 	self:RegisterEvent('GROUP_ROSTER_UPDATE', UpdateSelectedBorder, true)
 end
 
-function UNITFRAME:AddFCT(self)
-	if not cfg.enableFCT then return end
+function UNITFRAME:AddGCDSpark(self)
+	if not cfg.GCDSpark then return end
+		
+	self.GCD = CreateFrame('Frame', self:GetName()..'_GCD', self)
+	self.GCD:SetWidth(self:GetWidth())
+	self.GCD:SetHeight(3)
+	self.GCD:SetFrameLevel(self:GetFrameLevel() + 3)
+	self.GCD:SetPoint('BOTTOMLEFT', self, 'TOPLEFT', 0, 0)
 
-	local parentFrame = CreateFrame('Frame', nil, UIParent)
-	local fcf = CreateFrame('Frame', 'oUF_CombatTextFrame', parentFrame)
-	fcf:SetSize(32, 32)
-	if self.unitStyle == 'player' then
-		F.Mover(fcf, L['MOVER_COMBATTEXT_INCOMING'], 'PlayerCombatText', {'BOTTOM', self, 'TOPLEFT', 0, 120})
-	else
-		F.Mover(fcf, L['MOVER_COMBATTEXT_OUTGOING'], 'TargetCombatText', {'BOTTOM', self, 'TOPRIGHT', 0, 120})
-	end
-
-	for i = 1, 36 do
-		fcf[i] = parentFrame:CreateFontString('$parentText', 'OVERLAY')
-	end
-
-	fcf.font = C.font.normal
-	fcf.fontHeight = 18
-	fcf.fontFlags = nil
-	fcf.showPets = cfg.petFCT
-	fcf.showHots = cfg.hotsDots
-	fcf.showAutoAttack = cfg.autoAttack
-	fcf.showOverHealing = cfg.overHealing
-	fcf.abbreviateNumbers = true
-	self.FloatingCombatFeedback = fcf
+	self.GCD.Color = {1, 1, 1}
+	self.GCD.Height = 4
+	self.GCD.Width = 4
 end
+

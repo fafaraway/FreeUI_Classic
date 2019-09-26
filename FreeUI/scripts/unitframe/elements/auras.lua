@@ -4,7 +4,7 @@ local UNITFRAME = F:GetModule('Unitframe')
 
 local format, min, max, floor, mod, pairs = string.format, math.min, math.max, math.floor, mod, pairs
 local cfg, myClass = C.unitframe, C.Class
-local LCD = F.LibClassicDurations
+local LCD = C.LibClassicDurations
 
 local ignoredDebuffs = {
 	

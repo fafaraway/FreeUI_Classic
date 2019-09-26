@@ -24,6 +24,9 @@ local function CreatePlayerStyle(self)
 	UNITFRAME:AddPVPText(self)
 	UNITFRAME:AddComboPointsBar(self)
 	UNITFRAME:AddEnergyTicker(self)
+
+	UNITFRAME:AddDebuffsWatch(self)
+	UNITFRAME:AddGCDSpark(self)
 end
 
 local function CreatePetStyle(self)
@@ -87,7 +90,7 @@ local function CreatePartyStyle(self)
 	UNITFRAME:AddResurrectIndicator(self)
 	UNITFRAME:AddReadyCheckIndicator(self)
 	UNITFRAME:AddSelectedBorder(self)
-	UNITFRAME:AddDebuffWatch(self)
+	UNITFRAME:AddDebuffsWatch(self)
 end
 
 local function CreateRaidStyle(self)
@@ -106,6 +109,7 @@ local function CreateRaidStyle(self)
 	UNITFRAME:AddResurrectIndicator(self)
 	UNITFRAME:AddReadyCheckIndicator(self)
 	UNITFRAME:AddSelectedBorder(self)
+	UNITFRAME:AddDebuffsWatch(self)
 end
 
 
@@ -150,21 +154,6 @@ function UNITFRAME:OnLogin()
 			CompactRaidFrameManager:SetParent(FreeUIHider)
 			CompactUnitFrameProfiles:UnregisterAllEvents()
 		end
-
-		if cfg.debuffWatch then
-			local ORD = oUF_RaidDebuffs
-			local RaidDebuffs = CreateFrame("Frame")
-
-			RaidDebuffs:RegisterEvent("PLAYER_ENTERING_WORLD")
-			RaidDebuffs:SetScript("OnEvent", UNITFRAME.UpdateRaidDebuffIndicator)
-
-			if (ORD) then
-				ORD.ShowDispellableDebuff = true
-				ORD.FilterDispellableDebuff = true
-				ORD.MatchBySpellName = false
-			end
-		end
-
 
 		oUF:RegisterStyle('Party', CreatePartyStyle)
 		oUF:SetActiveStyle('Party')
