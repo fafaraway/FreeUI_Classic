@@ -9,10 +9,6 @@ local function PostUpdatePower(power, unit, cur, max, min)
 	if max == 0 or not UnitIsConnected(unit) or UnitIsDead(unit) or UnitIsGhost(unit) then
 		power:SetValue(0)
 	end
-
-	--[[if C.Class == 'ROGUE' and style == 'player' then
-		power:SetStatusBarColor(181/255, 107/255, 72/255)
-	end--]]
 end
 
 function module:AddPowerBar(self)
