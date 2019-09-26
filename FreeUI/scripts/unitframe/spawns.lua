@@ -24,8 +24,6 @@ local function CreatePlayerStyle(self)
 	UNITFRAME:AddPVPText(self)
 	UNITFRAME:AddComboPointsBar(self)
 	UNITFRAME:AddEnergyTicker(self)
-
-	UNITFRAME:AddDebuffsWatch(self)
 	UNITFRAME:AddGCDSpark(self)
 end
 
