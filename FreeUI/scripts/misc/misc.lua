@@ -1,5 +1,5 @@
 local F, C, L = unpack(select(2, ...))
-local MISC = F:RegisterModule('Misc')
+local MISC, cfg = F:RegisterModule('Misc'), C.general
 
 
 local _G = getfenv(0)
@@ -22,6 +22,7 @@ function MISC:OnLogin()
 	self:Reputation()
 	self:TradeTargetInfo()
 	self:AddSharedMedia()
+	self:QuickBuy()
 
 	-- Fix blizz error
 	MAIN_MENU_MICRO_ALERT_PRIORITY = MAIN_MENU_MICRO_ALERT_PRIORITY or {}
@@ -163,7 +164,9 @@ do
 end
 
 -- ALT+RightClick to buy a stack
-do
+function MISC:QuickBuy()
+	if not cfg.quickBuy then return end
+	
 	local cache = {}
 	local itemLink, id
 
