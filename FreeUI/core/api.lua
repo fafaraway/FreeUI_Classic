@@ -838,11 +838,10 @@ end
 function F:CreateButton(width, height, text, fontSize)
 	local bu = CreateFrame('Button', nil, self)
 	bu:SetSize(width, height)
-	F.CreateBD(bu, .3)
+	--F.CreateBD(bu, .3)
 	if type(text) == 'boolean' then
 		F.PixelIcon(bu, fontSize, true)
 	else
-		F.CreateBC(bu)
 		bu.text = F.CreateFS(bu, {C.font.normal, fontSize or 12}, text, nil, nil, true)
 	end
 
