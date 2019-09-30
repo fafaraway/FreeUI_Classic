@@ -244,13 +244,11 @@ function AURA:CreateAuraIcon(button)
 	button.icon:SetPoint('BOTTOMRIGHT', -C.Mult, C.Mult)
 	button.icon:SetTexCoord(unpack(C.TexCoord))
 
-	button.count = button:CreateFontString(nil, 'ARTWORK')
+	button.count = F.CreateFS(button, (C.appearance.usePixelFont and 'pixel') or {C.font.normal, 11}, text, nil, true)
 	button.count:SetPoint('TOPRIGHT', -1, -3)
-	F.SetFS(button.count, 'pixel')
 
-	button.timer = button:CreateFontString(nil, 'ARTWORK')
+	button.timer = F.CreateFS(button, (C.appearance.usePixelFont and 'pixel') or {C.font.normal, 11}, text, nil, true)
 	button.timer:SetPoint('TOP', button, 'BOTTOM', 1, 2)
-	F.SetFS(button.timer, 'pixel')
 
 	button.highlight = button:CreateTexture(nil, 'HIGHLIGHT')
 	button.highlight:SetColorTexture(1, 1, 1, .25)

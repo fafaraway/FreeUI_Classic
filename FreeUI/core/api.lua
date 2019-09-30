@@ -9,6 +9,41 @@ local r, g, b = C.ClassColors[C.Class].r, C.ClassColors[C.Class].g, C.ClassColor
 
 -- [[ Functions ]]
 
+-- UI scale
+local function clipScale(scale)
+	return tonumber(format('%.5f', scale))
+end
+
+local function GetPerfectScale()
+	local _, height = GetPhysicalScreenSize()
+	local scale = C.general.uiScale
+	local bestScale = max(.4, min(1.15, 768 / height))
+	local pixelScale = 768 / height
+
+	if C.general.uiScaleAuto then scale = clipScale(bestScale) end
+
+	C.Mult = (bestScale / scale) - ((bestScale - pixelScale) / scale)
+
+	return scale
+end
+GetPerfectScale()
+
+local isScaling = false
+function F:SetupUIScale()
+	if isScaling then return end
+	isScaling = true
+
+	local scale = GetPerfectScale()
+	local parentScale = UIParent:GetScale()
+	if scale ~= parentScale then
+		UIParent:SetScale(scale)
+	end
+
+	C.general.uiScale = clipScale(scale)
+
+	isScaling = false
+end
+
 function F:CreateFS(font, text, colour, shadow, anchor, x, y)
 	local fs = self:CreateFontString(nil, 'OVERLAY')
 	fs:SetWordWrap(false)
@@ -221,7 +256,6 @@ end
 
 local function StartGlow(f)
 	if not f:IsEnabled() then return end
-	--f:SetBackdropColor(.2, .2, .2, .7)
 
 	f:SetBackdropBorderColor(r, g, b, 1)
 	f.glow:SetAlpha(1)
@@ -229,7 +263,6 @@ local function StartGlow(f)
 end
 
 local function StopGlow(f)
-	--f:SetBackdropColor(.2, .2, .2, .7)
 	f:SetBackdropBorderColor(C.appearance.borderColour[1], C.appearance.borderColour[2], C.appearance.borderColour[3], C.appearance.borderAlpha)
 
 	f.glow:SetScript('OnUpdate', nil)
@@ -257,9 +290,7 @@ function F.Reskin(f, noGlow)
 	if f.BottomMiddle then f.BottomMiddle:SetAlpha(0) end
 	if f.BottomRight then f.BottomRight:SetAlpha(0) end
 
-	--f:SetBackdropColor(.2, .2, .2, .7)
-
-	F.CreateBD(f, .4)
+	F.CreateBD(f, .3)
 
 	f.bgTex = F.CreateGradient(f)
 	
@@ -1307,37 +1338,4 @@ F.CheckChat = function(warning)
 	return 'SAY'
 end
 
--- UI scale
-local function clipScale(scale)
-	return tonumber(format('%.5f', scale))
-end
 
-local function GetPerfectScale()
-	local _, height = GetPhysicalScreenSize()
-	local scale = C.general.uiScale
-	local bestScale = max(.4, min(1.15, 768 / height))
-	local pixelScale = 768 / height
-
-	if C.general.uiScaleAuto then scale = clipScale(bestScale) end
-
-	C.Mult = (bestScale / scale) - ((bestScale - pixelScale) / scale)
-
-	return scale
-end
-GetPerfectScale()
-
-local isScaling = false
-function F:SetupUIScale()
-	if isScaling then return end
-	isScaling = true
-
-	local scale = GetPerfectScale()
-	local parentScale = UIParent:GetScale()
-	if scale ~= parentScale then
-		UIParent:SetScale(scale)
-	end
-
-	C.general.uiScale = clipScale(scale)
-
-	isScaling = false
-end

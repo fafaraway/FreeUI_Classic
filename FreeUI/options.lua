@@ -14,6 +14,7 @@ C['general'] = {
 	['itemLevel'] = true,
 	['helmCloak'] = true,
 	['PVPSound'] = true,
+	['quickBuy'] = true,
 	['cameraZoomSpeed'] = 5,
 	['numberFormat'] = 1, -- 2 for Chinse number format (万/亿/兆)
 }
@@ -40,7 +41,6 @@ C['appearance'] = {
 
 	['BigWigs'] = true,
 	['WeakAuras'] = true,
-	['QuestLogEx'] = true,
 }
 
 C['actionbar'] = {
@@ -282,7 +282,8 @@ C['unitframe'] = {
 }
 
 C['quest'] = {
-	['questTracker'] = true,
+	['trackerEnhancement'] = true,
+	['logEnhancement'] = true,
 	['quickQuest'] = false,
 	['notifier'] = true,
 		['progressNotify'] = false,

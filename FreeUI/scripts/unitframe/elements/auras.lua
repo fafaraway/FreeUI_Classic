@@ -208,6 +208,9 @@ local function PostUpdateGapIcon(_, _, icon)
 	if icon.glow and icon.glow:IsShown() then
 		icon.glow:Hide()
 	end
+	if icon.timer and icon.timer:IsShown() then
+		icon.timer:Hide()
+	end
 end
 
 local function AuraIconSize(w, n, s)

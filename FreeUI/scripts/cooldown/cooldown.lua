@@ -27,7 +27,7 @@ function COOLDOWN:OnSizeChanged(width)
 	if fontScale < MIN_SCALE then
 		self:Hide()
 	else
-		self.text:SetFont(cfg.CDFont, cfg.CDFontFlag, cfg.CDFontSize)
+		self.text:SetFont(cfg.CDFont, cfg.CDFontSize, cfg.CDFontFlag)
 		self.text:SetShadowColor(0, 0, 0, 0)
 
 		if self.enabled then
@@ -163,7 +163,7 @@ function COOLDOWN:RegisterActionButton()
 end
 
 function COOLDOWN:CooldownEnhancement()
-	if not cfg.cdEnhancement then return end
+	if not cfg.CDEnhancement then return end
 
 	local cooldownIndex = getmetatable(ActionButton1Cooldown).__index
 	hooksecurefunc(cooldownIndex, "SetCooldown", COOLDOWN.StartTimer)
