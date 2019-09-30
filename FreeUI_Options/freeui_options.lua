@@ -112,10 +112,9 @@ local function toggleChildren(self, checked)
 		end
 	end
 
-		for _, slider in pairs(sliders) do
-			slider.textInput.num:SetTextColor(tR, tG, tB)
-		end
-
+	for _, slider in pairs(sliders) do
+		slider.textInput.num:SetTextColor(tR, tG, tB)
+	end
 end
 
 local function toggle(self)
@@ -572,13 +571,13 @@ local activeTab = nil
 
 local function setActiveTab(tab)
 	activeTab = tab
-	activeTab:SetBackdropColor(r, g, b, .6)
+	activeTab:SetBackdropColor(r, g, b, .3)
 	activeTab.panel:Show()
 end
 
 local onTabClick = function(tab)
 	activeTab.panel:Hide()
-	activeTab:SetBackdropColor(0, 0, 0, 0)
+	activeTab:SetBackdropColor(0, 0, 0, .3)
 	setActiveTab(tab)
 end
 
@@ -817,7 +816,7 @@ init:SetScript('OnEvent', function()
 		F.CreateBDFrame(panel)
 		panel.Title:SetTextColor(r, g, b)
 		panel.subText:SetTextColor(.8, .8, .8)
-		panel.tab:SetBackdropColor(0, 0, 0, 0)
+		--panel.tab:SetBackdropColor(0, 0, 0, 0)
 		F.CreateBDFrame(panel.tab.Icon)
 		F.Reskin(panel.tab)
 		F.ReskinScroll(panel.ScrollBar)

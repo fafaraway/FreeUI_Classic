@@ -47,6 +47,9 @@ L.general_uiScale = "自定义缩放"
 L.general_autoDismount = "自动下马"
 L.general_autoDismount_tooltip = "施法/攻击/使用物品时自动下马。"
 
+L.general_quickBuy = "快速购买"
+L.general_quickBuy_tooltip = "在商人界面Alt+鼠标左键直接购买整组物品。"
+
 
 
 L.appearance = "外观"
@@ -231,13 +234,12 @@ L.aura_reminder_tooltip = "提醒你缺失的光环(法师智力牧师耐力)。
 L.quest = "任务"
 L.quest_subText = "这些选项控制大部分和任务相关的设置。"
 L.quest_subCategory_basic = "基本设定"
-
-L.quest_questTracker = "任务追踪栏增强"
-L.quest_questTracker_tooltip = "任务追踪栏增强。"
-
+L.quest_logEnhancement = "任务日志增强"
+L.quest_logEnhancement_tooltip = "任务日志双列显示并且添加任务等级。"
+L.quest_trackerEnhancement = "任务追踪增强"
+L.quest_trackerEnhancement_tooltip = "任务追踪增强。"
 L.quest_quickQuest = "自动交接任务"
 L.quest_quickQuest_tooltip = "自动交接任务。"
-
 L.quest_notifier = "任务提示"
 L.quest_notifier_tooltip = "任务提示。"
 L.quest_progressNotify = "进度广播"

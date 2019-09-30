@@ -62,6 +62,8 @@ L.general_uiScaleAuto_tooltip = "Automatically apply the best UI scale for curre
 L.general_uiScale = "Customize UI scale"
 L.general_autoDismount = "Auto dismount"
 L.general_autoDismount_tooltip = "Automatically dismount when you attack cast or use item."
+L.general_quickBuy = "Quick buy"
+L.general_quickBuy_tooltip = "Buy a stack by alt + left click."
 
 
 
@@ -250,9 +252,11 @@ L.aura_reminder_tooltip = "Buffs reminder(stamina/intellect)."
 L.quest = "Quest"
 L.quest_subText = "These options control quest tracker and notifier."
 L.quest_subCategory_basic = "Basic"
-L.quest_questTracker = "Quest tracker"
-L.quest_questTracker_tooltip = "Enhanced quest tracker."
-L.quest_quickQuest = "Easy quest"
+L.quest_logEnhancement = "Quest log"
+L.quest_logEnhancement_tooltip = "Doubles quest log panel and adds quest levle."
+L.quest_trackerEnhancement = "Quest tracker"
+L.quest_trackerEnhancement_tooltip = "Enhances quest tracker."
+L.quest_quickQuest = "Auto quest"
 L.quest_quickQuest_tooltip = "Automatically accept and deliver quests."
 L.quest_notifier = "Notifier"
 L.quest_notifier_tooltip = "Quest notifier."

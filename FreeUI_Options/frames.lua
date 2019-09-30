@@ -36,9 +36,6 @@ end)
 OkayButton:Disable()
 tinsert(ns.buttons, OkayButton)
 
-
-
-
 local reloadText = options:CreateFontString(nil, 'ARTWORK', 'GameFontHighlight')
 reloadText:SetPoint('BOTTOM', 0, 14)
 reloadText:SetText(ns.localization.needReload)
@@ -58,13 +55,11 @@ end)
 tinsert(ns.buttons, CreditsButton)
 options.CreditsButton = CreditsButton
 
-
 local InstallButton = CreateFrame('Button', nil, options, 'UIPanelButtonTemplate')
 InstallButton:SetSize(120, 24)
 InstallButton:SetText(ns.localization.install)
 tinsert(ns.buttons, InstallButton)
 options.InstallButton = InstallButton
-
 
 local ResetButton = CreateFrame('Button', nil, options, 'UIPanelButtonTemplate')
 ResetButton:SetSize(120, 24)
@@ -72,14 +67,12 @@ ResetButton:SetText(ns.localization.reset)
 tinsert(ns.buttons, ResetButton)
 options.ResetButton = ResetButton
 
-
 local ProfileBox = CreateFrame('CheckButton', nil, options, 'InterfaceOptionsCheckButtonTemplate')
 ProfileBox:SetSize(24, 24)
 ProfileBox:SetPoint('BOTTOMLEFT', 6, 6)
 ProfileBox.Text:SetText(ns.localization.profile)
 ProfileBox.tooltipText = ns.localization.profileTooltip
 options.ProfileBox = ProfileBox
-
 
 local line = options:CreateTexture()
 line:SetSize(1, 600)
@@ -149,6 +142,9 @@ do
 	local autoDismount = ns.CreateCheckBox(general, 'autoDismount')
 	autoDismount:SetPoint('TOPLEFT', marker, 'BOTTOMLEFT', 0, -8)
 
+	local quickBuy = ns.CreateCheckBox(general, 'quickBuy')
+	quickBuy:SetPoint('LEFT', autoDismount, 'RIGHT', 160, 0)
+
 	local camerasub = ns.addSubCategory(general, ns.localization.general_subCategory_camera)
 	camerasub:SetPoint('TOPLEFT', autoDismount, 'BOTTOMLEFT', 0, -16)
 
@@ -215,14 +211,17 @@ do
 	local adjustFonts = ns.CreateCheckBox(appearance, 'adjustFonts')
 	adjustFonts:SetPoint('TOPLEFT', subfonts, 'BOTTOMLEFT', 0, -8)
 
-	local usePixelFont = ns.CreateCheckBox(appearance, 'usePixelFont', true)
+	local usePixelFont = ns.CreateCheckBox(appearance, 'usePixelFont')
 	usePixelFont:SetPoint('LEFT', adjustFonts, 'RIGHT', 160, 0)
 
 	local addons = ns.addSubCategory(appearance, ns.localization.appearance_subCategory_addons)
 	addons:SetPoint('TOPLEFT', adjustFonts, 'BOTTOMLEFT', 0, -16)
 
-	local QuestLogEx = ns.CreateCheckBox(appearance, 'QuestLogEx')
-	QuestLogEx:SetPoint('TOPLEFT', addons, 'BOTTOMLEFT', 0, -8)
+	local BigWigs = ns.CreateCheckBox(appearance, 'BigWigs', true)
+	BigWigs:SetPoint('TOPLEFT', addons, 'BOTTOMLEFT', 0, -8)
+
+	local WeakAuras = ns.CreateCheckBox(appearance, 'WeakAuras', true)
+	WeakAuras:SetPoint('LEFT', BigWigs, 'RIGHT', 160, 0)
 end
 
 -- Notification
@@ -712,14 +711,24 @@ do
 	local basic = ns.addSubCategory(quest, ns.localization.quest_subCategory_basic)
 	basic:SetPoint('TOPLEFT', quest.subText, 'BOTTOMLEFT', 0, -8)
 
-	local questTracker = ns.CreateCheckBox(quest, 'questTracker')
-	questTracker:SetPoint('TOPLEFT', basic, 'BOTTOMLEFT', 0, -8)
+
+
+	local logEnhancement = ns.CreateCheckBox(quest, 'logEnhancement')
+	logEnhancement:SetPoint('TOPLEFT', basic, 'BOTTOMLEFT', 0, -8)
+
+	local trackerEnhancement = ns.CreateCheckBox(quest, 'trackerEnhancement')
+	trackerEnhancement:SetPoint('LEFT', logEnhancement, 'RIGHT', 160, 0)
 
 	local quickQuest = ns.CreateCheckBox(quest, 'quickQuest')
-	quickQuest:SetPoint('LEFT', questTracker, 'RIGHT', 160, 0)
+	quickQuest:SetPoint('TOPLEFT', logEnhancement, 'BOTTOMLEFT', 0, -8)
+
+	local rewardHightlight = ns.CreateCheckBox(quest, 'rewardHightlight')
+	rewardHightlight:SetPoint('LEFT', quickQuest, 'RIGHT', 160, 0)
+
+
 
 	local notifier = ns.CreateCheckBox(quest, 'notifier')
-	notifier:SetPoint('TOPLEFT', questTracker, 'BOTTOMLEFT', 0, -8)
+	notifier:SetPoint('TOPLEFT', quickQuest, 'BOTTOMLEFT', 0, -8)
 
 	local progressNotify = ns.CreateCheckBox(quest, 'progressNotify')
 	progressNotify:SetPoint('TOPLEFT', notifier, 'BOTTOMLEFT', 16, -8)
@@ -728,9 +737,6 @@ do
 	completeRing:SetPoint('TOPLEFT', progressNotify, 'BOTTOMLEFT', 0, -8)
 
 	notifier.children = {progressNotify, completeRing}
-
-	local rewardHightlight = ns.CreateCheckBox(quest, 'rewardHightlight')
-	rewardHightlight:SetPoint('LEFT', notifier, 'RIGHT', 160, 0)
 end
 
 -- Tooltip
