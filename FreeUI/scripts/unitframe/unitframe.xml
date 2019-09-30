@@ -6,6 +6,7 @@
 	<Script file='elements\combopoints.lua'/>
 	<Script file='elements\dispellable.lua'/>
 	<Script file='elements\energyticker.lua'/>
+	<Script file='elements\gcdticker.lua'/>
 	<Script file='elements\health.lua'/>
 	<Script file='elements\indicators.lua'/>
 	<Script file='elements\portrait.lua'/>

@@ -4,9 +4,6 @@ local F, C, L = unpack(select(2, ...))
 local UNITFRAME, cfg = F:RegisterModule('Unitframe'), C.unitframe
 
 
-C.LibClassicDurations = LibStub('LibClassicDurations')
-C.LibClassicDurations:RegisterFrame('FreeUI')
-
 local format, floor, abs, min = string.format, math.floor, math.abs, math.min
 local pairs, next = pairs, next
 local LCD = C.LibClassicDurations
@@ -33,16 +30,18 @@ oUF.colors.reaction = {
 	[8] = {87/255, 255/255, 93/255}, 	-- Exalted
 }
 
-local RCC = RAID_CLASS_COLORS
-oUF.colors.class.ROGUE = {RCC['ROGUE']['r'], RCC['ROGUE']['g'], RCC['ROGUE']['b']}
-oUF.colors.class.DRUID = {RCC['DRUID']['r'], RCC['DRUID']['g'], RCC['DRUID']['b']}
-oUF.colors.class.HUNTER = {RCC['HUNTER']['r'], RCC['HUNTER']['g'], RCC['HUNTER']['b']}
-oUF.colors.class.MAGE = {RCC['MAGE']['r'], RCC['MAGE']['g'], RCC['MAGE']['b']}
-oUF.colors.class.PALADIN = {RCC['PALADIN']['r'], RCC['PALADIN']['g'], RCC['PALADIN']['b']}
-oUF.colors.class.PRIEST = {RCC['PRIEST']['r'], RCC['PRIEST']['g'], RCC['PRIEST']['b']}
-oUF.colors.class.SHAMAN = {RCC['SHAMAN']['r'], RCC['SHAMAN']['g'], RCC['SHAMAN']['b']}
-oUF.colors.class.WARLOCK = {RCC['WARLOCK']['r'], RCC['WARLOCK']['g'], RCC['WARLOCK']['b']}
-oUF.colors.class.WARRIOR = {RCC['WARRIOR']['r'], RCC['WARRIOR']['g'], RCC['WARRIOR']['b']}
+if C.appearance.adjustClassColors then
+	local RCC = RAID_CLASS_COLORS
+	oUF.colors.class.ROGUE = {RCC['ROGUE']['r'], RCC['ROGUE']['g'], RCC['ROGUE']['b']}
+	oUF.colors.class.DRUID = {RCC['DRUID']['r'], RCC['DRUID']['g'], RCC['DRUID']['b']}
+	oUF.colors.class.HUNTER = {RCC['HUNTER']['r'], RCC['HUNTER']['g'], RCC['HUNTER']['b']}
+	oUF.colors.class.MAGE = {RCC['MAGE']['r'], RCC['MAGE']['g'], RCC['MAGE']['b']}
+	oUF.colors.class.PALADIN = {RCC['PALADIN']['r'], RCC['PALADIN']['g'], RCC['PALADIN']['b']}
+	oUF.colors.class.PRIEST = {RCC['PRIEST']['r'], RCC['PRIEST']['g'], RCC['PRIEST']['b']}
+	oUF.colors.class.SHAMAN = {RCC['SHAMAN']['r'], RCC['SHAMAN']['g'], RCC['SHAMAN']['b']}
+	oUF.colors.class.WARLOCK = {RCC['WARLOCK']['r'], RCC['WARLOCK']['g'], RCC['WARLOCK']['b']}
+	oUF.colors.class.WARRIOR = {RCC['WARRIOR']['r'], RCC['WARRIOR']['g'], RCC['WARRIOR']['b']}
+end
 
 function UNITFRAME:createBarMover(bar, text, value, anchor)
 	local mover = F.Mover(bar, text, value, anchor, bar:GetHeight()+bar:GetWidth()+5, bar:GetHeight()+5)
@@ -54,43 +53,6 @@ local handler = CreateFrame('Frame')
 handler:SetScript('OnEvent', function(self, event, ...)
 	self[event](self, ...)
 end)
-
-function handler:MODIFIER_STATE_CHANGED(key, state)
-	if (key ~= 'RALT') then return end
-
-	for _, object in next, oUF.objects do
-		local unit = object.realUnit or object.unit
-		if (unit == 'target') then
-			local auras = object.Auras
-			if (state == 1) then
-				auras.CustomFilter = nil
-			else
-				auras.CustomFilter = UNITFRAME.CustomFilter
-			end
-			auras:ForceUpdate()
-			break
-		end
-	end
-end
-
-function handler:PLAYER_ENTERING_WORLD()
-	self:RegisterEvent('PLAYER_REGEN_DISABLED')
-	self:RegisterEvent('PLAYER_REGEN_ENABLED')
-	if (InCombatLockdown()) then
-		self:PLAYER_REGEN_DISABLED()
-	else
-		self:PLAYER_REGEN_ENABLED()
-	end
-end
-handler:RegisterEvent('PLAYER_ENTERING_WORLD')
-
-function handler:PLAYER_REGEN_DISABLED()
-	self:UnregisterEvent('MODIFIER_STATE_CHANGED')
-end
-
-function handler:PLAYER_REGEN_ENABLED()
-	self:RegisterEvent('MODIFIER_STATE_CHANGED')
-end
 
 function handler:PLAYER_TARGET_CHANGED()
 	if (UnitExists('target')) then
@@ -154,17 +116,5 @@ function UNITFRAME:AddSelectedBorder(self)
 	self:RegisterEvent('GROUP_ROSTER_UPDATE', UpdateSelectedBorder, true)
 end
 
-function UNITFRAME:AddGCDSpark(self)
-	if not cfg.GCDSpark then return end
-		
-	self.GCD = CreateFrame('Frame', self:GetName()..'_GCD', self)
-	self.GCD:SetWidth(self:GetWidth())
-	self.GCD:SetHeight(3)
-	self.GCD:SetFrameLevel(self:GetFrameLevel() + 3)
-	self.GCD:SetPoint('BOTTOMLEFT', self, 'TOPLEFT', 0, 0)
 
-	self.GCD.Color = {1, 1, 1}
-	self.GCD.Height = 4
-	self.GCD.Width = 4
-end
 

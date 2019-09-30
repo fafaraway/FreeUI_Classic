@@ -1,11 +1,11 @@
 local F, C, L = unpack(select(2, ...))
-local UNITFRAME = F:GetModule('Unitframe')
+local UNITFRAME, cfg = F:GetModule('Unitframe'), C.unitframe
 
 
 local unpack = unpack
 local GetTime, UnitIsUnit = GetTime, UnitIsUnit
-local UnitChannelInfo = UnitChannelInfo or ChannelInfo
-local cfg = C.unitframe
+local CastingInfo = CastingInfo
+local UnitChannelInfo = ChannelInfo
 
 local LibClassicCasterino = LibStub('LibClassicCasterino', true)
 if(LibClassicCasterino) then
@@ -54,8 +54,19 @@ local function updateCastBarTicks(bar, numTicks)
 	end
 end
 
+local function FixTargetCastbarUpdate(self)
+	if UnitIsUnit('target', 'player') and not CastingInfo() and not UnitChannelInfo() then
+		self.casting = nil
+		self.channeling = nil
+		self.Text:SetText(INTERRUPTED)
+		self.holdTime = 0
+	end
+end
+
 local function OnCastbarUpdate(self, elapsed)
 	if self.casting or self.channeling then
+		FixTargetCastbarUpdate(self)
+
 		local decimal = self.decimal
 
 		local duration = self.casting and self.duration + elapsed or self.duration - elapsed
@@ -228,8 +239,6 @@ function UNITFRAME:AddCastBar(self)
 
 	local castbar = CreateFrame('StatusBar', 'oUF_Castbar'..self.unitStyle, self)
 	castbar:SetAllPoints(self)
-	--castbar:SetPoint('TOPLEFT', self, 'TOPLEFT', C.Mult, -C.Mult)
-	--castbar:SetPoint('BOTTOMRIGHT', self, 'BOTTOMRIGHT', -C.Mult, C.Mult)
 	castbar:SetStatusBarTexture(C.media.sbTex)
 	castbar:GetStatusBarTexture():SetBlendMode('BLEND')
 	castbar:SetStatusBarColor(0, 0, 0, 0)

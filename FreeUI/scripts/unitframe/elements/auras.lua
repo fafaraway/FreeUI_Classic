@@ -1,16 +1,15 @@
 local F, C = unpack(select(2, ...))
-local UNITFRAME = F:GetModule('Unitframe')
+local UNITFRAME, cfg = F:GetModule('Unitframe'), C.unitframe
 
 
 local format, min, max, floor, mod, pairs = string.format, math.min, math.max, math.floor, mod, pairs
-local cfg, myClass = C.unitframe, C.Class
 local LCD = C.LibClassicDurations
 
-local ignoredDebuffs = {
+local IgnoredDebuffs = {
 	
 }
 
-local importantBuffs = {
+local VitalBuffs = {
 	[ 11958] = true,	-- 寒冰屏障
 	[ 12042] = true,	-- 奥术强化
 	[   498] = true,	-- 圣佑术
@@ -27,7 +26,7 @@ local importantBuffs = {
 	[   871] = true,	-- 盾墙
 }
 
-local classBuffs = {
+local ClassBuffs = {
 	['PRIEST'] = {
 		[   139] = true,	-- 恢复
 		[    17] = true,	-- 真言术盾
@@ -54,6 +53,44 @@ local classBuffs = {
 	},
 }
 
+local PlayerBuffs = {
+	['ALL'] = {
+		[ 20580] = true,	-- 隐遁
+	},
+	['MAGE'] = {
+		[ 11958] = true,	-- 寒冰屏障
+		[ 12042] = true,	-- 奥术强化
+	},
+	['ROGUE'] = {
+		[  2983] = true,	-- 疾跑
+		[  5277] = true,	-- 闪避
+		[ 13750] = true,	-- 冲动
+		[ 13877] = true,	-- 剑刃乱舞
+	},
+	['PRIEST'] = {
+		[ 10060] = true,	-- 能量灌注
+		[ 27827] = true,	-- 救赎之魂
+		[   586] = true,	-- 渐隐术
+	},
+	['WARRIOR'] = {
+		[   871] = true,	-- 盾墙
+	},
+	['WARLOCK'] = {
+	},
+	['SHAMAN'] = {
+	},
+	['PALADIN'] = {
+	},
+	['HUNTER'] = {
+	},
+	['DRUID'] = {
+	},
+}
+
+local filteredUnits = {
+	['target'] = true,
+}
+
 local function PostCreateIcon(element, button)
 	button.bg = F.CreateBDFrame(button)
 	button.glow = F.CreateSD(button.bg, .35, 2, 2)
@@ -75,11 +112,6 @@ local function PostCreateIcon(element, button)
 
 	button.timer = F.CreateFS(button, 'pixel', '', nil, true, 'BOTTOMLEFT', 2, -4)
 end
-
-local filteredUnits = {
-	['target'] = true,
-	['boss'] = true,
-}
 
 local function PostUpdateIcon(element, unit, button, index, _, duration, expiration, debuffType)
 	if duration then button.bg:Show() end
@@ -145,7 +177,7 @@ local function CustomFilter(element, unit, button, name, _, _, _, _, _, caster, 
 	local style = element.__owner.unitStyle
 
 	if style == 'player' then
-		if button.isDebuff then
+		if button.isDebuff or PlayerBuffs['ALL'][spellID] or PlayerBuffs[C.Class][spellID] then
 			return true
 		else
 			return false
@@ -157,9 +189,9 @@ local function CustomFilter(element, unit, button, name, _, _, _, _, _, caster, 
 			return true
 		end
 	elseif style == 'party' or style == 'raid' then
-		if (button.isDebuff and not ignoredDebuffs[spellID]) then
+		if (button.isDebuff and not IgnoredDebuffs[spellID]) then
 			return true
-		elseif (button.isPlayer and classBuffs[myClass][spellID]) or (importantBuffs[spellID]) then
+		elseif (button.isPlayer and ClassBuffs[C.Class][spellID]) or (VitalBuffs[spellID]) then
 			return true
 		else
 			return false
