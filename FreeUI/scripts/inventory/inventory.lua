@@ -1,5 +1,5 @@
 local F, C, L = unpack(select(2, ...))
-local INVENTORY = F:RegisterModule('Inventory')
+local INVENTORY, cfg = F:RegisterModule('Inventory'), C.inventory
 
 
 local cargBags = FreeUI.cargBags
@@ -57,22 +57,6 @@ end
 local function highlightFunction(button, match)
 	button:SetAlpha(match and 1 or .3)
 end
-
---[[local createIconButton = function (name, parent, texture, point)
-	local button = CreateFrame('Button', nil, parent)
-	button:SetWidth(17)
-	button:SetHeight(17)
-
-	F.CreateBD(button)
-	
-	button.icon = button:CreateTexture(nil, 'ARTWORK')
-	button.icon:SetPoint(point, button, point, point == 'CENTER' and 0 or -0, 0)
-	button.icon:SetWidth(16)
-	button.icon:SetHeight(16)
-	button.icon:SetTexture(texture)
-
-	return button
-end--]]
 
 function INVENTORY:CreateInfoFrame()
 	local infoFrame = CreateFrame('Button', nil, self)
@@ -169,7 +153,7 @@ function INVENTORY:CreateSortButton(name)
 		if name == 'Bank' then
 			SortBankBags()
 		else
-			if C.inventory.reverseSort then
+			if cfg.reverseSort then
 				if InCombatLockdown() then
 					UIErrorsFrame:AddMessage(C.InfoColor..ERR_NOT_IN_COMBAT)
 				else
@@ -321,7 +305,7 @@ local freeSlotContainer = {
 }
 
 function INVENTORY:CreateFreeSlots()
-	if not C.inventory.combineFreeSlots then return end
+	if not cfg.combineFreeSlots then return end
 
 	local name = self.name
 	if not freeSlotContainer[name] then return end
@@ -348,15 +332,13 @@ end
 
 
 function INVENTORY:OnLogin()
-	if not C.inventory.enable then return end
+	if not cfg.enable then return end
 
-	local bagsScale = C.inventory.bagScale
-	local bagsWidth = C.inventory.bagColumns
-	local bankWidth = C.inventory.bankColumns
-	local iconSize = C.inventory.itemSlotSize
-	local showItemLevel = C.inventory.itemLevel
-	local deleteButton = C.inventory.deleteButton
-	local itemSetFilter = C.inventory.gearSetFilter
+	local bagsScale = cfg.bagScale
+	local bagsWidth = cfg.bagColumns
+	local bankWidth = cfg.bankColumns
+	local iconSize = cfg.itemSlotSize
+	local deleteButton = cfg.deleteButton
 
 	local Backpack = cargBags:NewImplementation('FreeUI_Backpack')
 	Backpack:RegisterBlizzard()
@@ -367,7 +349,7 @@ function INVENTORY:OnLogin()
 	local f = {}
 	INVENTORY.AmmoBags = {}
 	INVENTORY.SpecialBags = {}
-	local onlyBags, bagAmmo, bagEquipment, bagConsumble, bagTradeGoods, bagQuestItem, bagsJunk, onlyBank, bankAmmo, bankLegendary, bankEquipment, bankConsumble, onlyReagent, bagFavourite, bankFavourite = self:GetFilters()
+	local onlyBags, bagClass, bagAmmo, bagEquipment, bagConsumble, bagTradeGoods, bagQuestItem, bagsJunk, onlyBank, bankClass, bankAmmo, bankLegendary, bankEquipment, bankConsumble, onlyReagent, bagFavourite, bankFavourite = self:GetFilters()
 
 	function Backpack:OnInit()
 		local MyContainer = self:GetContainerClass()
@@ -397,6 +379,9 @@ function INVENTORY:OnLogin()
 		f.questitem = MyContainer:New('QuestItem', {Columns = bagsWidth, Parent = f.main})
 		f.questitem:SetFilter(bagQuestItem, true)
 
+		f.classItem = MyContainer:New('ClassItem', {Columns = bagsWidth, Parent = f.main})
+		f.classItem:SetFilter(bagClass, true)
+
 		f.bank = MyContainer:New('Bank', {Columns = bankWidth, Bags = 'bank'})
 		f.bank:SetFilter(onlyBank, true)
 		f.bank:SetPoint('BOTTOMRIGHT', f.main, 'BOTTOMLEFT', -10, 0)
@@ -416,6 +401,9 @@ function INVENTORY:OnLogin()
 
 		f.bankConsumble = MyContainer:New('BankConsumble', {Columns = bankWidth, Parent = f.bank})
 		f.bankConsumble:SetFilter(bankConsumble, true)
+
+		f.bankClassItem = MyContainer:New('BankClassItem', {Columns = bankWidth, Parent = f.bank})
+		f.bankClassItem:SetFilter(bankClass, true)
 	end
 
 	function Backpack:OnBankOpened()
@@ -455,10 +443,6 @@ function INVENTORY:OnLogin()
 		self.Favourite:SetAtlas('collections-icon-favorites')
 		self.Favourite:SetSize(24, 24)
 		self.Favourite:SetPoint('TOPLEFT', -6, 2)
-
-		if showItemLevel then
-			self.iLvl = F.CreateFS(self, 'pixel', '', nil, true, 'BOTTOMRIGHT', 2, 2)
-		end
 
 		local flash = self:CreateTexture(nil, 'ARTWORK')
 		flash:SetTexture('Interface\\Cooldown\\star4')
@@ -517,17 +501,6 @@ function INVENTORY:OnLogin()
 			self.Favourite:SetAlpha(0)
 		end
 
-		if showItemLevel then
-			if item.link and item.level and item.rarity > 1 and (item.classID == LE_ITEM_CLASS_WEAPON or item.classID == LE_ITEM_CLASS_ARMOR) then
-				local level = F.GetItemLevel(item.link, item.bagID, item.slotID) or item.level
-				local color = BAG_ITEM_QUALITY_COLORS[item.rarity]
-				self.iLvl:SetText(level)
-				self.iLvl:SetTextColor(color.r, color.g, color.b)
-			else
-				self.iLvl:SetText('')
-			end
-		end
-
 		if self.ShowNewItems then
 			if C_NewItems_IsNewItem(item.bagID, item.slotID) then
 				self.anim:Play()
@@ -541,13 +514,13 @@ function INVENTORY:OnLogin()
 		self.Quest:SetAlpha(0)
 
 		if item.isQuestItem then
-			self.BG:SetVertexColor(.8, .8, 0)
+			self.BG:SetVertexColor(.8, .8, 0, 1)
 			self.Quest:SetAlpha(1)
 		elseif item.rarity and item.rarity > -1 then
 			local color = ITEM_QUALITY_COLORS[item.rarity]
 			self.BG:SetVertexColor(color.r, color.g, color.b, 1)
 		else
-			self.BG:SetVertexColor(0, 0, 0, .5)
+			self.BG:SetVertexColor(0, 0, 0, 1)
 		end
 	end
 
@@ -580,8 +553,8 @@ function INVENTORY:OnLogin()
 		end
 		self:SetSize(width + xOffset*2, height + offset)
 
-		INVENTORY:UpdateAnchors(f.main, {f.ammoItem, f.equipment, f.bagFavourite, f.consumble, f.tradegoods, f.questitem, f.junk})
-		INVENTORY:UpdateAnchors(f.bank, {f.bankAmmoItem, f.bankEquipment, f.bankLegendary, f.bankFavourite, f.bankConsumble})
+		INVENTORY:UpdateAnchors(f.main, {f.classItem, f.ammoItem, f.equipment, f.bagFavourite, f.consumble, f.tradegoods, f.questitem, f.junk})
+		INVENTORY:UpdateAnchors(f.bank, {f.bankClassItem, f.bankAmmoItem, f.bankEquipment, f.bankLegendary, f.bankFavourite, f.bankConsumble})
 	end
 
 	function MyContainer:OnCreate(name, settings)
@@ -595,12 +568,10 @@ function INVENTORY:OnLogin()
 		local label
 		if strmatch(name, 'AmmoItem$') then
 			label = INVTYPE_AMMO
+		elseif strmatch(name, 'ClassItem$') then
+			label = L['INVENTORY_CLASS_RELATED']
 		elseif strmatch(name, 'Equipment$') then
-			if itemSetFilter then
-				label = L['INVENTORY_EQUIPEMENTSET']
-			else
-				label = BAG_FILTER_EQUIPMENT
-			end
+			label = BAG_FILTER_EQUIPMENT
 		elseif name == 'BankLegendary' then
 			label = LOOT_JOURNAL_LEGENDARIES
 		elseif strmatch(name, 'Consumble$') then
@@ -694,6 +665,6 @@ function INVENTORY:OnLogin()
 	BankFrame.GetRight = function() return f.bank:GetRight() end
 	BankFrameItemButton_Update = F.Dummy
 
-	SetSortBagsRightToLeft(not C.inventory.reverseSort)
+	SetSortBagsRightToLeft(not cfg.reverseSort)
 	SetInsertItemsLeftToRight(false)
 end
