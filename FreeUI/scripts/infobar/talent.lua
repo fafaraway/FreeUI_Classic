@@ -45,7 +45,7 @@ function INFOBAR:Talent()
 		if points > 0 then
 			text = format(talentString, text, points)
 		end
-		self.Text:SetText(TALENT..': '..C.MyColor..text)
+		self.Text:SetText('Talent'..': '..C.MyColor..text)
 	end)
 
 	FreeUISpecButton:HookScript('OnEnter', function(self)

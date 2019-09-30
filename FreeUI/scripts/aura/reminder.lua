@@ -1,8 +1,7 @@
 local F, C, L = unpack(select(2, ...))
-local AURA = F:GetModule('Aura')
+local AURA, cfg = F:GetModule('Aura'), C.aura
 
 
-local iconSize = 40
 local frames, parentFrame = {}
 local InCombatLockdown, GetZonePVPInfo = InCombatLockdown, GetZonePVPInfo
 local IsInInstance, IsPlayerSpell, UnitBuff, GetSpellTexture = IsInInstance, IsPlayerSpell, UnitBuff, GetSpellTexture
@@ -37,9 +36,9 @@ local ReminderBuffs = {
 
 local groups = ReminderBuffs[C.Class]
 
-function AURA:Reminder_ConvertToName(cfg)
+function AURA:Reminder_ConvertToName(setting)
 	local cache = {}
-	for spellID in pairs(cfg.spells) do
+	for spellID in pairs(setting.spells) do
 		local name = GetSpellInfo(spellID)
 		if name then
 			cache[name] = true
@@ -47,16 +46,16 @@ function AURA:Reminder_ConvertToName(cfg)
 	end
 	
 	for name in pairs(cache) do
-		cfg.spells[name] = true
+		setting.spells[name] = true
 	end
 end
 
-function AURA:Reminder_Update(cfg)
-	local frame = cfg.frame
-	local depend = cfg.depend
-	local combat = cfg.combat
-	local instance = cfg.instance
-	local pvp = cfg.pvp
+function AURA:Reminder_Update(setting)
+	local frame = setting.frame
+	local depend = setting.depend
+	local combat = setting.combat
+	local instance = setting.instance
+	local pvp = setting.pvp
 	local isPlayerSpell, isInCombat, isInInst, isInPVP = true
 	local inInst, instType = IsInInstance()
 
@@ -71,7 +70,7 @@ function AURA:Reminder_Update(cfg)
 		for i = 1, 32 do
 			local name = UnitBuff('player', i)
 			if not name then break end
-			if name and cfg.spells[name] then
+			if name and setting.spells[name] then
 				frame:Hide()
 				return
 			end
@@ -80,25 +79,32 @@ function AURA:Reminder_Update(cfg)
 	end
 end
 
-function AURA:Reminder_Create(cfg)
+function AURA:Reminder_Create(setting)
 	local frame = CreateFrame('Frame', nil, parentFrame)
-	frame:SetSize(iconSize, iconSize)
-	F.PixelIcon(frame)
-	F.CreateSD(frame)
-	for spell in pairs(cfg.spells) do
-		frame.Icon:SetTexture(GetSpellTexture(spell))
+	frame:SetSize(cfg.debuffSize, cfg.debuffSize)
+	--F.PixelIcon(frame)
+	frame.bg = F.CreateBDFrame(frame)
+	frame.glow = F.CreateSD(frame.bg)
+	frame.glow:SetBackdropBorderColor(1, 1, 1)
+	frame.icon = frame:CreateTexture(nil, 'ARTWORK')
+	frame.icon:SetPoint('TOPLEFT')
+	frame.icon:SetPoint('BOTTOMRIGHT')
+
+	for spell in pairs(setting.spells) do
+		frame.icon:SetTexture(GetSpellTexture(spell))
 		break
 	end
+	frame.icon:SetTexCoord(unpack(C.TexCoord))
 	frame.text = F.CreateFS(frame, (C.isCNClient and{C.font.normal, 12}) or 'pixel', L['AURA_REMINDER_LACK'], 'red', true, 'TOP', 1, 15)
 	frame:Hide()
-	cfg.frame = frame
+	setting.frame = frame
 
 	tinsert(frames, frame)
 end
 
 function AURA:Reminder_UpdateAnchor()
 	local index = 0
-	local offset = iconSize + 5
+	local offset = cfg.debuffSize + 5
 	for _, frame in next, frames do
 		if frame:IsShown() then
 			frame:SetPoint('LEFT', offset * index, 0)
@@ -109,12 +115,12 @@ function AURA:Reminder_UpdateAnchor()
 end
 
 function AURA:Reminder_OnEvent()
-	for _, cfg in pairs(groups) do
-		if not cfg.frame then
-			AURA:Reminder_Create(cfg)
-			AURA:Reminder_ConvertToName(cfg)
+	for _, setting in pairs(groups) do
+		if not setting.frame then
+			AURA:Reminder_Create(setting)
+			AURA:Reminder_ConvertToName(setting)
 		end
-		AURA:Reminder_Update(cfg)
+		AURA:Reminder_Update(setting)
 	end
 	AURA:Reminder_UpdateAnchor()
 end
@@ -126,7 +132,7 @@ function AURA:BuffReminder()
 		if not parentFrame then
 			parentFrame = CreateFrame('Frame', nil, UIParent)
 			parentFrame:SetPoint('TOP', 0, -200)
-			parentFrame:SetSize(iconSize, iconSize)
+			parentFrame:SetSize(cfg.debuffSize, cfg.debuffSize)
 		end
 		parentFrame:Show()
 

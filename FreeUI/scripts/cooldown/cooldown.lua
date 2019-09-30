@@ -1,5 +1,5 @@
 local F, C = unpack(select(2, ...))
-local COOLDOWN = F:GetModule('cooldown')
+local COOLDOWN, cfg = F:GetModule('cooldown'), C.cooldown
 
 
 local MIN_DURATION = 2.5
@@ -27,7 +27,7 @@ function COOLDOWN:OnSizeChanged(width)
 	if fontScale < MIN_SCALE then
 		self:Hide()
 	else
-		self.text:SetFont(C.cooldown.cdFont, C.cooldown.cdFontSize, C.cooldown.cdFontFlag)
+		self.text:SetFont(cfg.CDFont, cfg.CDFontFlag, cfg.CDFontSize)
 		self.text:SetShadowColor(0, 0, 0, 0)
 
 		if self.enabled then
@@ -162,8 +162,8 @@ function COOLDOWN:RegisterActionButton()
 	end
 end
 
-function COOLDOWN:CooldownEnhanced()
-	if not C.cooldown.cdEnhanced then return end
+function COOLDOWN:CooldownEnhancement()
+	if not cfg.cdEnhancement then return end
 
 	local cooldownIndex = getmetatable(ActionButton1Cooldown).__index
 	hooksecurefunc(cooldownIndex, "SetCooldown", COOLDOWN.StartTimer)

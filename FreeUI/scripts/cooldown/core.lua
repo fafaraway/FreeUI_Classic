@@ -3,5 +3,5 @@ local COOLDOWN = F:RegisterModule('cooldown')
 
 
 function COOLDOWN:OnLogin()
-	self:CooldownEnhanced()
+	self:CooldownEnhancement()
 end
