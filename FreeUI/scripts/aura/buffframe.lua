@@ -1,201 +1,263 @@
 local F, C, L = unpack(select(2, ...))
-local AURA = F:GetModule('Aura')
+local AURA, cfg = F:RegisterModule('Aura'), C.aura
 
 
-local format, mod = string.format, mod
-local BuffFrame = BuffFrame
-local buffsPerRow, buffSize, margin, offset = 10, 42, 6, 8
-local debuffsPerRow, debuffSize = 10, 50
-local parentFrame, buffAnchor, debuffAnchor
-local cfg = C.aura
+local _G = getfenv(0)
+local format, floor, strmatch, select, unpack = format, floor, strmatch, select, unpack
+local DebuffTypeColor = _G.DebuffTypeColor
+local UnitAura, GetTime = UnitAura, GetTime
+local GetInventoryItemQuality, GetInventoryItemTexture, GetItemQualityColor, GetWeaponEnchantInfo = GetInventoryItemQuality, GetInventoryItemTexture, GetItemQualityColor, GetWeaponEnchantInfo
+local margin, offset, settings = 6, 12
+local day, hour, minute = 86400, 3600, 60
 
-local function restyleIcons(bu, isDebuff)
-	if not bu or bu.styled then return end
-	local name = bu:GetName()
+function AURA:OnLogin()
+	settings = {
+		Buffs = {
+			size = cfg.buffSize,
+			wrapAfter = cfg.buffsPerRow,
+			maxWraps = 3,
+			reverseGrow = cfg.reverseBuffs,
+		},
+		Debuffs = {
+			size = cfg.debuffSize,
+			wrapAfter = cfg.debuffsPerRow,
+			maxWraps = 1,
+			reverseGrow = cfg.reverseDebuffs,
+		},
+	}
 
-	local iconSize = buffSize
-	if isDebuff then iconSize = debuffSize end
+	F.HideObject(_G.BuffFrame)
+	F.HideObject(_G.TemporaryEnchantFrame)
 
-	local border = _G[name..'Border']
-	if border then border:Hide() end
+	self.BuffFrame = self:CreateAuraHeader('HELPFUL')
+	local buffAnchor = F.Mover(self.BuffFrame, L['MOVER_BUFFS'], 'BuffsFrame', {'TOPRIGHT', UIParent, 'TOPRIGHT', -50, -50})
+	self.BuffFrame:ClearAllPoints()
+	self.BuffFrame:SetPoint('TOPRIGHT', buffAnchor)
 
-	local icon = _G[name..'Icon']
-	icon:SetAllPoints()
-	icon:SetTexCoord(unpack(C.TexCoord))
-	icon:SetDrawLayer('BACKGROUND', 1)
+	self.DebuffFrame = self:CreateAuraHeader('HARMFUL')
+	local debuffAnchor = F.Mover(self.DebuffFrame, L['MOVER_DEBUFFS'], 'DebuffsFrame', {'TOPRIGHT', buffAnchor, 'BOTTOMRIGHT', 0, -12})
+	self.DebuffFrame:ClearAllPoints()
+	self.DebuffFrame:SetPoint('TOPRIGHT', debuffAnchor)
 
-	local duration = _G[name..'Duration']
-	duration:ClearAllPoints()
-	duration:SetPoint('TOP', bu, 'BOTTOM', 2, 2)
-	F.SetFS(duration, (cfg.usePixelFont and 'pixel') or {C.font.normal, 11, 'OUTLINE'}, nil, nil, (not cfg.usePixelFont))
-
-	local count = _G[name..'Count']
-	count:ClearAllPoints()
-	count:SetParent(bu)
-	count:SetPoint('TOPRIGHT', bu, 'TOPRIGHT', -1, -3)
-	F.SetFS(count, (cfg.usePixelFont and 'pixel') or {C.font.normal, 11, 'OUTLINE'}, nil, nil, (not cfg.usePixelFont))
-
-	bu:SetSize(iconSize, iconSize)
-	bu.HL = bu:CreateTexture(nil, 'HIGHLIGHT')
-	bu.HL:SetColorTexture(1, 1, 1, .25)
-	bu.HL:SetAllPoints(icon)
-
-	local bg = F.CreateBG(bu)
-	local glow = F.CreateSD(bg, .5, 3, 3)
-	bu.bg = bg
-	bu.glow = glow
-
-	bu.styled = true
+	self:BuffReminder()
 end
 
-local function restyleBuffs()
-	local buff, previousBuff, aboveBuff, index
-	local numBuffs = 0
-	local slack = BuffFrame.numEnchants
+function AURA:FormatAuraTime(s)
+	if s >= day then
+		return format('%d'..C.InfoColor..'d', s/day), s%day
+	elseif s >= hour then
+		return format('%d'..C.InfoColor..'h', s/hour), s%hour
+	elseif s >= 10*minute then
+		return format('%d'..C.InfoColor..'m', s/minute), s%minute
+	elseif s >= minute then
+		return format('%d:%.2d', s/minute, s%minute), s - floor(s)
+	elseif s > 10 then
+		return format('%d'..C.InfoColor..'s', s), s - floor(s)
+	elseif s > 5 then
+		return format('|cffffff00%.1f|r', s), s - format('%.1f', s)
+	else
+		return format('|cffff0000%.1f|r', s), s - format('%.1f', s)
+	end
+end
 
-	for i = 1, BUFF_ACTUAL_DISPLAY do
-		buff = _G['BuffButton'..i]
-		restyleIcons(buff)
+function AURA:UpdateTimer(elapsed)
+	if self.offset then
+		local expiration = select(self.offset, GetWeaponEnchantInfo())
+		if expiration then
+			self.timeLeft = expiration / 1e3
+		else
+			self.timeLeft = 0
+		end
+	else
+		self.timeLeft = self.timeLeft - elapsed
+	end
 
-		numBuffs = numBuffs + 1
-		index = numBuffs + slack
-		buff:ClearAllPoints()
-		if index > 1 and mod(index, buffsPerRow) == 1 then
-			if index == buffsPerRow + 1 then
-				buff:SetPoint('TOP', TempEnchant1, 'BOTTOM', 0, -offset)
+	if self.nextUpdate > 0 then
+		self.nextUpdate = self.nextUpdate - elapsed
+		return
+	end
+
+	if self.timeLeft >= 0 then
+		local timer, nextUpdate = AURA:FormatAuraTime(self.timeLeft)
+		self.nextUpdate = nextUpdate
+		self.timer:SetText(timer)
+	end
+end
+
+function AURA:UpdateAuras(button, index)
+	local filter = button:GetParent():GetAttribute('filter')
+	local unit = button:GetParent():GetAttribute('unit')
+	local name, texture, count, debuffType, duration, expirationTime = UnitAura(unit, index, filter)
+
+	if name then
+		if duration > 0 and expirationTime then
+			local timeLeft = expirationTime - GetTime()
+			if not button.timeLeft then
+				button.nextUpdate = -1
+				button.timeLeft = timeLeft
+				button:SetScript('OnUpdate', AURA.UpdateTimer)
 			else
-				buff:SetPoint('TOP', aboveBuff, 'BOTTOM', 0, -offset)
+				button.timeLeft = timeLeft
 			end
-			aboveBuff = buff
-		elseif numBuffs == 1 and slack == 0 then
-			buff:SetPoint('TOPRIGHT', buffAnchor)
-		elseif numBuffs == 1 and slack > 0 then
-			buff:SetPoint('TOPRIGHT', _G['TempEnchant'..slack], 'TOPLEFT', -margin, 0)
+			-- need reviewed
+			button.nextUpdate = -1
+			AURA.UpdateTimer(button, 0)
 		else
-			buff:SetPoint('RIGHT', previousBuff, 'LEFT', -margin, 0)
+			button.timeLeft = nil
+			button.timer:SetText('')
+			button:SetScript('OnUpdate', nil)
 		end
-		previousBuff = buff
+
+		if count and count > 1 then
+			button.count:SetText(count)
+		else
+			button.count:SetText('')
+		end
+
+		if filter == 'HARMFUL' then
+			local color = DebuffTypeColor[debuffType or 'none']
+			button.bg:SetBackdropBorderColor(color.r, color.g, color.b)
+			button.glow:SetBackdropBorderColor(color.r, color.g, color.b)
+		else
+			button.bg:SetBackdropBorderColor(0, 0, 0)
+			button.glow:SetBackdropBorderColor(0, 0, 0, .35)
+		end
+
+		button.icon:SetTexture(texture)
+		button.offset = nil
 	end
 end
 
-local function restyleTempEnchant()
-	for i = 1, NUM_TEMP_ENCHANT_FRAMES do
-		local bu = _G['TempEnchant'..i]
-		restyleIcons(bu)
+function AURA:UpdateTempEnchant(button, index)
+	local quality = GetInventoryItemQuality('player', index)
+	button.icon:SetTexture(GetInventoryItemTexture('player', index))
+
+	local offset = 2
+	local weapon = button:GetName():sub(-1)
+	if strmatch(weapon, '2') then
+		offset = 6
 	end
-end
 
-local function restyleDebuffs(buttonName, i)
-	local debuff = _G[buttonName..i]
-	restyleIcons(debuff, true)
+	if quality then
+		button:SetBackdropBorderColor(GetItemQualityColor(quality))
+	end
 
-	debuff:ClearAllPoints()
-	if i > 1 and mod(i, debuffsPerRow) == 1 then
-		debuff:SetPoint('TOP', _G[buttonName..(i-debuffsPerRow)], 'BOTTOM', 0, -offset)
-	elseif i == 1 then
-		debuff:SetPoint('TOPRIGHT', debuffAnchor)
+	local expirationTime, count = select(offset, GetWeaponEnchantInfo())
+	if expirationTime then
+		if count and count > 0 then
+			button.count:SetText(count)
+		else
+			button.count:SetText('')
+		end
+		button.offset = offset
+		button:SetScript('OnUpdate', AURA.UpdateTimer)
+		button.nextUpdate = -1
+		AURA.UpdateTimer(button, 0)
 	else
-		debuff:SetPoint('RIGHT', _G[buttonName..(i-1)], 'LEFT', -margin - 4, 0)
+		button.offset = nil
+		button.timeLeft = nil
+		button:SetScript('OnUpdate', nil)
+		button.timer:SetText('')
+		button.count:SetText('')
 	end
 end
 
-local function updateDebuffBorder(buttonName, index, filter)
-	local unit = PlayerFrame.unit
-	local name, _, _, debuffType = UnitAura(unit, index, filter)
-	if not name then return end
-	local bu = _G[buttonName..index]
-	if not (bu and bu.bg) then return end
-
-	if filter == 'HARMFUL' then
-		local color = DebuffTypeColor[debuffType or 'none']
-		--bu.bg:SetVertexColor(color.r, color.g, color.b)
-		if bu.glow then
-			if bu.glow then
-				bu.glow:SetBackdropBorderColor(color.r, color.g, color.b, 1)
-			else
-				bu.glow:SetBackdropBorderColor(0, 0, 0, .5)
-			end
-		end
+function AURA:OnAttributeChanged(attribute, value)
+	if attribute == 'index' then
+		AURA:UpdateAuras(self, value)
+	elseif attribute == 'target-slot' then
+		AURA:UpdateTempEnchant(self, value)
 	end
 end
 
-local function flashOnEnd(self)
-	if self.timeLeft < 10 then
-		self:SetAlpha(BuffFrame.BuffAlphaValue)
-	else
-		self:SetAlpha(1)
+function AURA:UpdateHeader(header)
+	local cfg = settings.Debuffs
+	if header:GetAttribute('filter') == 'HELPFUL' then
+		cfg = settings.Buffs
+		header:SetAttribute('consolidateTo', 0)
+		header:SetAttribute('weaponTemplate', format('FreeUIAuraTemplate%d', cfg.size))
+	end
+
+	header:SetAttribute('separateOwn', 1)
+	header:SetAttribute('sortMethod', 'INDEX')
+	header:SetAttribute('sortDirection', '+')
+	header:SetAttribute('wrapAfter', cfg.wrapAfter)
+	header:SetAttribute('maxWraps', cfg.maxWraps)
+	header:SetAttribute('point', cfg.reverseGrow and 'TOPLEFT' or 'TOPRIGHT')
+	header:SetAttribute('minWidth', (cfg.size + margin)*cfg.wrapAfter)
+	header:SetAttribute('minHeight', (cfg.size + offset)*cfg.maxWraps)
+	header:SetAttribute('xOffset', (cfg.reverseGrow and 1 or -1) * (cfg.size + margin))
+	header:SetAttribute('yOffset', 0)
+	header:SetAttribute('wrapXOffset', 0)
+	header:SetAttribute('wrapYOffset', -(cfg.size + offset))
+	header:SetAttribute('template', format('FreeUIAuraTemplate%d', cfg.size))
+
+	local index = 1
+	local child = select(index, header:GetChildren())
+	while child do
+		if (floor(child:GetWidth() * 100 + .5) / 100) ~= cfg.size then
+			child:SetSize(cfg.size, cfg.size)
+		end
+
+		--Blizzard bug fix, icons arent being hidden when you reduce the amount of maximum buttons
+		if index > (cfg.maxWraps * cfg.wrapAfter) and child:IsShown() then
+			child:Hide()
+		end
+
+		index = index + 1
+		child = select(index, header:GetChildren())
 	end
 end
 
-local function formatAuraTime(seconds)
-	local d, h, m, str = 0, 0, 0
-	if seconds >= 86400 then
-		d = seconds/86400
-		seconds = seconds%86400
-	end
-	if seconds >= 3600 then
-		h = seconds/3600
-		seconds = seconds%3600
-	end
-	if seconds >= 60 then
-		m = seconds/60
-		seconds = seconds%60
-	end
-	if d > 0 then
-		str = format('%d'..C.InfoColor..'d', d)
-	elseif h > 0 then
-		str = format('%d'..C.InfoColor..'h', h)
-	elseif m >= 10 then
-		str = format('%d'..C.InfoColor..'m', m)
-	elseif m > 0 and m < 10 then
-		str = format('%d:%.2d', m, seconds)
-	else
-		if seconds <= 5 then
-			str = format('|cffff0000%.1f|r', seconds) -- red
-		elseif seconds <= 10 then
-			str = format('|cffffff00%.1f|r', seconds) -- yellow
-		else
-			str = format('%d'..C.InfoColor..'s', seconds)
-		end
+function AURA:CreateAuraHeader(filter)
+	local name = 'FreeUIPlayerDebuffs'
+	if filter == 'HELPFUL' then name = 'FreeUIPlayerBuffs' end
+
+	local header = CreateFrame('Frame', name, UIParent, 'SecureAuraHeaderTemplate')
+	header:SetClampedToScreen(true)
+	header:SetAttribute('unit', 'player')
+	header:SetAttribute('filter', filter)
+	RegisterStateDriver(header, 'visibility', '[petbattle] hide; show')
+	RegisterAttributeDriver(header, 'unit', '[vehicleui] vehicle; player')
+
+	if filter == 'HELPFUL' then
+		header:SetAttribute('consolidateDuration', -1)
+		header:SetAttribute('includeWeapons', 1)
 	end
 
-	return str
+	AURA:UpdateHeader(header)
+	header:Show()
+
+	return header
 end
 
-function AURA:BuffFrame()
-	parentFrame = CreateFrame("Frame", nil, UIParent)
-	parentFrame:SetSize(buffSize, buffSize)
-	buffAnchor = F.Mover(parentFrame, L['MOVER_BUFFS'], "BuffFrame", {'TOPRIGHT', UIParent, 'TOPRIGHT', -50, -50}, (buffSize + margin)*buffsPerRow, (buffSize + offset)*3)
-	debuffAnchor = F.Mover(parentFrame, L['MOVER_DEBUFFS'], "DebuffFrame", {"TOPRIGHT", buffAnchor, "BOTTOMRIGHT", 0, -offset}, (debuffSize + margin)*debuffsPerRow, (debuffSize + offset)*2)
-	parentFrame:ClearAllPoints()
-	parentFrame:SetPoint("TOPRIGHT", buffAnchor)
-
-	for i = 1, 3 do
-		local enchant = _G['TempEnchant'..i]
-		enchant:ClearAllPoints()
-		if i == 1 then
-			enchant:SetPoint('TOPRIGHT', buffAnchor)
-		else
-			enchant:SetPoint('TOPRIGHT', _G['TempEnchant'..(i-1)], 'TOPLEFT', -margin, 0)
-		end
+function AURA:CreateAuraIcon(button)
+	local header = button:GetParent()
+	local cfg = settings.Debuffs
+	if header:GetAttribute('filter') == 'HELPFUL' then
+		cfg = settings.Buffs
 	end
-	TempEnchant3:Hide()
-	BuffFrame.ignoreFramePositionManager = true
+	local fontSize = floor(cfg.size/30*12 + .5)
 
-	hooksecurefunc('BuffFrame_UpdateAllBuffAnchors', restyleBuffs)
-	hooksecurefunc('TemporaryEnchantFrame_Update', restyleTempEnchant)
-	hooksecurefunc('DebuffButton_UpdateAnchors', restyleDebuffs)
-	hooksecurefunc('AuraButton_Update', updateDebuffBorder)
-	hooksecurefunc('AuraButton_OnUpdate', flashOnEnd)
+	button.icon = button:CreateTexture(nil, 'BORDER')
+	button.icon:SetPoint('TOPLEFT', C.Mult, -C.Mult)
+	button.icon:SetPoint('BOTTOMRIGHT', -C.Mult, C.Mult)
+	button.icon:SetTexCoord(unpack(C.TexCoord))
 
-	hooksecurefunc('AuraButton_UpdateDuration', function(button, timeLeft)
-		local duration = button.duration
-		if SHOW_BUFF_DURATIONS == '1' and timeLeft then
-			duration:SetText(formatAuraTime(timeLeft))
-			duration:SetVertexColor(1, 1, 1)
-			duration:Show()
-		else
-			duration:Hide()
-		end
-	end)
+	button.count = button:CreateFontString(nil, 'ARTWORK')
+	button.count:SetPoint('TOPRIGHT', -1, -3)
+	F.SetFS(button.count, 'pixel')
+
+	button.timer = button:CreateFontString(nil, 'ARTWORK')
+	button.timer:SetPoint('TOP', button, 'BOTTOM', 1, 2)
+	F.SetFS(button.timer, 'pixel')
+
+	button.highlight = button:CreateTexture(nil, 'HIGHLIGHT')
+	button.highlight:SetColorTexture(1, 1, 1, .25)
+	button.highlight:SetAllPoints(button.icon)
+
+	button.bg = F.CreateBDFrame(button)
+	button.glow = F.CreateSD(button, .35)
+
+	button:SetScript('OnAttributeChanged', AURA.OnAttributeChanged)
 end
