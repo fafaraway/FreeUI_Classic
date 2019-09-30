@@ -154,13 +154,13 @@ tinsert(C.themes["FreeUI"], function()
 		bg:SetPoint("BOTTOMRIGHT", icon, "BOTTOMRIGHT", 100, -C.Mult)
 	end
 
-	C_Timer.After(3, function()
-		if CodexQuestShow then
-			F.Reskin(CodexQuestShow)
-			F.Reskin(CodexQuestHide)
-			F.Reskin(CodexQuestReset)
-		end
-	end)
+	--C_Timer.After(3, function()
+	--	if CodexQuestShow then
+	--		F.Reskin(CodexQuestShow)
+	--		F.Reskin(CodexQuestHide)
+	--		F.Reskin(CodexQuestReset)
+	--	end
+	--end)
 
 	-- QuestTimerFrame
 

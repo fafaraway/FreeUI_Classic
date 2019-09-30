@@ -5,7 +5,7 @@ local UNITFRAME, cfg = F:GetModule('Unitframe'), C.unitframe
 local unpack = unpack
 local GetTime, UnitIsUnit = GetTime, UnitIsUnit
 local CastingInfo = CastingInfo
-local UnitChannelInfo = ChannelInfo
+local ChannelInfo = ChannelInfo
 
 local LibClassicCasterino = LibStub('LibClassicCasterino', true)
 if(LibClassicCasterino) then
@@ -55,7 +55,7 @@ local function updateCastBarTicks(bar, numTicks)
 end
 
 local function FixTargetCastbarUpdate(self)
-	if UnitIsUnit('target', 'player') and not CastingInfo() and not UnitChannelInfo() then
+	if UnitIsUnit('target', 'player') and not CastingInfo() and not ChannelInfo() then
 		self.casting = nil
 		self.channeling = nil
 		self.Text:SetText(INTERRUPTED)
