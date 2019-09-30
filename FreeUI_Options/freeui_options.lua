@@ -111,6 +111,11 @@ local function toggleChildren(self, checked)
 			child.Text:SetTextColor(tR, tG, tB)
 		end
 	end
+
+		for _, slider in pairs(sliders) do
+			slider.textInput.num:SetTextColor(tR, tG, tB)
+		end
+
 end
 
 local function toggle(self)
@@ -134,8 +139,13 @@ local function toggle(self)
 	end
 end
 
-ns.CreateCheckBox = function(parent, option)
+ns.CreateCheckBox = function(parent, option, disable)
 	local f = CreateFrame('CheckButton', nil, parent.child, 'InterfaceOptionsCheckButtonTemplate')
+	f:SetSize(24, 24)
+
+	if disable then
+		f:Disable()
+	end
 
 	f.group = parent.tag
 	f.option = option
@@ -282,7 +292,7 @@ end
 
 local function createSlider(parent, option, lowText, highText, low, high, step, needsReload)
 	local f = CreateFrame('Slider', baseName..option, parent.child, 'OptionsSliderTemplate')
-
+	f:SetWidth(120)
 	BlizzardOptionsPanel_Slider_Enable(f)
 
 	f.group = parent.tag
@@ -294,6 +304,7 @@ local function createSlider(parent, option, lowText, highText, low, high, step, 
 
 	f.text:SetFontObject(GameFontNormalTiny)
 	f.text:SetText(ns.localization[parent.tag..'_'..option])
+	f.text:SetTextColor(1, 1, 1)
 
 	f.lowText:SetText(lowText)
 	f.lowText:SetTextColor(.5, .5, .5)
@@ -340,7 +351,7 @@ ns.CreateNumberSlider = function(parent, option, lowText, highText, low, high, s
 
 	local f = CreateFrame('EditBox', baseName..option..'TextInput', slider, 'InputBoxTemplate')
 	f:SetAutoFocus(false)
-	f:SetWidth(40)
+	f:SetWidth(36)
 	f:SetHeight(20)
 	f:SetMaxLetters(8)
 	

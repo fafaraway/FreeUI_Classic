@@ -74,6 +74,7 @@ options.ResetButton = ResetButton
 
 
 local ProfileBox = CreateFrame('CheckButton', nil, options, 'InterfaceOptionsCheckButtonTemplate')
+ProfileBox:SetSize(24, 24)
 ProfileBox:SetPoint('BOTTOMLEFT', 6, 6)
 ProfileBox.Text:SetText(ns.localization.profile)
 ProfileBox.tooltipText = ns.localization.profileTooltip
@@ -202,8 +203,8 @@ do
 	local flashCursor = ns.CreateCheckBox(appearance, 'flashCursor')
 	flashCursor:SetPoint('TOPLEFT', misc, 'BOTTOMLEFT', 0, -16)
 
-	local shadow = ns.CreateCheckBox(appearance, 'shadow')
-	shadow:SetPoint('LEFT', flashCursor, 'RIGHT', 160, 0)
+	local addShadowBorder = ns.CreateCheckBox(appearance, 'addShadowBorder')
+	addShadowBorder:SetPoint('LEFT', flashCursor, 'RIGHT', 160, 0)
 
 	local gradient = ns.CreateCheckBox(appearance, 'gradient')
 	gradient:SetPoint('TOPLEFT', flashCursor, 'BOTTOMLEFT', 0, -8)
@@ -211,23 +212,17 @@ do
 	local subfonts = ns.addSubCategory(appearance, ns.localization.appearance_subCategory_font)
 	subfonts:SetPoint('TOPLEFT', gradient, 'BOTTOMLEFT', 0, -16)
 
-	local fonts = ns.CreateCheckBox(appearance, 'fonts')
-	fonts:SetPoint('TOPLEFT', subfonts, 'BOTTOMLEFT', 0, -8)
+	local adjustFonts = ns.CreateCheckBox(appearance, 'adjustFonts')
+	adjustFonts:SetPoint('TOPLEFT', subfonts, 'BOTTOMLEFT', 0, -8)
+
+	local usePixelFont = ns.CreateCheckBox(appearance, 'usePixelFont', true)
+	usePixelFont:SetPoint('LEFT', adjustFonts, 'RIGHT', 160, 0)
 
 	local addons = ns.addSubCategory(appearance, ns.localization.appearance_subCategory_addons)
-	addons:SetPoint('TOPLEFT', fonts, 'BOTTOMLEFT', 0, -16)
-
-	local BigWigs = ns.CreateCheckBox(appearance, 'BigWigs')
-	BigWigs:SetPoint('TOPLEFT', addons, 'BOTTOMLEFT', 0, -8)
-
-	local WeakAuras = ns.CreateCheckBox(appearance, 'WeakAuras')
-	WeakAuras:SetPoint('LEFT', BigWigs, 'RIGHT', 160, 0)
-
-	local Skada = ns.CreateCheckBox(appearance, 'Skada')
-	Skada:SetPoint('TOPLEFT', BigWigs, 'BOTTOMLEFT', 0, -8)
+	addons:SetPoint('TOPLEFT', adjustFonts, 'BOTTOMLEFT', 0, -16)
 
 	local QuestLogEx = ns.CreateCheckBox(appearance, 'QuestLogEx')
-	QuestLogEx:SetPoint('LEFT', Skada, 'RIGHT', 160, 0)
+	QuestLogEx:SetPoint('TOPLEFT', addons, 'BOTTOMLEFT', 0, -8)
 end
 
 -- Notification
@@ -261,84 +256,37 @@ do
 	local alert = ns.addSubCategory(notification, ns.localization.notification_subCategory_combat)
 	alert:SetPoint('TOPLEFT', autoSellJunk, 'BOTTOMLEFT', -16, -16)
 
-	local enterCombat = ns.CreateCheckBox(notification, 'enterCombat')
-	enterCombat:SetPoint('TOPLEFT', alert, 'BOTTOMLEFT', 0, -8)
-
-	local sapped = ns.CreateCheckBox(notification, 'sapped')
-	sapped:SetPoint('LEFT', enterCombat, 'RIGHT', 160, 0)
-
-	local vitalSpells = ns.CreateCheckBox(notification, 'vitalSpells')
-	vitalSpells:SetPoint('TOPLEFT', enterCombat, 'BOTTOMLEFT', 0, -8)
-
-	local resurrect = ns.CreateCheckBox(notification, 'resurrect')
-	resurrect:SetPoint('LEFT', vitalSpells, 'RIGHT', 160, 0)
-
-	local interrupt = ns.CreateCheckBox(notification, 'interrupt')
-	interrupt:SetPoint('TOPLEFT', vitalSpells, 'BOTTOMLEFT', 0, -8)
-
-	local interruptAlert = ns.CreateCheckBox(notification, 'interruptAlert')
-	interruptAlert:SetPoint('TOPLEFT', interrupt, 'BOTTOMLEFT', 16, -8)
+	local combatAlert = ns.CreateCheckBox(notification, 'combatAlert')
+	combatAlert:SetPoint('TOPLEFT', alert, 'BOTTOMLEFT', 0, -8)
 
 	local interruptSound = ns.CreateCheckBox(notification, 'interruptSound')
-	interruptSound:SetPoint('TOPLEFT', interruptAlert, 'BOTTOMLEFT', 0, -8)
+	interruptSound:SetPoint('TOPLEFT', combatAlert, 'BOTTOMLEFT', 16, -8)
 
 	local interruptAnnounce = ns.CreateCheckBox(notification, 'interruptAnnounce')
-	interruptAnnounce:SetPoint('TOPLEFT', interruptSound, 'BOTTOMLEFT', 0, -8)
-
-	interrupt.children = {interruptAlert, interruptSound, interruptAnnounce}
-
-	local dispel = ns.CreateCheckBox(notification, 'dispel')
-	dispel:SetPoint('LEFT', interrupt, 'RIGHT', 160, 0)
-
-	local dispelAlert = ns.CreateCheckBox(notification, 'dispelAlert')
-	dispelAlert:SetPoint('TOPLEFT', dispel, 'BOTTOMLEFT', 16, -8)
+	interruptAnnounce:SetPoint('LEFT', interruptSound, 'RIGHT', 160, 0)
 
 	local dispelSound = ns.CreateCheckBox(notification, 'dispelSound')
-	dispelSound:SetPoint('TOPLEFT', dispelAlert, 'BOTTOMLEFT', 0, -8)
+	dispelSound:SetPoint('TOPLEFT', interruptSound, 'BOTTOMLEFT', 0, -8)
 
 	local dispelAnnounce = ns.CreateCheckBox(notification, 'dispelAnnounce')
-	dispelAnnounce:SetPoint('TOPLEFT', dispelSound, 'BOTTOMLEFT', 0, -8)
-
-	dispel.children = {dispelAlert, dispelSound, dispelAnnounce}
-
-	local emergency = ns.CreateCheckBox(notification, 'emergency')
-	emergency:SetPoint('TOPLEFT', interruptAnnounce, 'BOTTOMLEFT', -16, -8)
-
-	local lowHPAlert = ns.CreateCheckBox(notification, 'lowHPAlert')
-	lowHPAlert:SetPoint('TOPLEFT', emergency, 'BOTTOMLEFT', 16, -8)
+	dispelAnnounce:SetPoint('LEFT', dispelSound, 'RIGHT', 160, 0)
 
 	local lowHPSound = ns.CreateCheckBox(notification, 'lowHPSound')
-	lowHPSound:SetPoint('TOPLEFT', lowHPAlert, 'BOTTOMLEFT', 0, -8)
-
-	local lowMPAlert = ns.CreateCheckBox(notification, 'lowMPAlert')
-	lowMPAlert:SetPoint('TOPLEFT', lowHPSound, 'BOTTOMLEFT', 0, -8)
+	lowHPSound:SetPoint('TOPLEFT', dispelSound, 'BOTTOMLEFT', 0, -8)
 
 	local lowMPSound = ns.CreateCheckBox(notification, 'lowMPSound')
-	lowMPSound:SetPoint('TOPLEFT', lowMPAlert, 'BOTTOMLEFT', 0, -8)
+	lowMPSound:SetPoint('LEFT', lowHPSound, 'RIGHT', 160, 0)
 
-	emergency.children = {lowHPAlert, lowHPSound, lowMPAlert, lowMPSound}
+	local enterCombat = ns.CreateCheckBox(notification, 'enterCombat')
+	enterCombat:SetPoint('TOPLEFT', lowHPSound, 'BOTTOMLEFT', 0, -8)
 
-	local execute = ns.CreateCheckBox(notification, 'execute')
-	execute:SetPoint('LEFT', emergency, 'RIGHT', 160, 0)
+	local lowHPThreshold = ns.CreateNumberSlider(notification, 'lowHPThreshold', 0.1, 1, 0.1, 1, 0.1, true)
+	lowHPThreshold:SetPoint('TOPLEFT', enterCombat, 'BOTTOMLEFT', 24, -24)
 
-	local executeAlert = ns.CreateCheckBox(notification, 'executeAlert')
-	executeAlert:SetPoint('TOPLEFT', execute, 'BOTTOMLEFT', 16, -8)
+	local lowMPThreshold = ns.CreateNumberSlider(notification, 'lowMPThreshold', 0.1, 1, 0.1, 1, 0.1, true)
+	lowMPThreshold:SetPoint('TOPLEFT', lowHPThreshold, 'BOTTOMLEFT', 0, -32)
 
-	local executeSound = ns.CreateCheckBox(notification, 'executeSound')
-	executeSound:SetPoint('TOPLEFT', executeAlert, 'BOTTOMLEFT', 0, -8)
-
-	execute.children = {executeAlert, executeSound}
-
-
-	--[[
-
-	local lowHealth = ns.CreateNumberSlider(notification, 'lowHealth', 0.1, 1, 0.1, 1, 0.1, true)
-	lowHealth:SetPoint('TOPLEFT', emergency, 'BOTTOMLEFT', 24, -24)
-
-	local lowMana = ns.CreateNumberSlider(notification, 'lowMana', 0.1, 1, 0.1, 1, 0.1, true)
-	lowMana:SetPoint('TOPLEFT', lowHealth, 'BOTTOMLEFT', 0, -32)
-
-	--]]
+	combatAlert.children = {interruptSound, interruptAnnounce, dispelSound, dispelAnnounce, lowHPSound, lowMPSound, enterCombat, lowHPThreshold, lowMPThreshold}
 end
 
 -- Infobar
@@ -355,8 +303,8 @@ do
 	local mouseover = ns.CreateCheckBox(infobar, 'mouseover')
 	mouseover:SetPoint('TOPLEFT', enable, 'BOTTOMLEFT', 16, -8)
 
-	local usePixelFont = ns.CreateCheckBox(infobar, 'usePixelFont')
-	usePixelFont:SetPoint('LEFT', mouseover, 'RIGHT', 160, 0)
+	local durability = ns.CreateCheckBox(infobar, 'durability')
+	durability:SetPoint('LEFT', mouseover, 'RIGHT', 160, 0)
 
 	local stats = ns.CreateCheckBox(infobar, 'stats')
 	stats:SetPoint('TOPLEFT', mouseover, 'BOTTOMLEFT', 0, -8)
@@ -370,22 +318,7 @@ do
 	local talent = ns.CreateCheckBox(infobar, 'talent')
 	talent:SetPoint('LEFT', friends, 'RIGHT', 160, 0)
 
-	local durability = ns.CreateCheckBox(infobar, 'durability')
-	durability:SetPoint('TOPLEFT', friends, 'BOTTOMLEFT', 0, -8)
-
-	local function toggleInfoBarOptions()
-		local shown = enable:GetChecked()
-		mouseover:SetShown(shown)
-		stats:SetShown(shown)
-		gold:SetShown(shown)
-		friends:SetShown(shown)
-		durability:SetShown(shown)
-		talent:SetShown(shown)
-		usePixelFont:SetShown(shown)
-	end
-
-	enable:HookScript('OnClick', toggleInfoBarOptions)
-	infobar:HookScript('OnShow', toggleInfoBarOptions)
+	enable.children = {mouseover, stats, gold, friends, durability, talent}
 end
 
 -- Actionbar
@@ -498,31 +431,31 @@ do
 	local basic = ns.addSubCategory(cooldown, ns.localization.cooldown_subCategory_basic)
 	basic:SetPoint('TOPLEFT', cooldown.subText, 'BOTTOMLEFT', 0, -8)
 
-	local cdEnhanced = ns.CreateCheckBox(cooldown, 'cdEnhanced')
-	cdEnhanced:SetPoint('TOPLEFT', basic, 'BOTTOMLEFT', 0, -8)
+	local CDEnhancement = ns.CreateCheckBox(cooldown, 'CDEnhancement')
+	CDEnhancement:SetPoint('TOPLEFT', basic, 'BOTTOMLEFT', 0, -8)
 
-	local cdPulse = ns.CreateCheckBox(cooldown, 'cdPulse')
-	cdPulse:SetPoint('LEFT', cdEnhanced, 'RIGHT', 160, 0)
+	local CDPulse = ns.CreateCheckBox(cooldown, 'CDPulse')
+	CDPulse:SetPoint('LEFT', CDEnhancement, 'RIGHT', 160, 0)
 
-	local cdFont = ns.CreateDropDown(cooldown, 'cdFont', true, ns.localization.font_stats_font, fontsTable)
-	cdFont:SetPoint('TOPLEFT', cdEnhanced, 'BOTTOMLEFT', 0, -16)
+	local CDFont = ns.CreateDropDown(cooldown, 'CDFont', true, ns.localization.font_stats_font, fontsTable)
+	CDFont:SetPoint('TOPLEFT', CDEnhancement, 'BOTTOMLEFT', 0, -16)
 
-	local cdFontFlag = ns.CreateDropDown(cooldown, 'cdFontFlag', true, ns.localization.font_stats_font_style, flagsTable)
-	cdFontFlag:SetPoint('LEFT', cdFont, 'RIGHT', 30, 0)
+	local CDFontFlag = ns.CreateDropDown(cooldown, 'CDFontFlag', true, ns.localization.font_stats_font_style, flagsTable)
+	CDFontFlag:SetPoint('LEFT', CDFont, 'RIGHT', 30, 0)
 
-	local cdFontSize = ns.CreateNumberSlider(cooldown, 'cdFontSize', 8, 24, 8, 24, 1, true)
-	cdFontSize:SetPoint('TOPLEFT', cdFont, 'BOTTOMLEFT', 24, -32)
+	local CDFontSize = ns.CreateNumberSlider(cooldown, 'CDFontSize', 8, 24, 8, 24, 1, true)
+	CDFontSize:SetPoint('TOPLEFT', CDFont, 'BOTTOMLEFT', 24, -32)
 
 	local function toggleCooldownOptions()
-		local shown = cdEnhanced:GetChecked()
-		cdFont:SetShown(shown)
-		cdFontFlag:SetShown(shown)
-		cdFontSize:SetShown(shown)
+		local shown = CDEnhancement:GetChecked()
+		CDFont:SetShown(shown)
+		CDFontFlag:SetShown(shown)
+		CDFontSize:SetShown(shown)
 	end
 
-	cdEnhanced:HookScript('OnClick', toggleCooldownOptions)
-	cdFontFlag:HookScript('OnShow', toggleCooldownOptions)
-	cdFontSize:HookScript('OnShow', toggleCooldownOptions)
+	CDEnhancement:HookScript('OnClick', toggleCooldownOptions)
+	CDFontFlag:HookScript('OnShow', toggleCooldownOptions)
+	CDFontSize:HookScript('OnShow', toggleCooldownOptions)
 end
 
 -- Aura
@@ -533,11 +466,8 @@ do
 	local basic = ns.addSubCategory(aura, ns.localization.aura_subCategory_basic)
 	basic:SetPoint('TOPLEFT', aura.subText, 'BOTTOMLEFT', 0, -8)
 
-	local pixelFont = ns.CreateCheckBox(aura, 'pixelFont')
-	pixelFont:SetPoint('TOPLEFT', basic, 'BOTTOMLEFT', 0, -8)
-
 	local reminder = ns.CreateCheckBox(aura, 'reminder')
-	reminder:SetPoint('LEFT', pixelFont, 'RIGHT', 160, 0)
+	reminder:SetPoint('TOPLEFT', basic, 'BOTTOMLEFT', 0, -8)
 end
 
 -- Unitframe
@@ -672,8 +602,14 @@ do
 	local reverseSort = ns.CreateCheckBox(inventory, 'reverseSort')
 	reverseSort:SetPoint('LEFT', newitemFlash, 'RIGHT', 160, 0)
 
+
+	local combineFreeSlots = ns.CreateCheckBox(inventory, 'combineFreeSlots')
+	combineFreeSlots:SetPoint('TOPLEFT', newitemFlash, 'BOTTOMLEFT', 0, -8)
+
+
+
 	local category = ns.addSubCategory(inventory, ns.localization.inventory_subCategory_category)
-	category:SetPoint('TOPLEFT', newitemFlash, 'BOTTOMLEFT', -16, -8)
+	category:SetPoint('TOPLEFT', combineFreeSlots, 'BOTTOMLEFT', -16, -8)
 
 	local useCategory = ns.CreateCheckBox(inventory, 'useCategory')
 	useCategory:SetPoint('TOPLEFT', category, 'BOTTOMLEFT', 0, -8)
@@ -684,10 +620,15 @@ do
 	local questItemFilter = ns.CreateCheckBox(inventory, 'questItemFilter')
 	questItemFilter:SetPoint('LEFT', tradeGoodsFilter, 'RIGHT', 160, 0)
 
-	useCategory.children = {tradeGoodsFilter, questItemFilter}
+
+	local classRelatedFilter = ns.CreateCheckBox(inventory, 'classRelatedFilter')
+	classRelatedFilter:SetPoint('TOPLEFT', tradeGoodsFilter, 'BOTTOMLEFT', 0, -8)
+
+
+	useCategory.children = {tradeGoodsFilter, questItemFilter, classRelatedFilter}
 
 	local size = ns.addSubCategory(inventory, ns.localization.inventory_subCategory_size)
-	size:SetPoint('TOPLEFT', tradeGoodsFilter, 'BOTTOMLEFT', -16, -8)
+	size:SetPoint('TOPLEFT', classRelatedFilter, 'BOTTOMLEFT', -16, -8)
 
 	local slotSize = ns.CreateNumberSlider(inventory, 'itemSlotSize', 20, 40, 20, 40, 1, true)
 	slotSize:SetPoint('TOPLEFT', size, 'BOTTOMLEFT', 24, -32)
@@ -702,9 +643,11 @@ do
 		local shown = enable:GetChecked()
 		useCategory:SetShown(shown)
 		tradeGoodsFilter:SetShown(shown)
+		classRelatedFilter:SetShown(shown)
 		questItemFilter:SetShown(shown)
 		reverseSort:SetShown(shown)
 		newitemFlash:SetShown(shown)
+		combineFreeSlots:SetShown(shown)
 		slotSize:SetShown(shown)
 		bagColumns:SetShown(shown)
 		bankColumns:SetShown(shown)
@@ -831,22 +774,7 @@ do
 	local extraInfo = ns.CreateCheckBox(tooltip, 'extraInfo')
 	extraInfo:SetPoint('LEFT', linkHover, 'RIGHT', 160, 0)
 
-	local function toggleTooltipOptions()
-		local shown = enable:GetChecked()
-		cursor:SetShown(shown)
-		hideTitle:SetShown(shown)
-		hideRealm:SetShown(shown)
-		hideRank:SetShown(shown)
-		combatHide:SetShown(shown)
-		linkHover:SetShown(shown)
-		borderColor:SetShown(shown)
-		tipIcon:SetShown(shown)
-		extraInfo:SetShown(shown)
-		targetBy:SetShown(shown)
-	end
-
-	enable:HookScript('OnClick', toggleTooltipOptions)
-	tooltip:HookScript('OnShow', toggleTooltipOptions)
+	enable.children = {cursor, hideTitle, hideRealm, hideRank, combatHide, linkHover, borderColor, tipIcon, extraInfo, targetBy}
 end
 
 -- Chat
@@ -854,8 +782,11 @@ do
 	local chat = FreeUIOptionsPanel.chat
 	chat.tab.Icon:SetTexture('Interface\\Icons\\UI_Chat')
 
+	local basic = ns.addSubCategory(chat, ns.localization.chat_subCategory_basic)
+	basic:SetPoint('TOPLEFT', chat.subText, 'BOTTOMLEFT', 0, -8)
+
 	local enable = ns.CreateCheckBox(chat, 'enable')
-	enable:SetPoint('TOPLEFT', chat.subText, 'BOTTOMLEFT', 0, -8)
+	enable:SetPoint('TOPLEFT', basic, 'BOTTOMLEFT', 0, -8)
 
 	local lockPosition = ns.CreateCheckBox(chat, 'lockPosition')
 	lockPosition:SetPoint('TOPLEFT', enable, 'BOTTOMLEFT', 16, -8)
@@ -875,29 +806,10 @@ do
 	local filters = ns.CreateCheckBox(chat, 'filters')
 	filters:SetPoint('LEFT', fading, 'RIGHT', 160, 0)
 
-	local timeStamp = ns.CreateCheckBox(chat, 'timeStamp')
-	timeStamp:SetPoint('TOPLEFT', fading, 'BOTTOMLEFT', 0, -8)
-
-	local timeStampColor = ns.CreateColourPicker(chat, 'timeStampColor', true)
-	timeStampColor:SetPoint('TOPLEFT', timeStamp, 'BOTTOMLEFT', 16, -8)
-
 	local hideVoiceButtons = ns.CreateCheckBox(chat, 'hideVoiceButtons')
-	hideVoiceButtons:SetPoint('LEFT', timeStamp, 'RIGHT', 160, 0)
+	hideVoiceButtons:SetPoint('TOPLEFT', fading, 'BOTTOMLEFT', 0, -8)
 
-	local function toggleChatOptions()
-		local shown = enable:GetChecked()
-		lockPosition:SetShown(shown)
-		fontOutline:SetShown(shown)
-		whisperAlert:SetShown(shown)
-		copyButton:SetShown(shown)
-		fading:SetShown(shown)
-		filters:SetShown(shown)
-		timeStamp:SetShown(shown)
-		timeStampColor:SetShown(shown)
-	end
-
-	enable:HookScript('OnClick', toggleChatOptions)
-	chat:HookScript('OnShow', toggleChatOptions)
+	enable.children = {lockPosition, fontOutline, whisperAlert, copyButton, fading, filters, hideVoiceButtons}
 end
 
 --Credits

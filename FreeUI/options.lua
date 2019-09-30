@@ -20,23 +20,26 @@ C['general'] = {
 
 C['appearance'] = {
 	['themes'] = true,
+		['borderColour'] = {.03, .03, .03},
+		['borderAlpha'] = 1,
 		['backdropColour'] = {.03, .03, .03},
-		['backdropAlpha'] = .7,
-		['buttonGradientColour'] = {.1, .1, .1, .5},
-		['buttonSolidColour'] = {.05, .05, .05, .7},
+		['backdropAlpha'] = .6,
+		['buttonGradientColour'] = {.1, .1, .1, .3},
+		['buttonSolidColour'] = {.05, .05, .05, .3},
 		['gradient'] = true,
 
-	['shadow'] = true,
+	['addShadowBorder'] = true,
 
 	['flashCursor'] = true,
 	['vignette'] = true,
 		['vignetteAlpha'] = .8,
 
-	['fonts'] = true,
+	['adjustFonts'] = true,
+	['usePixelFont'] = true,
+	['adjustClassColors'] = true,
 
 	['BigWigs'] = true,
 	['WeakAuras'] = true,
-	['Skada'] = true,
 	['QuestLogEx'] = true,
 }
 
@@ -65,6 +68,7 @@ C['actionbar'] = {
 			['sideBarMouseover'] = true,
 
 		['hoverBind'] = true,
+			['bindType'] = 1,
 }
 
 C['map'] = {
@@ -97,29 +101,14 @@ C['notification'] = {
 
 	['combatAlert'] = true,
 		['enterCombat']	= true,
-		['interrupt'] = true,
-			['interruptAlert'] = true,
-			['interruptAnnounce'] = true,
-			['interruptSound'] = true,
-		['dispel'] = true,
-			['dispelAlert'] = true,
-			['dispelAnnounce'] = true,
-			['dispelSound'] = true,
-		['execute'] = true,
-			['executeAlert'] = true,
-			['executeSound'] = true,
-			['executeThreshold']= 0.2,
-		['emergency'] = true,
-			['lowHPAlert'] = true,
-			['lowHPSound'] = true,
-			['lowHPThreshold'] = 0.5,
-			['lowMPAlert'] = true,
-			['lowMPSound'] = true,
-			['lowMPThreshold'] = 0.3,
-
-	['vitalSpells'] = true,
-	['resurrect'] = true,
-	['sapped'] = true,
+		['interruptAnnounce'] = true,
+		['interruptSound'] = true,
+		['dispelAnnounce'] = true,
+		['dispelSound'] = true,
+		['lowHPSound'] = true,
+		['lowHPThreshold'] = 0.3,
+		['lowMPSound'] = true,
+		['lowMPThreshold'] = 0.3,
 }
 
 C['inventory'] = {
@@ -129,14 +118,13 @@ C['inventory'] = {
 		['bagColumns'] = 10,
 		['bankColumns'] = 10,
 		['reverseSort'] = true,
-		['itemLevel'] = false,
 		['newitemFlash'] = true,
 		['deleteButton'] = true,
 		['combineFreeSlots'] = true,
 		['useCategory'] = true,
-			['gearSetFilter'] = false,
 			['tradeGoodsFilter'] = true,
 			['questItemFilter'] = true,
+			['classRelatedFilter'] = true,
 }
 
 C['infobar'] = {
@@ -144,7 +132,6 @@ C['infobar'] = {
 		['barHeight'] = 20,
 		['anchorTop'] = true,
 		['mouseover'] = true,
-		['usePixelFont'] = true,
 		['stats'] = true,
 		['friends'] = true,
 		['gold'] = true,
@@ -304,11 +291,11 @@ C['quest'] = {
 }
 
 C['cooldown'] = {
-	['cdEnhanced'] = true,
-		['cdFont'] = C.AssetsPath..'font\\supereffective.ttf',	
-		['cdFontFlag'] = 'OUTLINEMONOCHROME',	
-		['cdFontSize'] = 16,
-	['cdPulse'] = true,
+	['CDEnhancement'] = true,
+		['CDFont'] = 'interface\\addons\\FreeUI\\assets\\font\\supereffective.ttf',	
+		['CDFontFlag'] = 'OUTLINEMONOCHROME',	
+		['CDFontSize'] = 16,
+	['CDPulse'] = true,
 		['ignoredSpells'] = {
 			--GetSpellInfo(6807),	-- Maul
 			--GetSpellInfo(35395),	-- Crusader Strike
@@ -322,6 +309,11 @@ C['loot'] = {
 }
 
 C['aura'] = {
-	['usePixelFont'] = true,
+	['buffSize'] = 42,
+	['buffsPerRow'] = 8,
+	['reverseBuffs'] = false,
+	['debuffSize'] = 50,
+	['debuffsPerRow'] = 8,
+	['reverseDebuffs'] = false,
 	['reminder'] = true,
 }
