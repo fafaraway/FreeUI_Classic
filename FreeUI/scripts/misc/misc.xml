@@ -7,6 +7,7 @@
 	<Script file='dismount.lua'/>
 	<Script file='dragemall.lua'/>
 	<Script file='errors.lua'/>
+	<Script file='grouptool.lua'/>
 	<Script file='itemlevel.lua'/>
 	<Script file='mail.lua'/>
 	<Script file='marker.lua'/>
