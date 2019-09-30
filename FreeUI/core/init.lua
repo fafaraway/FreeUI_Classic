@@ -13,61 +13,6 @@ local F, C, L = unpack(ns)
 
 local pairs, next, tinsert = pairs, next, table.insert
 
-
-local defaultSettings = {
-	BfA = false,
-	UIElementsAnchor = {},
-	tempAnchor = {},
-	clickCast = {},
-	installComplete = false,
-	inventory = {
-		favouriteItems = {},
-	},
-}
-
-local accountSettings = {
-	totalGold = {},
-	repairType = 0,
-	autoSellJunk = true,
-}
-
-local function InitialSettings(source, target)
-	for i, j in pairs(source) do
-		if type(j) == 'table' then
-			if target[i] == nil then target[i] = {} end
-			for k, v in pairs(j) do
-				if target[i][k] == nil then
-					target[i][k] = v
-				end
-			end
-		else
-			if target[i] == nil then target[i] = j end
-		end
-	end
-
-	for i in pairs(target) do
-		if source[i] == nil then target[i] = nil end
-	end
-end
-
-local loader = CreateFrame('Frame')
-loader:RegisterEvent('ADDON_LOADED')
-loader:SetScript('OnEvent', function(self, _, addon)
-	if addon ~= 'FreeUI' then return end
-
-	if not FreeUIConfig['BfA'] then
-		FreeUIConfig = {}
-		FreeUIConfig['BfA'] = true
-	end
-
-	InitialSettings(defaultSettings, FreeUIConfig)
-	InitialSettings(accountSettings, FreeUIGlobalConfig)
-
-	self:UnregisterAllEvents()
-end)
-
-
-
 local events = {}
 
 local host = CreateFrame('Frame')

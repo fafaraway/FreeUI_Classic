@@ -4,11 +4,10 @@
 	<Script file='locales\enUS.lua'/>
 	<Script file='locales\zhCN.lua'/>
 
-	<Script file='core\constant.lua'/>
-
 	<Script file='options.lua'/>
+	<Script file='core\constant.lua'/>
 	<Script file='profiles.lua'/>
-	
+
 	<Script file='core\api.lua'/>
 	<Script file='core\gui.lua'/>
 	<Script file='core\install.lua'/>
@@ -28,7 +27,6 @@
 	<Include file='scripts\misc\misc.xml'/>
 	<Include file='scripts\notification\notification.xml'/>
 	<Include file='scripts\quest\quest.xml'/>
-	
 	<Include file='scripts\tooltip\tooltip.xml'/>
 	<Include file='scripts\unitframe\unitframe.xml'/>
 

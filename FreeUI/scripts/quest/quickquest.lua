@@ -7,11 +7,14 @@ local QUEST = F:GetModule('Quest')
 local created
 local function setupCheckButton()
 	if created then return end
-	local bu = CreateFrame('CheckButton', nil, WorldMapFrame, 'OptionsCheckButtonTemplate')
+	local bu = CreateFrame('CheckButton', nil, WorldMapFrame, 'InterfaceOptionsCheckButtonTemplate')
 	bu:SetPoint('TOPRIGHT', -140, -2)
 	bu:SetSize(26, 26)
-	F.CreateCB(bu, .25)
+
+	F.ReskinCheck(bu)
+
 	bu.text = F.CreateFS(bu, {C.font.normal, 11}, L['QUEST_QUICK_QUEST'], 'yellow', true, 'LEFT', 25, 0)
+	
 	bu:SetChecked(C.quest.quickQuest)
 	bu:SetScript('OnClick', function(self)
 		C.quest.quickQuest = self:GetChecked()

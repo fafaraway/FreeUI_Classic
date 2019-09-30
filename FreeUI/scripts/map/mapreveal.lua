@@ -142,11 +142,13 @@ local function TexturePool_ResetVertexColor(pool, texture)
 end
 
 function MAP:WorldMapReveal()
-	local bu = CreateFrame('CheckButton', nil, WorldMapFrame, 'OptionsCheckButtonTemplate')
+	local bu = CreateFrame('CheckButton', nil, WorldMapFrame, 'InterfaceOptionsCheckButtonTemplate')
 	bu:SetPoint('TOPRIGHT', -270, -2)
 	bu:SetSize(26, 26)
-	F.CreateCB(bu)
 	bu:SetChecked(C.map.worldMapReveal)
+	
+	F.ReskinCheck(bu)
+
 	bu.text = F.CreateFS(bu, {C.font.normal, 11}, L['MAP_REVEAL'], 'yellow', true, 'LEFT', 25, 0)
 
 	for pin in WorldMapFrame:EnumeratePinsByTemplate('MapExplorationPinTemplate') do
