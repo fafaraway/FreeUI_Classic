@@ -127,7 +127,7 @@ function F:CreateTex()
 end
 
 function F:CreateSD(a, m, s)
-	if not C.appearance.shadow then return end
+	if not C.appearance.addShadowBorder then return end
 	if self.Shadow then return end
 
 	local frame = self
@@ -150,7 +150,7 @@ function F:CreateBD(a)
 		bgFile = C.media.bdTex, edgeFile = C.media.bdTex, edgeSize = C.Mult,
 	})
 	self:SetBackdropColor(C.appearance.backdropColour[1], C.appearance.backdropColour[2], C.appearance.backdropColour[3], a or C.appearance.backdropAlpha)
-	self:SetBackdropBorderColor(0, 0, 0)
+	self:SetBackdropBorderColor(C.appearance.borderColour[1], C.appearance.borderColour[2], C.appearance.borderColour[3], C.appearance.borderAlpha)
 
 	F.CreateTex(self)
 end
@@ -223,14 +223,14 @@ local function StartGlow(f)
 	if not f:IsEnabled() then return end
 	--f:SetBackdropColor(.2, .2, .2, .7)
 
-	f:SetBackdropBorderColor(r, g, b)
+	f:SetBackdropBorderColor(r, g, b, 1)
 	f.glow:SetAlpha(1)
 	CreatePulse(f.glow)
 end
 
 local function StopGlow(f)
 	--f:SetBackdropColor(.2, .2, .2, .7)
-	f:SetBackdropBorderColor(0, 0, 0)
+	f:SetBackdropBorderColor(C.appearance.borderColour[1], C.appearance.borderColour[2], C.appearance.borderColour[3], C.appearance.borderAlpha)
 
 	f.glow:SetScript('OnUpdate', nil)
 	f.glow:SetAlpha(0)
@@ -259,7 +259,7 @@ function F.Reskin(f, noGlow)
 
 	--f:SetBackdropColor(.2, .2, .2, .7)
 
-	F.CreateBD(f, .25)
+	F.CreateBD(f, .4)
 
 	f.bgTex = F.CreateGradient(f)
 	
@@ -343,7 +343,7 @@ function F:ReskinScroll()
 	bu.bg = CreateFrame('Frame', nil, self)
 	bu.bg:SetPoint('TOPLEFT', bu, 0, -2)
 	bu.bg:SetPoint('BOTTOMRIGHT', bu, 0, 4)
-	F.CreateBD(bu.bg, 0)
+	F.CreateBD(bu.bg, .8)
 
 	local tex = F.CreateGradient(self)
 	tex:SetPoint('TOPLEFT', bu.bg, C.Mult, -C.Mult)
@@ -523,8 +523,6 @@ function F:ReskinCheck(default)
 	self:SetPushedTexture('')
 	self:SetHighlightTexture(C.media.bdTex)
 	
-	
-
 	local bd = CreateFrame('Frame', nil, self)
 	bd:SetPoint('TOPLEFT', 7, -7)
 	bd:SetPoint('BOTTOMRIGHT', -7, 7)
@@ -567,8 +565,6 @@ function F:ReskinCheck(default)
 
 		end
 	end
-
-
 end
 
 local function colourRadio(self)
@@ -822,14 +818,6 @@ function F:CreateButton(width, height, text, fontSize)
 	return bu
 end
 
-function F:CreateCheckBox()
-	local cb = CreateFrame('CheckButton', nil, self, 'InterfaceOptionsCheckButtonTemplate')
-	F.CreateCB(cb, .5)
-
-	cb.Type = 'CheckBox'
-	return cb
-end
-
 function F:StyleSearchButton()
 	F.StripTextures(self)
 	if self.icon then
@@ -877,51 +865,6 @@ function F:AddTooltip(anchor, text, color)
 	self.color = color
 	self:SetScript('OnEnter', tooltipOnEnter)
 	self:SetScript('OnLeave', F.HideTooltip)
-end
-
--- Button Color
-function F:CreateBC(a)
-	self:SetNormalTexture('')
-	self:SetHighlightTexture('')
-	self:SetPushedTexture('')
-	self:SetDisabledTexture('')
-
-	if self.Left then self.Left:SetAlpha(0) end
-	if self.Middle then self.Middle:SetAlpha(0) end
-	if self.Right then self.Right:SetAlpha(0) end
-	if self.LeftSeparator then self.LeftSeparator:Hide() end
-	if self.RightSeparator then self.RightSeparator:Hide() end
-
-	self:SetScript('OnEnter', function()
-		self:SetBackdropBorderColor(r, g, b, 1)
-	end)
-	self:SetScript('OnLeave', function()
-		self:SetBackdropBorderColor(0, 0, 0, 1)
-	end)
-	self:SetScript('OnMouseDown', function()
-		self:SetBackdropColor(r, g, b, a or .3)
-	end)
-	self:SetScript('OnMouseUp', function()
-		self:SetBackdropColor(0, 0, 0, a or .3)
-	end)
-end
-
--- Checkbox
-function F:CreateCB(a)
-	self:SetNormalTexture('')
-	self:SetPushedTexture('')
-	self:SetHighlightTexture(C.media.bdTex)
-	local hl = self:GetHighlightTexture()
-	hl:SetPoint('TOPLEFT', 5, -5)
-	hl:SetPoint('BOTTOMRIGHT', -5, 5)
-	hl:SetVertexColor(r, g, b, .25)
-
-	local bd = F.CreateBG(self, -4, a)
-	--F.CreateBD(bd, a)
-
-	local ch = self:GetCheckedTexture()
-	ch:SetDesaturated(true)
-	ch:SetVertexColor(r, g, b)
 end
 
 -- Movable Frame
