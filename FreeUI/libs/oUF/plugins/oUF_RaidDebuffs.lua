@@ -2,18 +2,19 @@ local _, ns = ...
 local F, C = unpack(select(2, ...))
 local oUF = ns.oUF or oUF
 
-local LCD = LibStub('LibClassicDurations')
+C.LibClassicDurations = LibStub("LibClassicDurations")
+C.LibClassicDurations:RegisterFrame("FreeUI")
+local LCD = C.LibClassicDurations
 
 local debugMode = false
-local class = C.Class
 local RaidDebuffsIgnore, invalidPrio = {}, -1
 
 local DispellColor = {
-	["Magic"]	= {.2, .6, 1},
-	["Curse"]	= {.6, 0, 1},
-	["Disease"]	= {.6, .4, 0},
-	["Poison"]	= {0, .6, 0},
-	["none"]	= {0, 0, 0},
+	['Curse'] = {.8, 0, 1},
+	['Disease'] = {.8, .6, 0},
+	['Magic'] = {0, .8, 1},
+	['Poison'] = {0, .8, 0},
+	['none'] = {0, 0, 0}
 }
 
 local DispellPriority = {
@@ -51,7 +52,7 @@ do
 		},
 	}
 
-	DispellFilter = dispellClasses[class] or {}
+	DispellFilter = dispellClasses[C.Class] or {}
 end
 
 local function UpdateDebuffFrame(self, name, icon, count, debuffType, duration, expiration)
