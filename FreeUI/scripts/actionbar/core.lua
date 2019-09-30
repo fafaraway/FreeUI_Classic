@@ -457,4 +457,5 @@ function ACTIONBAR:OnLogin()
 	self:RemoveBlizzArt()
 	self:RestyleButtons()
 	self:HookActionEvents()
+	self:HoverBind()
 end
