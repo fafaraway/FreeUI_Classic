@@ -1,6 +1,7 @@
 <Ui xmlns='http://www.blizzard.com/wow/ui/'>
 	<Script file='core.lua'/>
-	<Script file='questtracker.lua'/>
-	<Script file='quickquest.lua'/>
-	<Script file='questnotifier.lua'/>
+	<Script file='automation.lua'/>
+	<Script file='log.lua'/>
+	<Script file='notifier.lua'/>
+	<Script file='tracker.lua'/>
 </Ui>

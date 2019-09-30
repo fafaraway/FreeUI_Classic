@@ -1,5 +1,5 @@
 local F, C, L = unpack(select(2, ...))
-local QUEST = F:GetModule('Quest')
+local QUEST, cfg = F:GetModule('Quest'), C.quest
 
 
 -- QuickQuest, by p3lim
@@ -15,9 +15,9 @@ local function setupCheckButton()
 
 	bu.text = F.CreateFS(bu, {C.font.normal, 11}, L['QUEST_QUICK_QUEST'], 'yellow', true, 'LEFT', 25, 0)
 	
-	bu:SetChecked(C.quest.quickQuest)
+	bu:SetChecked(cfg.quickQuest)
 	bu:SetScript('OnClick', function(self)
-		C.quest.quickQuest = self:GetChecked()
+		cfg.quickQuest = self:GetChecked()
 	end)
 
 	created = true
@@ -35,7 +35,7 @@ QuickQuest:SetScript('OnEvent', function(self, event, ...) self[event](...) end)
 function QuickQuest:Register(event, func)
 	self:RegisterEvent(event)
 	self[event] = function(...)
-		if C.quest.quickQuest and not IsShiftKeyDown() then
+		if cfg.quickQuest and not IsShiftKeyDown() then
 			func(...)
 		end
 	end

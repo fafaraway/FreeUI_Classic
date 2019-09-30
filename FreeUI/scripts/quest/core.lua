@@ -181,7 +181,8 @@ end
 
 
 function QUEST:OnLogin()
-	self:QuestTracker()
+	self:QuestTrackerEnhancement()
 	self:QuestNotifier()
 	self:QuestRewardHighlight()
+	self:QuestLogEnhancement()
 end

@@ -1,11 +1,10 @@
 local F, C, L = unpack(select(2, ...))
-local QUEST = F:GetModule('Quest')
+local QUEST, cfg = F:GetModule('Quest'), C.quest
 
 
-local pairs = pairs
-local LE_QUEST_FREQUENCY_DAILY = LE_QUEST_FREQUENCY_DAILY or 2
+function QUEST:QuestTrackerEnhancement()
+	if not cfg.trackerEnhancement then return end
 
-function QUEST:QuestTracker()
 	-- Mover for quest tracker
 	local frame = CreateFrame('Frame', 'FreeUIQuestTrackerMover', UIParent)
 	frame:SetSize(240, 50)
@@ -38,34 +37,6 @@ function QUEST:QuestTracker()
 	bg:SetVertexColor(C.r, C.g, C.b, .8)
 	bg:SetPoint('TOPLEFT', 0, 20)
 	bg:SetSize(120, 30)
-
-	-- Show quest color and level
-	local function Showlevel(self)
-		local numEntries, numQuests = GetNumQuestLogEntries()
-
-		for i = 1, QUESTS_DISPLAYED, 1 do
-			local questIndex = i + FauxScrollFrame_GetOffset(QuestLogListScrollFrame)
-			local questLogTitle = _G['QuestLogTitle'..i]
-			local questCheck = _G['QuestLogTitle'..i..'Check']
-
-			if questIndex <= numEntries then
-				local questLogTitleText, level, _, isHeader, _, isComplete, frequency = GetQuestLogTitle(questIndex)
-
-				if not isHeader then
-					questLogTitleText = '['..level..'] '..questLogTitleText
-					if isComplete then
-						questLogTitleText = '|cffff78ff'..questLogTitleText
-					elseif frequency == LE_QUEST_FREQUENCY_DAILY then
-						questLogTitleText = '|cff3399ff'..questLogTitleText
-					end
-
-					questLogTitle:SetText(questLogTitleText)
-					questCheck:SetPoint('LEFT', questLogTitle, questLogTitle:GetWidth()-22, 0)
-				end
-			end
-		end
-	end
-	hooksecurefunc('QuestLog_Update', Showlevel)
 
 	for i = 1, 30 do
 		local Line = _G["QuestWatchLine"..i]
