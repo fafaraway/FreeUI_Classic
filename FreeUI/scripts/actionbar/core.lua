@@ -110,7 +110,7 @@ function ACTIONBAR:CreateBar3()
 	end
 
 	if cfg.layoutStyle == 2 then
-		frame:SetPoint(unpack(cfg.bar1Pos))
+		frame:SetPoint('BOTTOM', UIParent, 'BOTTOM', 0, 50)
 	else
 		local function positionBars()
 			if InCombatLockdown() then return end
