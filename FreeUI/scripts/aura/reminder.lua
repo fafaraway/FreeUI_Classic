@@ -31,6 +31,14 @@ local ReminderBuffs = {
 			instance = true,
 			pvp = true,
 		},
+		{	spells = {
+				[588] = true, -- 心灵之火
+			},
+			depend = 588,
+			combat = true,
+			instance = true,
+			pvp = true,
+		},
 	},
 }
 

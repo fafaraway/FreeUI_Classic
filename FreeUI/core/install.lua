@@ -65,6 +65,7 @@ local function ForceDefaultSettings()
 	SetCVar('screenshotQuality', 10)
 	SetCVar('showTutorials', 0)
 
+	if C.isMacClient then return end
 	SetCVar('cameraYawMoveSpeed', 120)
 	SetCVar('rawMouseEnable', 1)
 end

@@ -202,7 +202,7 @@ local function CustomFilter(element, unit, button, name, _, _, _, _, _, caster, 
 end
 
 local function PostUpdateGapIcon(_, _, icon)
-	if icon.bg and icon.bg:IsShown() then
+	--[[if icon.bg and icon.bg:IsShown() then
 		icon.bg:Hide()
 	end
 	if icon.glow and icon.glow:IsShown() then
@@ -210,7 +210,8 @@ local function PostUpdateGapIcon(_, _, icon)
 	end
 	if icon.timer and icon.timer:IsShown() then
 		icon.timer:Hide()
-	end
+	end--]]
+	icon:Hide()
 end
 
 local function AuraIconSize(w, n, s)

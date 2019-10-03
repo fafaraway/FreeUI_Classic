@@ -222,9 +222,9 @@ function F:CreateGradient()
 	local tex = self:CreateTexture(nil, 'BORDER')
 	tex:SetPoint('TOPLEFT', C.Mult, -C.Mult)
 	tex:SetPoint('BOTTOMRIGHT', -C.Mult, C.Mult)
-	tex:SetTexture(C.appearance.gradient and C.media.gradient or C.media.bdTex)
+	tex:SetTexture(C.appearance.addGradient and C.media.gradient or C.media.bdTex)
 
-	if C.appearance.gradient then
+	if C.appearance.addGradient then
 		tex:SetVertexColor(unpack(C.appearance.buttonGradientColour))
 	else
 		tex:SetVertexColor(unpack(C.appearance.buttonSolidColour))
@@ -860,6 +860,31 @@ function F:StyleSearchButton()
 	hl:SetVertexColor(C.r, C.g, C.b, .25)
 	hl:SetPoint('TOPLEFT', C.Mult, -C.Mult)
 	hl:SetPoint('BOTTOMRIGHT', -C.Mult, C.Mult)
+end
+
+local function reskinRotation(self, direction)
+	self:SetSize(20, 20)
+	F.Reskin(self)
+	local tex = self:CreateTexture(nil, 'ARTWORK')
+	tex:SetAllPoints()
+	tex:SetTexture('Interface\\Buttons\\UI-RefreshButton')
+	if direction == 'left' then
+		tex:SetTexCoord(1, 0, 0, 1)
+	else
+		tex:SetTexCoord(0, 1, 0, 1)
+	end
+end
+
+function F:ReskinRotationButtons()
+	local name = self.GetName and self:GetName() or self
+	local leftButton = _G[name..'RotateRightButton']
+	reskinRotation(leftButton, 'left')
+	local rightButton = _G[name..'RotateLeftButton']
+	reskinRotation(rightButton, 'right')
+
+	leftButton:SetPoint('TOPLEFT', 5, -5)
+	rightButton:ClearAllPoints()
+	rightButton:SetPoint('LEFT', leftButton, 'RIGHT', 3, 0)
 end
 
 -- GameTooltip

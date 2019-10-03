@@ -25,11 +25,10 @@ C['appearance'] = {
 		['borderAlpha'] = 1,
 		['backdropColour'] = {.03, .03, .03},
 		['backdropAlpha'] = .6,
-		['buttonGradientColour'] = {.1, .1, .1, .3},
-		['buttonSolidColour'] = {.05, .05, .05, .3},
-		['gradient'] = true,
-
-	['addShadowBorder'] = true,
+		['buttonGradientColour'] = {.1, .1, .1, .4},
+		['buttonSolidColour'] = {.03, .03, .03, .6},
+		['addGradient'] = true,
+		['addShadowBorder'] = true,
 
 	['flashCursor'] = true,
 	['vignette'] = true,
@@ -37,8 +36,7 @@ C['appearance'] = {
 
 	['adjustFonts'] = true,
 	['usePixelFont'] = true,
-	['adjustClassColors'] = true,
-
+	
 	['BigWigs'] = true,
 	['WeakAuras'] = true,
 }
@@ -199,6 +197,7 @@ C['unitframe'] = {
 		['dispellable'] = true,
 		['debuffbyPlayer'] = false,
 		['rangeCheck'] = true,
+		['adjustClassColors'] = true,
 
 		['powerHeight'] = 4,
 		['energyTicker'] = true,

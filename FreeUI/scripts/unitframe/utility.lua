@@ -30,7 +30,7 @@ oUF.colors.reaction = {
 	[8] = {87/255, 255/255, 93/255}, 	-- Exalted
 }
 
-if C.appearance.adjustClassColors then
+if cfg.adjustClassColors then
 	local RCC = RAID_CLASS_COLORS
 	oUF.colors.class.ROGUE = {RCC['ROGUE']['r'], RCC['ROGUE']['g'], RCC['ROGUE']['b']}
 	oUF.colors.class.DRUID = {RCC['DRUID']['r'], RCC['DRUID']['g'], RCC['DRUID']['b']}

@@ -4,18 +4,7 @@ local INSTALL = F:GetModule('Install')
 
 
 
-StaticPopupDialogs['FREEUI_RELOAD'] = {
-	text = L['RELOAD_CHECK'],
-	button1 = APPLY,
-	button2 = CLASS_TRIAL_THANKS_DIALOG_CLOSE_BUTTON,
-	OnAccept = function()
-		ReloadUI()
-	end,
-	timeout = 0,
-	whileDead = 1,
-	hideOnEscape = true,
-	preferredIndex = 5,
-}
+
 
 
 

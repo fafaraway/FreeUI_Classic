@@ -11,9 +11,11 @@ C.Version = GetAddOnMetadata('FreeUI', 'Version')
 C.Title = GetAddOnMetadata('FreeUI', 'Title')
 C.Support = GetAddOnMetadata('FreeUI', 'X-Support')
 C.wowBuild = select(2, GetBuildInfo()); C.wowBuild = tonumber(C.wowBuild)
-C.isClassic = select(4, GetBuildInfo()) < 20000
+C.isRetail = WOW_PROJECT_ID == WOW_PROJECT_MAINLINE
+C.isClassic = WOW_PROJECT_ID == WOW_PROJECT_CLASSIC
+C.isMacClient = IsMacClient()
 
-if C.appearance.adjustClassColors then
+if C.unitframe.adjustClassColors then
 	RAID_CLASS_COLORS['SHAMAN']['colorStr'] = 'ff4447bc'
 	RAID_CLASS_COLORS['SHAMAN']['r'] = 0.27
 	RAID_CLASS_COLORS['SHAMAN']['g'] = 0.28

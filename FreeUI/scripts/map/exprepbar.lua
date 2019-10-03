@@ -1,5 +1,5 @@
 local F, C, L = unpack(select(2, ...))
-local MAP = F:GetModule('Map')
+local MAP, cfg = F:GetModule('Map'), C.map
 
 
 local format, pairs = string.format, pairs
@@ -39,7 +39,7 @@ end
 
 function MAP:UpdateExpRepTooltip()
 	GameTooltip:SetOwner(Minimap, 'ANCHOR_NONE')
-	GameTooltip:SetPoint('TOPRIGHT', Minimap, 'TOPLEFT', -4, -(C.map.miniMapSize/8*C.Mult)-6)
+	GameTooltip:SetPoint('TOPRIGHT', Minimap, 'TOPLEFT', -4, -(cfg.miniMapSize/8*C.Mult)-6)
 	
 	if UnitLevel('player') < MAX_PLAYER_LEVEL then
 		GameTooltip:AddLine(LEVEL..' '..UnitLevel('player'), C.r, C.g, C.b)
@@ -51,6 +51,17 @@ function MAP:UpdateExpRepTooltip()
 		end
 	end
 
+	if C.Class == 'HUNTER' then
+		local currXP, nextXP = GetPetExperience()
+		if nextXP ~= 0 then
+			if UnitLevel('player') < MAX_PLAYER_LEVEL then
+				GameTooltip:AddLine(' ')
+			end
+			GameTooltip:AddLine(PET..' Lv'..UnitLevel('pet'), C.r, C.g, C.b)
+			GameTooltip:AddDoubleLine(XP..':', currXP..' / '..nextXP..' ('..floor(currXP/nextXP*100)..'%)', 1, 1, 1, 1, 1, 1)
+		end
+	end
+
 	if GetWatchedFactionInfo() then
 		local name, standing, barMin, barMax, value, factionID = GetWatchedFactionInfo()
 		if standing == MAX_REPUTATION_REACTION then
@@ -59,11 +70,11 @@ function MAP:UpdateExpRepTooltip()
 		end
 		local standingtext = GetText('FACTION_STANDING_LABEL'..standing, UnitSex('player'))
 		
-		if UnitLevel('player') < MAX_PLAYER_LEVEL then
+		if (UnitLevel('player') < MAX_PLAYER_LEVEL) or (C.Class == 'HUNTER') then
 			GameTooltip:AddLine(' ')
 		end
 		
-		GameTooltip:AddLine(name, 62/250, 175/250, 227/250)
+		GameTooltip:AddLine(name, FACTION_BAR_COLORS[standing].r, FACTION_BAR_COLORS[standing].g, FACTION_BAR_COLORS[standing].b)
 		GameTooltip:AddDoubleLine(standingtext, value - barMin..' / '..barMax - barMin..' ('..floor((value - barMin)/(barMax - barMin)*100)..'%)', 1, 1, 1, 1, 1, 1)
 	end
 
@@ -90,11 +101,11 @@ function MAP:SetupScript(bar)
 end
 
 function MAP:ExpRepBar()
-	if not C.map.expRepBar then return end 
+	if not cfg.expRepBar then return end 
 
 	local bar = CreateFrame('StatusBar', nil, Minimap)
-	bar:SetPoint('BOTTOM', Minimap, 'TOP', 0, -C.map.miniMapSize/8*C.Mult)
-	bar:SetSize(C.map.miniMapSize*C.Mult, 3*C.Mult)
+	bar:SetPoint('BOTTOM', Minimap, 'TOP', 0, -cfg.miniMapSize/8*C.Mult)
+	bar:SetSize(cfg.miniMapSize*C.Mult, 3*C.Mult)
 	bar:SetHitRectInsets(0, 0, -10, -10)
 	F.CreateSB(bar)
 	F.CreateBDFrame(bar)
