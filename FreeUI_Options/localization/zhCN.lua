@@ -1,15 +1,15 @@
 local _, ns = ...
+local L = ns.localization
 
 if GetLocale() ~= "zhCN" and GetLocale() ~= "zhTW" then return end
 
-local L = ns.localization
-
+L.reset = "重置选项"
+L.install = "安装"
 L.profile = "角色单独配置"
 L.profileTooltip = "为当前角色使用单独的选项配置。"
+L.profileCheck = "|cffff2735是否转换选项配置为角色单独/账号通用？|r"
 L.reloadCheck = "|cffff2735是否重载界面来完成设置？|r"
-L.needReload = "|cffff2735重载界面来应用改动。|r"
-L.install = "安装"
-L.reset = "重置选项"
+L.needReload = "|cffff2735需要重载界面来应用改动！|r"
 L.resetCheck = "|cffff2735是否移除所有已保存的选项并重置为默认值？|r"
 L.credits = "致谢"
 
@@ -65,8 +65,8 @@ L.appearance_vignetteAlpha = "暗角强度"
 L.appearance_vignetteAlpha_tooltip = "调整暗角强度，数字越小透明度越高。"
 L.appearance_addShadowBorder = "阴影边框"
 L.appearance_addShadowBorder_tooltip = "界面元素添加外围阴影。"
-L.appearance_gradient = "渐变风格"
-L.appearance_gradient_tooltip = "按钮类元素使用渐变效果。"
+L.appearance_addGradient = "渐变风格"
+L.appearance_addGradient_tooltip = "按钮类元素使用渐变效果。"
 L.appearance_subCategory_misc = "其他"
 L.appearance_flashCursor = "鼠标闪光"
 L.appearance_flashCursor_tooltip = "鼠标移动时添加一道闪光轨迹。"

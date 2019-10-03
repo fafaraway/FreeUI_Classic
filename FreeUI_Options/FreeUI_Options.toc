@@ -3,13 +3,15 @@
 ## Notes: Options GUI for FreeUI.
 ## Author: Haleth, Solor
 ## Version: 1.5
+## RequiredDeps: FreeUI
 ## SavedVariables: FreeUIOptionsGlobal, FreeUIOptions
 ## SavedVariablesPerCharacter: FreeUIOptionsPerChar
 
 
-freeui_options.lua
-localization\english.lua
-localization\chinese.lua
-frames.lua
+init.lua
+localization\enUS.lua
+localization\zhCN.lua
+core.lua
+options.lua
 
 

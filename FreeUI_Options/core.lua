@@ -1,17 +1,14 @@
 local _, ns = ...
 
+
+local F, C, L
+local r, g, b
+
 local realm = GetRealmName()
 local name = UnitName('player')
 
 
 -- [[ Variables ]]
-
-local F, C, INSTALL
-local r, g, b
-
-ns.localization = {}
-ns.categories = {}
-ns.buttons = {}
 
 local checkboxes = {}
 local radiobuttons = {}
@@ -31,6 +28,91 @@ local userChangedSlider = true -- to use SetValue without triggering OnValueChan
 local baseName = 'FreeUIOptionsPanel'
 
 
+-- [[ Options frame ]]
+
+local options = CreateFrame('Frame', baseName, UIParent)
+options:SetSize(640, 700)
+options:SetPoint('CENTER')
+options:SetFrameStrata('HIGH')
+options:EnableMouse(true)
+options.close = CreateFrame('Button', nil, options, 'UIPanelCloseButton')
+tinsert(UISpecialFrames, options:GetName())
+
+options.closeButton = CreateFrame('Button', nil, options, 'UIPanelButtonTemplate')
+options.closeButton:SetPoint('BOTTOMRIGHT', -6, 6)
+options.closeButton:SetSize(80, 24)
+options.closeButton:SetText(CLOSE)
+options.closeButton:SetScript('OnClick', function()
+	PlaySound(SOUNDKIT.IG_MAINMENU_OPTION)
+	options:Hide()
+end)
+tinsert(ns.buttons, options.closeButton)
+
+options.okayButton = CreateFrame('Button', 'FreeUIOptionsPanelOkayButton', options, 'UIPanelButtonTemplate')
+options.okayButton:SetPoint('RIGHT', options.closeButton, 'LEFT', -6, 0)
+options.okayButton:SetSize(80, 24)
+options.okayButton:SetText(OKAY)
+options.okayButton:Disable()
+tinsert(ns.buttons, options.okayButton)
+
+options.reloadText = options:CreateFontString(nil, 'ARTWORK', 'GameFontHighlight')
+options.reloadText:SetPoint('BOTTOM', 0, 12)
+options.reloadText:SetText(ns.localization.needReload)
+options.reloadText:Hide()
+
+options.creditsFrame = CreateFrame('Frame', 'FreeUIOptionsPanelCredits', UIParent)
+options.creditsFrame:SetSize(500, 500)
+options.creditsFrame:SetPoint('CENTER')
+options.creditsFrame:SetFrameStrata('DIALOG')
+options.creditsFrame:EnableMouse(true)
+options.creditsFrame:Hide()
+options.creditsFrame.close = CreateFrame('Button', nil, options.creditsFrame, 'UIPanelCloseButton')
+options.creditsFrame:SetScript('OnHide', function()
+	options:SetAlpha(1)
+end)
+tinsert(UISpecialFrames, options.creditsFrame:GetName())
+
+options.creditsFrame.closeButton = CreateFrame('Button', nil, options.creditsFrame, 'UIPanelButtonTemplate')
+options.creditsFrame.closeButton:SetSize(80, 24)
+options.creditsFrame.closeButton:SetPoint('BOTTOM', 0, 25)
+options.creditsFrame.closeButton:SetText(CLOSE)
+options.creditsFrame.closeButton:SetScript('OnClick', function()
+	options.creditsFrame:Hide()
+end)
+tinsert(ns.buttons, options.creditsFrame.closeButton)
+
+options.resetButton = CreateFrame('Button', nil, options, 'UIPanelButtonTemplate')
+options.resetButton:SetSize(120, 24)
+options.resetButton:SetText(ns.localization.reset)
+options.resetButton:SetPoint('BOTTOMLEFT', options, 'BOTTOMLEFT', 30, 50)
+tinsert(ns.buttons, options.resetButton)
+
+options.creditsButton = CreateFrame('Button', nil, options, 'UIPanelButtonTemplate')
+options.creditsButton:SetSize(120, 24)
+options.creditsButton:SetText(ns.localization.credits)
+options.creditsButton:SetPoint('BOTTOM', options.resetButton, 'TOP', 0, 4)
+options.creditsButton:SetScript('OnClick', function()
+	options.creditsFrame:Show()
+	options:SetAlpha(.2)
+end)
+tinsert(ns.buttons, options.creditsButton)
+
+options.installButton = CreateFrame('Button', nil, options, 'UIPanelButtonTemplate')
+options.installButton:SetSize(120, 24)
+options.installButton:SetText(ns.localization.install)
+options.installButton:SetPoint('BOTTOM', options.creditsButton, 'TOP', 0, 4)
+tinsert(ns.buttons, options.installButton)
+
+options.profile = CreateFrame('CheckButton', nil, options, 'InterfaceOptionsCheckButtonTemplate')
+options.profile:SetSize(24, 24)
+options.profile:SetPoint('BOTTOMLEFT', 6, 6)
+options.profile.Text:SetText(ns.localization.profile)
+options.profile.tooltipText = ns.localization.profileTooltip
+
+options.line = options:CreateTexture()
+options.line:SetSize(1, 600)
+options.line:SetPoint('TOPLEFT', 180, -60)
+options.line:SetColorTexture(.5, .5, .5, .1)
 
 
 -- [[ Functions ]]
@@ -86,10 +168,10 @@ local function SaveValue(f, value)
 	C[f.group][f.option] = value -- and this is from the lua options
 end
 
+
 -- [[ Widgets ]]
 
--- Check boxes
-
+-- Toggle
 local function toggleChildren(self, checked)
 	local tR, tG, tB
 	if checked then
@@ -138,6 +220,7 @@ local function toggle(self)
 	end
 end
 
+-- Check boxes
 ns.CreateCheckBox = function(parent, option, disable)
 	local f = CreateFrame('CheckButton', nil, parent.child, 'InterfaceOptionsCheckButtonTemplate')
 	f:SetSize(24, 24)
@@ -163,7 +246,6 @@ ns.CreateCheckBox = function(parent, option, disable)
 end
 
 -- Radios
-
 local function toggleRadio(self)
 	local previousValue
 
@@ -263,7 +345,6 @@ ns.CreateRadioButtonGroup = function(parent, option, numValues, tooltipText, nee
 end
 
 -- Sliders
-
 local function onValueChanged(self, value)
 	if self.step < 1 then
 		value = tonumber(string.format('%.2f', value))
@@ -372,7 +453,6 @@ ns.CreateNumberSlider = function(parent, option, lowText, highText, low, high, s
 end
 
 -- EditBox
-
 local function onEnterPressed(self)
 	local value = self.valueNumber and tonumber(self:GetText()) or tostring(self:GetText())
 	SaveValue(self, value)
@@ -430,7 +510,6 @@ ns.CreateEditBox = function(parent, option, needsReload, number)
 end
 
 -- Colour pickers
-
 local currentColourOption
 
 local function round(x)
@@ -510,7 +589,6 @@ ns.CreateColourPicker = function(parent, option, needsReload)
 end
 
 -- DropDown
-
 local DropDownText = {
 	['interface\\addons\\FreeUI\\assets\\font\\supereffective.ttf'] = 'Pixel font',
 	[STANDARD_TEXT_FONT] = 'Normal font'
@@ -564,6 +642,7 @@ ns.CreateDropDown = function(parent, option, needsReload, text, tableValue)
 	return f
 end
 
+
 -- [[ Categories and tabs ]]
 
 local offset = 60
@@ -577,7 +656,7 @@ end
 
 local onTabClick = function(tab)
 	activeTab.panel:Hide()
-	activeTab:SetBackdropColor(0, 0, 0, .3)
+	activeTab:SetBackdropColor(.03, .03, .03, .3)
 	setActiveTab(tab)
 end
 
@@ -647,9 +726,6 @@ ns.addSubCategory = function(category, name)
 
 	return header, line
 end
-
-
-
 
 
 -- [[ Init ]]
@@ -722,23 +798,37 @@ local function displaySettings()
 	end
 end
 
-
-local init = CreateFrame('Frame')
-init:RegisterEvent('PLAYER_LOGIN')
-init:SetScript('OnEvent', function()
+local f = CreateFrame('Frame')
+f:RegisterEvent('PLAYER_LOGIN')
+f:SetScript('OnEvent', function()
 	if not FreeUI then return end
 
 	F, C = unpack(FreeUI)
 	r, g, b = C.r, C.g, C.b
-	INSTALL = F:GetModule('Install')
+	L = ns.localization
 
-	local FreeUIOptionsPanel = FreeUIOptionsPanel
-	local loc = ns.localization
+	local FOP = FreeUIOptionsPanel
 
+	if C.unitframe.enable then
+		FOP:HookScript("OnShow", function()
+			oUF_Player:SetAlpha(0)
+			oUF_Pet:SetAlpha(0)
+			oUF_Target:SetAlpha(0)
+			oUF_TargetTarget:SetAlpha(0)
+		end)
+
+		FOP:HookScript("OnHide", function()
+			oUF_Player:SetAlpha(1)
+			oUF_Pet:SetAlpha(1)
+			oUF_Target:SetAlpha(1)
+			oUF_TargetTarget:SetAlpha(1)
+		end)
+	end
+	
 	StaticPopupDialogs['FREEUI_RESET'] = {
-		text = loc.resetCheck,
-		button1 = YES,
-		button2 = NO,
+		text = L.resetCheck,
+		button1 = ACCEPT,
+		button2 = CANCEL,
 		OnAccept = function()
 			FreeUIGlobalConfig = {}
 			FreeUIConfig = {}
@@ -752,77 +842,116 @@ init:SetScript('OnEvent', function()
 		end,
 		timeout = 0,
 		whileDead = 1,
+		hideOnEscape = false,
+		preferredIndex = 5,
+	}
+
+	StaticPopupDialogs['FREEUI_PROFILE'] = {
+		text = L.profileCheck,
+		button1 = ACCEPT,
+		button2 = CANCEL,
+		OnAccept = function()
+			if FOP.profile:GetChecked() then
+				FreeUIOptionsGlobal[realm][name] = true
+			else
+				FreeUIOptionsGlobal[realm][name] = false
+			end
+			changeProfile()
+			ReloadUI()
+		end,
+		OnCancel = function()
+			if FOP.profile:GetChecked() then
+				FOP.profile:SetChecked(false)
+			else
+				FOP.profile:SetChecked(true)
+			end
+		end,
+		timeout = 0,
+		whileDead = 1,
+		hideOnEscape = false,
+		preferredIndex = 5,
+	}
+
+	StaticPopupDialogs['FREEUI_RELOAD'] = {
+		text = ns.localization.reloadCheck,
+		button1 = APPLY,
+		button2 = CLASS_TRIAL_THANKS_DIALOG_CLOSE_BUTTON,
+		OnAccept = function()
+			ReloadUI()
+		end,
+		timeout = 0,
+		whileDead = 1,
 		hideOnEscape = true,
 		preferredIndex = 5,
 	}
 
-	
-
-	FreeUIOptionsPanel.ProfileBox:SetChecked(FreeUIOptionsGlobal[realm][name])
-	FreeUIOptionsPanel.ProfileBox:SetScript('OnClick', function(self)
-		FreeUIOptionsGlobal[realm][name] = self:GetChecked()
-		changeProfile()
-		displaySettings()
-
-		ReloadUI()
+	FOP.profile:SetChecked(FreeUIOptionsGlobal[realm][name])
+	FOP.profile:SetScript("OnClick", function()
+		StaticPopup_Show("FREEUI_PROFILE")
 	end)
 
-	FreeUIOptionsPanel.InstallButton:SetScript('OnClick', function()
-		INSTALL:HelloWorld()
-		FreeUIOptionsPanel:Hide()
+	FOP.installButton:SetScript('OnClick', function()
+		F:GetModule('Install'):HelloWorld()
+		FOP:Hide()
 	end)
 
-	FreeUIOptionsPanel.ResetButton:SetScript('OnClick', function()
+	FOP.resetButton:SetScript('OnClick', function()
 		StaticPopup_Show('FREEUI_RESET')
 	end)
 
-	F.CreateMF(FreeUIOptionsPanel)
-	F.CreateBD(FreeUIOptionsPanel)
-	F.CreateSD(FreeUIOptionsPanel)
+	FOP.okayButton:SetScript('OnClick', function()
+		options:Hide()
+		if ns.needReload then
+			StaticPopup_Show('FREEUI_RELOAD')
+		end
+	end)
 
-	F.CreateBD(FreeUIOptionsPanel.CreditsFrame)
-	F.CreateSD(FreeUIOptionsPanel.CreditsFrame)
-	F.ReskinClose(FreeUIOptionsPanel.CreditsFrame.CloseButton)
-	FreeUIOptionsPanel.CreditsFrame.title = F.CreateFS(FreeUIOptionsPanel.CreditsFrame, {C.AssetsPath..'font\\supereffective.ttf', 24, 'OUTLINEMONOCHROME'}, 'Free'..C.MyColor..'UI|r', nil, true, 'TOP', 0, -4)
-	FreeUIOptionsPanel.CreditsFrame.author = F.CreateFS(FreeUIOptionsPanel.CreditsFrame, 'pixel', loc.author, nil, true, 'TOP', 0, -40)
-	FreeUIOptionsPanel.CreditsFrame.authorSubText = F.CreateFS(FreeUIOptionsPanel.CreditsFrame, 'pixel', loc.authorSubText, nil, true, 'TOP', 0, -52)
-	FreeUIOptionsPanel.CreditsFrame.credits = F.CreateFS(FreeUIOptionsPanel.CreditsFrame, {C.font.normal, 20}, loc.credits, 'yellow', true, 'TOP', 0, -80)
+	F.CreateMF(FOP)
+	F.CreateBD(FOP)
+	F.CreateSD(FOP)
+	F.ReskinClose(FOP.close)
+
+	F.CreateBD(FOP.creditsFrame)
+	F.CreateSD(FOP.creditsFrame)
+	F.ReskinClose(FOP.creditsFrame.close)
+	FOP.creditsFrame.title = F.CreateFS(FOP.creditsFrame, {C.AssetsPath..'font\\supereffective.ttf', 24, 'OUTLINEMONOCHROME'}, 'Free'..C.MyColor..'UI|r', nil, true, 'TOP', 0, -4)
+	FOP.creditsFrame.author = F.CreateFS(FOP.creditsFrame, 'pixel', L.author, nil, true, 'TOP', 0, -40)
+	FOP.creditsFrame.authorSubText = F.CreateFS(FOP.creditsFrame, 'pixel', L.authorSubText, nil, true, 'TOP', 0, -52)
+	FOP.creditsFrame.credits = F.CreateFS(FOP.creditsFrame, {C.font.normal, 20}, L.credits, 'yellow', true, 'TOP', 0, -80)
 	
-	FreeUIOptionsPanel.CreditsFrame.haleth = F.CreateFS(FreeUIOptionsPanel.CreditsFrame, {C.font.normal, 16}, loc.haleth, nil, true, 'TOP', 0, -110)
-	FreeUIOptionsPanel.CreditsFrame.halethSubText = F.CreateFS(FreeUIOptionsPanel.CreditsFrame, {C.font.normal, 12}, loc.halethSubText, 'grey', true, 'TOP', 0, -130)
+	FOP.creditsFrame.haleth = F.CreateFS(FOP.creditsFrame, {C.font.normal, 16}, L.haleth, nil, true, 'TOP', 0, -110)
+	FOP.creditsFrame.halethSubText = F.CreateFS(FOP.creditsFrame, {C.font.normal, 12}, L.halethSubText, 'grey', true, 'TOP', 0, -130)
 
-	FreeUIOptionsPanel.CreditsFrame.alza = F.CreateFS(FreeUIOptionsPanel.CreditsFrame, {C.font.normal, 16}, loc.alza, nil, true, 'TOP', 0, -150)
-	FreeUIOptionsPanel.CreditsFrame.alzaSubText = F.CreateFS(FreeUIOptionsPanel.CreditsFrame, {C.font.normal, 12}, loc.alzaSubText, 'grey', true, 'TOP', 0, -170)
+	FOP.creditsFrame.alza = F.CreateFS(FOP.creditsFrame, {C.font.normal, 16}, L.alza, nil, true, 'TOP', 0, -150)
+	FOP.creditsFrame.alzaSubText = F.CreateFS(FOP.creditsFrame, {C.font.normal, 12}, L.alzaSubText, 'grey', true, 'TOP', 0, -170)
 
-	FreeUIOptionsPanel.CreditsFrame.haste = F.CreateFS(FreeUIOptionsPanel.CreditsFrame, {C.font.normal, 16}, loc.haste, nil, true, 'TOP', 0, -190)
-	FreeUIOptionsPanel.CreditsFrame.hasteSubText = F.CreateFS(FreeUIOptionsPanel.CreditsFrame, {C.font.normal, 12}, loc.hasteSubText, 'grey', true, 'TOP', 0, -210)
-	FreeUIOptionsPanel.CreditsFrame.tukz = F.CreateFS(FreeUIOptionsPanel.CreditsFrame, {C.font.normal, 16}, loc.tukz, nil, true, 'TOP', 0, -230)
-	FreeUIOptionsPanel.CreditsFrame.tukzSubText = F.CreateFS(FreeUIOptionsPanel.CreditsFrame, {C.font.normal, 12}, loc.tukzSubText, 'grey', true, 'TOP', 0, -250)
-	FreeUIOptionsPanel.CreditsFrame.zork = F.CreateFS(FreeUIOptionsPanel.CreditsFrame, {C.font.normal, 16}, loc.zork, nil, true, 'TOP', 0, -270)
-	FreeUIOptionsPanel.CreditsFrame.zorkSubText = F.CreateFS(FreeUIOptionsPanel.CreditsFrame, {C.font.normal, 12}, loc.zorkSubText, 'grey', true, 'TOP', 0, -290)
+	FOP.creditsFrame.haste = F.CreateFS(FOP.creditsFrame, {C.font.normal, 16}, L.haste, nil, true, 'TOP', 0, -190)
+	FOP.creditsFrame.hasteSubText = F.CreateFS(FOP.creditsFrame, {C.font.normal, 12}, L.hasteSubText, 'grey', true, 'TOP', 0, -210)
+	FOP.creditsFrame.tukz = F.CreateFS(FOP.creditsFrame, {C.font.normal, 16}, L.tukz, nil, true, 'TOP', 0, -230)
+	FOP.creditsFrame.tukzSubText = F.CreateFS(FOP.creditsFrame, {C.font.normal, 12}, L.tukzSubText, 'grey', true, 'TOP', 0, -250)
+	FOP.creditsFrame.zork = F.CreateFS(FOP.creditsFrame, {C.font.normal, 16}, L.zork, nil, true, 'TOP', 0, -270)
+	FOP.creditsFrame.zorkSubText = F.CreateFS(FOP.creditsFrame, {C.font.normal, 12}, L.zorkSubText, 'grey', true, 'TOP', 0, -290)
 
-	FreeUIOptionsPanel.CreditsFrame.siweia = F.CreateFS(FreeUIOptionsPanel.CreditsFrame, {C.font.normal, 16}, loc.siweia, nil, true, 'TOP', 0, -310)
-	FreeUIOptionsPanel.CreditsFrame.siweiaSubText = F.CreateFS(FreeUIOptionsPanel.CreditsFrame, {C.font.normal, 12}, loc.siweiaSubText, 'grey', true, 'TOP', 0, -330)
+	FOP.creditsFrame.siweia = F.CreateFS(FOP.creditsFrame, {C.font.normal, 16}, L.siweia, nil, true, 'TOP', 0, -310)
+	FOP.creditsFrame.siweiaSubText = F.CreateFS(FOP.creditsFrame, {C.font.normal, 12}, L.siweiaSubText, 'grey', true, 'TOP', 0, -330)
 
-	FreeUIOptionsPanel.CreditsFrame.others = F.CreateFS(FreeUIOptionsPanel.CreditsFrame, {C.font.normal, 16}, loc.others, 'yellow', true, 'TOP', 0, -360)
-	FreeUIOptionsPanel.CreditsFrame.othersSubText_1 = F.CreateFS(FreeUIOptionsPanel.CreditsFrame, {C.font.normal, 12}, loc.othersSubText_1, 'grey', true, 'TOP', 0, -380)
-	FreeUIOptionsPanel.CreditsFrame.othersSubText_2 = F.CreateFS(FreeUIOptionsPanel.CreditsFrame, {C.font.normal, 12}, loc.othersSubText_2, 'grey', true, 'TOP', 0, -400)
+	FOP.creditsFrame.others = F.CreateFS(FOP.creditsFrame, {C.font.normal, 16}, L.others, 'yellow', true, 'TOP', 0, -360)
+	FOP.creditsFrame.othersSubText_1 = F.CreateFS(FOP.creditsFrame, {C.font.normal, 12}, L.othersSubText_1, 'grey', true, 'TOP', 0, -380)
+	FOP.creditsFrame.othersSubText_2 = F.CreateFS(FOP.creditsFrame, {C.font.normal, 12}, L.othersSubText_2, 'grey', true, 'TOP', 0, -400)
 
-	F.ReskinClose(FreeUIOptionsPanel.close)
-	
-	F.ReskinCheck(FreeUIOptionsPanel.ProfileBox)
+	F.ReskinCheck(FOP.profile)
 
 	for _, panel in pairs(panels) do
 		F.CreateBDFrame(panel)
 		panel.Title:SetTextColor(r, g, b)
 		panel.subText:SetTextColor(.8, .8, .8)
-		panel.tab:SetBackdropColor(0, 0, 0, .3)
+		panel.tab:SetBackdropColor(.03, .03, .03, .3)
 		F.CreateBDFrame(panel.tab.Icon)
 		F.Reskin(panel.tab)
 		F.ReskinScroll(panel.ScrollBar)
 	end
 
-	setActiveTab(FreeUIOptionsPanel.general.tab)
+	setActiveTab(FOP.general.tab)
 
 	for _, button in pairs(ns.buttons) do
 		F.Reskin(button)
@@ -856,18 +985,18 @@ init:SetScript('OnEvent', function()
 		F.ReskinDropDown(dropdown)
 	end
 
-
-	local title = F.CreateFS(FreeUIOptionsPanel, {C.AssetsPath..'font\\supereffective.ttf', 24, 'OUTLINEMONOCHROME'}, 'Free'..C.MyColor..'UI', nil, true, 'TOP', 0, -4)
-	local description = F.CreateFS(FreeUIOptionsPanel, 'pixel', 'configuration', 'grey', true, 'TOP', 0, -36)
-	local version = F.CreateFS(FreeUIOptionsPanel, 'pixel', C.GreyColor..'v|r'..C.GreyColor..C.Version, 'yellow', true, 'BOTTOM', 0, 4)
+	local title = F.CreateFS(FOP, {C.AssetsPath..'font\\supereffective.ttf', 24, 'OUTLINEMONOCHROME'}, 'Free'..C.MyColor..'UI', nil, true, 'TOP', 0, -4)
+	local description = F.CreateFS(FOP, 'pixel', 'configuration', 'grey', true, 'TOP', 0, -36)
+	local version = F.CreateFS(FOP, 'pixel', C.GreyColor..'v|r'..C.GreyColor..C.Version, 'yellow', true)
+	version:SetPoint('BOTTOMLEFT', title, 'BOTTOMRIGHT', 0, 3)
 	version:SetAlpha(.3)
 	
-	local lineLeft = CreateFrame('Frame', nil, FreeUIOptionsPanel)
+	local lineLeft = CreateFrame('Frame', nil, FOP)
 	lineLeft:SetPoint('TOP', -50, -32)
 	F.CreateGF(lineLeft, 100, 1, 'Horizontal', .7, .7, .7, 0, .7)
 	lineLeft:SetFrameStrata('HIGH')
 
-	local lineRight = CreateFrame('Frame', nil, FreeUIOptionsPanel)
+	local lineRight = CreateFrame('Frame', nil, FOP)
 	lineRight:SetPoint('TOP', 50, -32)
 	F.CreateGF(lineRight, 100, 1, 'Horizontal', .7, .7, .7, .7, 0)
 	lineRight:SetFrameStrata('HIGH')
@@ -888,7 +1017,7 @@ init:SetScript('OnEvent', function()
 	menuButton:SetScript('OnClick', function()
 		PlaySound(SOUNDKIT.IG_MAINMENU_OPTION)
 		HideUIPanel(GameMenuFrame)
-		FreeUIOptionsPanel:Show()
+		FOP:Show()
 	end)
 
 	F.Reskin(menuButton)

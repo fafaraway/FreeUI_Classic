@@ -1,17 +1,17 @@
 local _, ns = ...
-
 local L = ns.localization
 
 
-L.credits = "Credits"
+
 L.reset = "Reset"
 L.install = "Installer"
 L.profile = "Character-specific settings"
 L.profileTooltip = "Switch between a profile that applies to all characters and one that is unique to this character."
-L.resetCheck = "Remove all saved options, and reset them to their default values."
-L.needReload = "|cffff2735You need to reload the UI to apply your changes.|r"
+L.profileCheck = "|cffff2735Are you sure you want to switch profile setting?|r"
+L.resetCheck = "|cffff2735Remove all saved options, and reset them to their default values!|r"
+L.needReload = "|cffff2735Reload Required!|r"
 L.reloadCheck = "|cffff2735You need to reload the UI to apply your changes.\n\nWould you like to do so now?|r"
-
+L.credits = "Credits"
 
 L.author = "FreeUI Continued by Solor"
 L.authorSubText = "https://github.com/Solor/FreeUI"
@@ -80,8 +80,8 @@ L.appearance_vignetteAlpha = "Vignette opacity"
 L.appearance_vignetteAlpha_tooltip = "Adjust vignette opacity"
 L.appearance_addShadowBorder = "Shadow border"
 L.appearance_addShadowBorder_tooltip = "Adds smooth shadow border to most of UI elements."
-L.appearance_gradient = "Gradient"
-L.appearance_gradient_tooltip = "Adds gradient on some UI elements."
+L.appearance_addGradient = "Gradient"
+L.appearance_addGradient_tooltip = "Adds gradient on some UI elements."
 L.appearance_subCategory_misc = "Misc"
 L.appearance_flashCursor = "Flash cursor"
 L.appearance_flashCursor_tooltip = "Adds a star at the cursor, with size proportional to the cursor speed."
