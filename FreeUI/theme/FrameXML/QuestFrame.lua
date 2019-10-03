@@ -65,9 +65,9 @@ tinsert(C.themes["FreeUI"], function()
 
 	-- Text colour stuff
 
-	QuestProgressRequiredItemsText:SetTextColor(1, 1, 1)
+	QuestProgressRequiredItemsText:SetTextColor(1, .8, 0)
 	QuestProgressRequiredItemsText:SetShadowColor(0, 0, 0)
-	QuestProgressTitleText:SetTextColor(1, 1, 1)
+	QuestProgressTitleText:SetTextColor(1, .8, 0)
 	QuestProgressTitleText:SetShadowColor(0, 0, 0)
 	QuestProgressTitleText.SetTextColor = F.Dummy
 	QuestProgressText:SetTextColor(1, 1, 1)
@@ -132,6 +132,12 @@ tinsert(C.themes["FreeUI"], function()
 
 	F.ReskinExpandOrCollapse(QuestLogCollapseAllButton)
 	QuestLogCollapseAllButton:DisableDrawLayer("BACKGROUND")
+
+	F.StripTextures(QuestLogTrack)
+	QuestLogTrack:SetSize(6, 6)
+	QuestLogTrackTitle:SetPoint("LEFT", QuestLogTrack, "RIGHT", 3, 0)
+	QuestLogTrackTracking:SetTexture(C.media.sbTex)
+	F.CreateBDFrame(QuestLogTrackTracking)
 
 	hooksecurefunc("QuestLog_Update", function()
 		for i = 1, QUESTS_DISPLAYED, 1 do

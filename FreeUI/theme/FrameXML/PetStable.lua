@@ -6,6 +6,7 @@ tinsert(C.themes["FreeUI"], function()
 
 	F.ReskinPortraitFrame(PetStableFrame, 15, -15, -35, 73)
 	F.Reskin(PetStablePurchaseButton)
+	F.ReskinRotationButtons(PetStableModel)
 
 	local slots = {
 		PetStableCurrentPet,

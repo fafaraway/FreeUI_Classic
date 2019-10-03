@@ -33,4 +33,8 @@ C.themes["Blizzard_InspectUI"] = function()
 	for i = 1, 2 do
 		F.ReskinTab(_G["InspectFrameTab"..i])
 	end
+
+	InspectModelFrameRotateLeftButton:Hide()
+	InspectModelFrameRotateRightButton:Hide()
+	F.ReskinRotationButtons(InspectModelFrame)
 end
