@@ -1,9 +1,18 @@
 local F, C, L = unpack(select(2, ...))
-local MAP = F:GetModule('Map')
+local MAP, cfg = F:GetModule('Map'), C.map
 
 
 local strmatch, strfind, strupper = string.match, string.find, string.upper
 local select, pairs, ipairs, unpack = select, pairs, ipairs, unpack
+
+local function TrackingIcon()
+	MiniMapTrackingFrame:SetScale(.7)
+	MiniMapTrackingFrame:ClearAllPoints()
+	MiniMapTrackingFrame:SetPoint('TOPLEFT', Minimap, 4, -(cfg.miniMapSize/8+20))
+	MiniMapTrackingBorder:Hide()
+	MiniMapTrackingIcon:SetTexCoord(unpack(C.TexCoord))
+	local bg = F.CreateBDFrame(MiniMapTrackingIcon)
+end
 
 local function NewMail()
 	local mail = CreateFrame('Frame', 'FreeUIMailFrame', Minimap)
@@ -23,7 +32,7 @@ local function NewMail()
 	end)
 
 	local mt = F.CreateFS(mail, 'pixel', '<New Mail>', 'yellow', true)
-	mt:SetPoint('BOTTOM', Minimap, 0, (C.map.miniMapSize/8*C.Mult)+6)
+	mt:SetPoint('BOTTOM', Minimap, 0, (cfg.miniMapSize/8*C.Mult)+6)
 
 	MiniMapMailFrame:SetAlpha(0)
 	MiniMapMailFrame:SetSize(22, 10)
@@ -43,7 +52,7 @@ local function ZoneText()
 	PVPArenaTextString:SetWidth(230)
 
 	MinimapZoneTextButton:ClearAllPoints()
-	MinimapZoneTextButton:SetPoint('TOP', Minimap, 0, -(C.map.miniMapSize/8+10))
+	MinimapZoneTextButton:SetPoint('TOP', Minimap, 0, -(cfg.miniMapSize/8+10))
 	MinimapZoneTextButton:SetFrameStrata('HIGH')
 	MinimapZoneTextButton:EnableMouse(false)
 	MinimapZoneTextButton:SetAlpha(0)
@@ -68,7 +77,7 @@ local function ZoneText()
 end
 
 local function WhoPings()
-	if not C.map.whoPings then return end
+	if not cfg.whoPings then return end
 
 	local f = CreateFrame('Frame', nil, Minimap)
 	f:SetAllPoints()
@@ -97,15 +106,15 @@ local function WhoPings()
 end
 
 function MAP:UpdateMinimapScale()
-	local scale = C.map.miniMapScale
+	local scale = cfg.miniMapScale
 	Minimap:SetScale(scale)
 	Minimap.mover:SetSize(Minimap:GetWidth()*scale, Minimap:GetHeight()*scale)
 end
 
 function MAP:SetupMiniMap()
-	local size = C.map.miniMapSize
-	local pos = C.map.miniMapPosition
-	local scale = C.map.miniMapScale
+	local size = cfg.miniMapSize
+	local pos = cfg.miniMapPosition
+	local scale = cfg.miniMapScale
 	function GetMinimapShape() return 'SQUARE' end
 
 	Minimap:SetSize(size*C.Mult, size*C.Mult)
@@ -159,6 +168,7 @@ function MAP:SetupMiniMap()
 
 	MinimapCluster:EnableMouse(false)
 
+	TrackingIcon()
 	NewMail()
 	ZoneText()
 	WhoPings()
