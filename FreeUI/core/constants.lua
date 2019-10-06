@@ -2,52 +2,73 @@ local F, C = unpack(select(2, ...))
 
 
 C.Class = select(2, UnitClass('player'))
-C.Color = (CUSTOM_CLASS_COLORS or RAID_CLASS_COLORS)[C.Class]
 C.Name = UnitName('player')
 C.Level = UnitLevel('player')
+C.Faction = select(2, UnitFactionGroup("player"))
+C.Race = select(2, UnitRace("player"))
 C.Realm = GetRealmName()
 C.Client = GetLocale()
 C.Version = GetAddOnMetadata('FreeUI', 'Version')
 C.Title = GetAddOnMetadata('FreeUI', 'Title')
-C.Support = GetAddOnMetadata('FreeUI', 'X-Support')
-C.wowBuild = select(2, GetBuildInfo()); C.wowBuild = tonumber(C.wowBuild)
+C.VersionNumber = tonumber(C.Version)
+C.WoWPatch, C.WoWBuild, C.WoWPatchReleaseDate, C.TocVersion = GetBuildInfo()
+C.WoWBuild = tonumber(C.WoWBuild)
+C.Hider = CreateFrame("Frame", nil, UIParent) C.Hider:Hide()
 C.isRetail = WOW_PROJECT_ID == WOW_PROJECT_MAINLINE
 C.isClassic = WOW_PROJECT_ID == WOW_PROJECT_CLASSIC
-C.isMacClient = IsMacClient()
+C.isMac = IsMacClient()
+C.getLocale = GetLocale()
+C.isChinses = C.getLocale == 'zhCN' or C.getLocale == 'zhTW'
 
-if C.unitframe.adjustClassColors then
+local Resolution = select(1, GetPhysicalScreenSize()).."x"..select(2, GetPhysicalScreenSize())
+C.Resolution = Resolution or (Windowed and GetCVar("gxWindowedResolution")) or GetCVar("gxFullscreenResolution")
+C.ScreenHeight = select(2, GetPhysicalScreenSize())
+C.ScreenWidth = select(1, GetPhysicalScreenSize())
+C.PerfectScale = min(1, max(0.64, 768 / string.match(Resolution, "%d+x(%d+)")))
+C.is2KRes = C.ScreenHeight >= 1440
+C.is4KRes = C.ScreenHeight >= 2160
+
+if C.unitframe.enable and C.unitframe.adjustClassColors then
 	RAID_CLASS_COLORS['SHAMAN']['colorStr'] = 'ff4447bc'
-	RAID_CLASS_COLORS['SHAMAN']['r'] = 0.27
-	RAID_CLASS_COLORS['SHAMAN']['g'] = 0.28
 	RAID_CLASS_COLORS['SHAMAN']['b'] = 0.74
+	RAID_CLASS_COLORS['SHAMAN']['g'] = 0.28
+	RAID_CLASS_COLORS['SHAMAN']['r'] = 0.27
+
 	RAID_CLASS_COLORS['WARRIOR']['colorStr'] = 'ffa18e81'
 	RAID_CLASS_COLORS['WARRIOR']['b'] = 0.51
 	RAID_CLASS_COLORS['WARRIOR']['g'] = 0.56
 	RAID_CLASS_COLORS['WARRIOR']['r'] = 0.63
+
 	RAID_CLASS_COLORS['PALADIN']['colorStr'] = 'ffff5775'
 	RAID_CLASS_COLORS['PALADIN']['b'] = 0.46
 	RAID_CLASS_COLORS['PALADIN']['g'] = 0.34
 	RAID_CLASS_COLORS['PALADIN']['r'] = 1
+
 	RAID_CLASS_COLORS['MAGE']['colorStr'] = 'ff61a4df'
 	RAID_CLASS_COLORS['MAGE']['b'] = 0.87
 	RAID_CLASS_COLORS['MAGE']['g'] = 0.64
 	RAID_CLASS_COLORS['MAGE']['r'] = 0.38
+
 	RAID_CLASS_COLORS['PRIEST']['colorStr'] = 'ffd9d9d9'
 	RAID_CLASS_COLORS['PRIEST']['b'] = 0.85
 	RAID_CLASS_COLORS['PRIEST']['g'] = 0.85
 	RAID_CLASS_COLORS['PRIEST']['r'] = 0.85
+
 	RAID_CLASS_COLORS['WARLOCK']['colorStr'] = 'ffa07fd7'
 	RAID_CLASS_COLORS['WARLOCK']['b'] = 0.84
 	RAID_CLASS_COLORS['WARLOCK']['g'] = 0.51
 	RAID_CLASS_COLORS['WARLOCK']['r'] = 0.63
+
 	RAID_CLASS_COLORS['HUNTER']['colorStr'] = 'ff219c34'
 	RAID_CLASS_COLORS['HUNTER']['b'] = 0.21
 	RAID_CLASS_COLORS['HUNTER']['g'] = 0.61
 	RAID_CLASS_COLORS['HUNTER']['r'] = 0.13
+
 	RAID_CLASS_COLORS['DRUID']['colorStr'] = 'ffdf692f'
 	RAID_CLASS_COLORS['DRUID']['b'] = 0.18
 	RAID_CLASS_COLORS['DRUID']['g'] = 0.41
 	RAID_CLASS_COLORS['DRUID']['r'] = 0.87
+
 	RAID_CLASS_COLORS['ROGUE']['colorStr'] = 'ffffd33e'
 	RAID_CLASS_COLORS['ROGUE']['b'] = 0.24
 	RAID_CLASS_COLORS['ROGUE']['g'] = 0.83
@@ -122,32 +143,33 @@ end
 C.isCNClient = isCNClient()
 
 
+
 local normalFont, damageFont, headerFont, chatFont
-if GetLocale() == 'zhCN' then
+if C.getLocale == 'zhCN' then
 	normalFont = 'Fonts\\ARKai_T.ttf'
 	damageFont = 'Fonts\\ARKai_C.ttf'
 	headerFont = 'Fonts\\ARKai_T.ttf'
 	chatFont   = 'Fonts\\ARKai_T.ttf'
-elseif GetLocale() == 'zhTW' then
+elseif C.getLocale == 'zhTW' then
 	normalFont = 'Fonts\\blei00d.ttf'
 	damageFont = 'Fonts\\bKAI00M.ttf'
 	headerFont = 'Fonts\\blei00d.ttf'
 	chatFont   = 'Fonts\\blei00d.ttf'
-elseif GetLocale() == 'koKR' then
+elseif C.getLocale == 'koKR' then
 	normalFont = 'Fonts\\2002.ttf'
 	damageFont = 'Fonts\\K_Damage.ttf'
 	headerFont = 'Fonts\\2002.ttf'
 	chatFont   = 'Fonts\\2002.ttf'
-elseif GetLocale() == 'ruRU' then
+elseif C.getLocale == 'ruRU' then
 	normalFont = 'Fonts\\FRIZQT___CYR.ttf'
 	damageFont = 'Fonts\\FRIZQT___CYR.ttf'
 	headerFont = 'Fonts\\FRIZQT___CYR.ttf'
 	chatFont   = 'Fonts\\FRIZQT___CYR.ttf'
 else
-	normalFont = C.AssetsPath..'font\\expresswaysb.ttf'
-	damageFont = C.AssetsPath..'font\\PEPSI_pl.ttf'
+	normalFont = C.AssetsPath..'font\\TeXGyreAdventor.ttf'
+	damageFont = C.AssetsPath..'font\\PEPSI.ttf'
 	headerFont = C.AssetsPath..'font\\ExocetBlizzardMedium.ttf'
-	chatFont   = C.AssetsPath..'font\\expresswaysb.ttf'
+	chatFont   = C.AssetsPath..'font\\TeXGyreAdventor.ttf'
 end
 
 C.font = {
@@ -158,13 +180,9 @@ C.font = {
 	['pixel']   = C.AssetsPath..'font\\pixel.ttf',
 }
 
-if GetLocale() == 'ruRU' then
+if C.getLocale == 'ruRU' then
 	C.font.pixel = C.AssetsPath..'font\\iFlash705.ttf'
 end
-
-C.NormalFont = {C.font.normal, 11, 'OUTLINE'}
-C.PixelFont = {C.font.pixel, 8, 'OUTLINEMONOCHROME'}
-
 
 
 

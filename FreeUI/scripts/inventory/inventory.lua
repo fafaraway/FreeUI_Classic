@@ -346,9 +346,11 @@ function INVENTORY:OnLogin()
 	Backpack:HookScript('OnShow', function() PlaySound(SOUNDKIT.IG_BACKPACK_OPEN) end)
 	Backpack:HookScript('OnHide', function() PlaySound(SOUNDKIT.IG_BACKPACK_CLOSE) end)
 
+	INVENTORY.BagsType = {}
+	INVENTORY.BagsType[0] = 0
+	INVENTORY.BagsType[-1] = 0
+
 	local f = {}
-	INVENTORY.AmmoBags = {}
-	INVENTORY.SpecialBags = {}
 	local onlyBags, bagClass, bagAmmo, bagEquipment, bagConsumble, bagTradeGoods, bagQuestItem, bagsJunk, onlyBank, bankClass, bankAmmo, bankLegendary, bankEquipment, bankConsumble, onlyReagent, bagFavourite, bankFavourite = self:GetFilters()
 
 	function Backpack:OnInit()
@@ -567,7 +569,7 @@ function INVENTORY:OnLogin()
 
 		local label
 		if strmatch(name, 'AmmoItem$') then
-			label = INVTYPE_AMMO
+			label = C.Class == 'HUNTER' and INVTYPE_AMMO or SOUL_SHARDS
 		elseif strmatch(name, 'ClassItem$') then
 			label = L['INVENTORY_CLASS_RELATED']
 		elseif strmatch(name, 'Equipment$') then
@@ -641,7 +643,7 @@ function INVENTORY:OnLogin()
 	function BagButton:OnUpdate()
 		local id = GetInventoryItemID('player', (self.GetInventorySlot and self:GetInventorySlot()) or self.invID)
 		if not id then return end
-		local _, _, quality, _, _, _, _, _, _, _, _, classID = GetItemInfo(id)
+		local _, _, quality, _, _, _, _, _, _, _, _, classID, subClassID = GetItemInfo(id)
 		quality = quality or 0
 		if quality == 1 then quality = 0 end
 		local color = ITEM_QUALITY_COLORS[quality]
@@ -651,11 +653,12 @@ function INVENTORY:OnLogin()
 			self.BG:SetVertexColor(0, 0, 0, .5)
 		end
 
-		INVENTORY.AmmoBags[self.bagID] = (classID == LE_ITEM_CLASS_QUIVER)
-		local bagFamily = select(2, GetContainerNumFreeSlots(self.bagID))
-
-		if bagFamily then
-			INVENTORY.SpecialBags[self.bagID] = bagFamily ~= 0
+		if classID == LE_ITEM_CLASS_CONTAINER then
+			INVENTORY.BagsType[self.bagID] = subClassID or 0
+		elseif classID == LE_ITEM_CLASS_QUIVER then
+			INVENTORY.BagsType[self.bagID] = -1
+		else
+			INVENTORY.BagsType[self.bagID] = 0
 		end
 	end
 

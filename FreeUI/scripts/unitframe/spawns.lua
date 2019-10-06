@@ -149,7 +149,7 @@ function UNITFRAME:OnLogin()
 
 	if cfg.enableGroup then
 		if IsAddOnLoaded('Blizzard_CompactRaidFrames') then
-			CompactRaidFrameManager:SetParent(FreeUIHider)
+			CompactRaidFrameManager:SetParent(C.Hider)
 			CompactUnitFrameProfiles:UnregisterAllEvents()
 		end
 

@@ -103,7 +103,7 @@ function CHAT:CopyButton()
 			end
 		end
 
-		if C.Client == 'zhCN' and button == 'MiddleButton' and ChatHide == false then
+		if C.isChinses and button == 'MiddleButton' and ChatHide == false then
 			local inchannel = false
 			local channels = {GetChannelList()}
 			for i = 1, #channels do

@@ -78,8 +78,11 @@ end
 
 local function isItemAmmo(item)
 	if not cfg.useCategory then return end
-	if C.Class ~= 'HUNTER' then return end
-	return item.equipLoc == 'INVTYPE_AMMO' or INVENTORY.AmmoBags[item.bagID]
+	if C.Class == 'HUNTER' then
+		return item.equipLoc == 'INVTYPE_AMMO' or INVENTORY.BagsType[item.bagID] == -1
+	elseif C.Class == 'WARLOCK' then
+		return item.id == 6265 or INVENTORY.BagsType[item.bagID] == 1
+	end
 end
 
 local function isItemEquipment(item)
@@ -117,7 +120,7 @@ end
 
 local function isEmptySlot(item)
 	if not cfg.combineFreeSlots then return end
-	return not item.texture and not INVENTORY.SpecialBags[item.bagID]
+	return not item.texture and INVENTORY.BagsType[item.bagID] == 0
 end
 
 

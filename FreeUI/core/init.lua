@@ -1,15 +1,15 @@
-local addonName, ns = ...
+local AddOn, Engine = ...
 
-ns[1] = {} -- F, Functions
-ns[2] = {} -- C, Constants/Config
-ns[3] = {} -- L, Localisation
+Engine[1] = {} -- F, Functions
+Engine[2] = {} -- C, Constants/Config
+Engine[3] = {} -- L, Localisation
 
-_G[addonName] = ns
+_G[AddOn] = Engine
 
 FreeUIGlobalConfig, FreeUIConfig = {}, {}
 
 
-local F, C, L = unpack(ns)
+local F, C, L = unpack(Engine)
 
 local pairs, next, tinsert = pairs, next, table.insert
 
@@ -87,8 +87,60 @@ end)
 
 
 
-local hider = CreateFrame('Frame', 'FreeUIHider', UIParent)
-hider:Hide()
 
+--
+local defaultSettings = {
+	BfA = false,
+	Classic = false,
+	UIElementsAnchor = {},
+	tempAnchor = {},
+	clickCast = {},
+	installComplete = false,
+	inventory = {
+		favouriteItems = {},
+	},
+	actionbar = {
+		bindType = 1,
+	},
+}
 
+local accountSettings = {
+	totalGold = {},
+	repairType = 0,
+	autoSellJunk = true,
+}
 
+local function InitialSettings(source, target)
+	for i, j in pairs(source) do
+		if type(j) == 'table' then
+			if target[i] == nil then target[i] = {} end
+			for k, v in pairs(j) do
+				if target[i][k] == nil then
+					target[i][k] = v
+				end
+			end
+		else
+			if target[i] == nil then target[i] = j end
+		end
+	end
+
+	for i in pairs(target) do
+		if source[i] == nil then target[i] = nil end
+	end
+end
+
+local loader = CreateFrame('Frame')
+loader:RegisterEvent('ADDON_LOADED')
+loader:SetScript('OnEvent', function(self, _, addon)
+	if addon ~= 'FreeUI' then return end
+
+	if not FreeUIConfig['Classic'] then
+		FreeUIConfig = {}
+		FreeUIConfig['Classic'] = true
+	end
+
+	InitialSettings(defaultSettings, FreeUIConfig)
+	InitialSettings(accountSettings, FreeUIGlobalConfig)
+
+	self:UnregisterAllEvents()
+end)

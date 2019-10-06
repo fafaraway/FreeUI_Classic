@@ -9,41 +9,6 @@ local r, g, b = C.ClassColors[C.Class].r, C.ClassColors[C.Class].g, C.ClassColor
 
 -- [[ Functions ]]
 
--- UI scale
-local function clipScale(scale)
-	return tonumber(format('%.5f', scale))
-end
-
-local function GetPerfectScale()
-	local _, height = GetPhysicalScreenSize()
-	local scale = C.general.uiScale
-	local bestScale = max(.4, min(1.15, 768 / height))
-	local pixelScale = 768 / height
-
-	if C.general.uiScaleAuto then scale = clipScale(bestScale) end
-
-	C.Mult = (bestScale / scale) - ((bestScale - pixelScale) / scale)
-
-	return scale
-end
-GetPerfectScale()
-
-local isScaling = false
-function F:SetupUIScale()
-	if isScaling then return end
-	isScaling = true
-
-	local scale = GetPerfectScale()
-	local parentScale = UIParent:GetScale()
-	if scale ~= parentScale then
-		UIParent:SetScale(scale)
-	end
-
-	C.general.uiScale = clipScale(scale)
-
-	isScaling = false
-end
-
 function F:CreateFS(font, text, colour, shadow, anchor, x, y)
 	local fs = self:CreateFontString(nil, 'OVERLAY')
 	fs:SetWordWrap(false)
@@ -52,7 +17,7 @@ function F:CreateFS(font, text, colour, shadow, anchor, x, y)
 		fs:SetFont(font[1], font[2], font[3])
 	elseif type(font) == 'string' then
 		if font == 'pixel' then
-			fs:SetFont(C.font.pixel, 8, 'OUTLINEMONOCHROME')
+			fs:SetFont(C.font.pixel, 8*C.Mult, 'OUTLINEMONOCHROME')
 		end
 	end
 
@@ -106,7 +71,7 @@ function F.SetFS(object, font, text, colour, shadow)
 		object:SetFont(font[1], font[2], font[3])
 	elseif type(font) == 'string' then
 		if font == 'pixel' then
-			object:SetFont(C.font.pixel, 8, 'OUTLINEMONOCHROME')
+			object:SetFont(C.font.pixel, 8*C.Mult, 'OUTLINEMONOCHROME')
 		elseif font == 'standard' then
 			object:SetFont(C.font.normal, 12, 'OUTLINE')
 		end
@@ -949,8 +914,7 @@ function F:RestoreMF()
 end
 
 -- Icon Style
-function F:PixelIcon(texture, highlight)
-	F.CreateBD(self)
+function F:PixelIcon(texture, highlight, bg)
 	self.Icon = self:CreateTexture(nil, 'ARTWORK')
 	self.Icon:SetPoint('TOPLEFT', C.Mult, -C.Mult)
 	self.Icon:SetPoint('BOTTOMRIGHT', -C.Mult, C.Mult)
@@ -969,6 +933,9 @@ function F:PixelIcon(texture, highlight)
 		self.HL:SetColorTexture(1, 1, 1, .25)
 		self.HL:SetPoint('TOPLEFT', C.Mult, -C.Mult)
 		self.HL:SetPoint('BOTTOMRIGHT', -C.Mult, C.Mult)
+	end
+	if bg and type(bg) == 'boolean' then
+		F.CreateBDFrame(self)
 	end
 end
 

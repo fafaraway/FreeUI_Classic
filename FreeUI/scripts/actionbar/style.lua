@@ -4,8 +4,14 @@ local ACTIONBAR = F:GetModule('Actionbar')
 
 local _G = getfenv(0)
 local pairs, gsub = pairs, string.gsub
+local abFont
 
-local abFont = {C.font.pixel, 8, 'OUTLINEMONOCHROME'}
+if C.appearance.usePixelFont then
+	abFont = {C.font.pixel, 8*C.Mult, 'OUTLINEMONOCHROME'}
+else
+	abFont = {C.font.normal, 11, 'OUTLINE'}
+end
+
 local assetsPath = 'Interface\\Addons\\FreeUI\\assets\\'
 local abAssets = {
 	normal		= assetsPath..'gloss',
@@ -125,16 +131,12 @@ local function SetupCooldown(cooldown, cfg)
 	ApplyPoints(cooldown, cfg.points)
 end
 
+local keyButton = gsub(KEY_BUTTON4, '%d', '')
+local keyNumpad = gsub(KEY_NUMPAD1, '%d', '')
 
 local replaces = {
-	{'(Mouse Button)', 'M'},
-	{'(鼠标按键)', 'M'},
-	{'(滑鼠按鍵)', 'M'},
-	{'(数字键盘)', 'N'},
-	{'(方向键上)', 'U'},
-	{'(方向键下)', 'D'},
-	{'(方向键左)', 'L'},
-	{'(方向键右)', 'R'},
+	{'('..keyButton..')', 'M'},
+	{'('..keyNumpad..')', 'N'},
 	{'(a%-)', 'a'},
 	{'(c%-)', 'c'},
 	{'(s%-)', 's'},
@@ -143,6 +145,14 @@ local replaces = {
 	{KEY_MOUSEWHEELDOWN, 'MD'},
 	{KEY_SPACE, 'Sp'},
 	{CAPSLOCK_KEY_TEXT, 'CL'},
+	{'BUTTON', 'M'},
+	{'NUMPAD', 'N'},
+	{'(ALT%-)', 'a'},
+	{'(CTRL%-)', 'c'},
+	{'(SHIFT%-)', 's'},
+	{'MOUSEWHEELUP', 'MU'},
+	{'MOUSEWHEELDOWN', 'MD'},
+	{'SPACE', 'Sp'},
 }
 
 function ACTIONBAR:UpdateHotKey()
@@ -312,6 +322,13 @@ function ACTIONBAR:StyleExtraActionButton(cfg)
 	button.__styled = true
 end
 
+function ACTIONBAR:UpdateStanceHotKey()
+	for i = 1, NUM_STANCE_SLOTS do
+		_G['StanceButton'..i..'HotKey']:SetText(GetBindingKey('SHAPESHIFTBUTTON'..i))
+		ACTIONBAR.UpdateHotKey(_G['StanceButton'..i])
+	end
+end
+
 function ACTIONBAR:StyleAllActionButtons(cfg)
 	for i = 1, NUM_ACTIONBAR_BUTTONS do
 		ACTIONBAR:StyleActionButton(_G['ActionButton'..i], cfg)
@@ -395,6 +412,15 @@ function ACTIONBAR:RestyleButtons()
 		},
 		buttonstyle = {file = ''},
 	}
+
 	ACTIONBAR:StyleAllActionButtons(cfg)
+
+
+	-- Update hotkeys
 	hooksecurefunc('ActionButton_UpdateHotkeys', ACTIONBAR.UpdateHotKey)
+	hooksecurefunc('PetActionButton_SetHotkeys', ACTIONBAR.UpdateHotKey)
+	if C.actionbar.hotKey then
+		ACTIONBAR:UpdateStanceHotKey()
+		F:RegisterEvent('UPDATE_BINDINGS', ACTIONBAR.UpdateStanceHotKey)
+	end
 end

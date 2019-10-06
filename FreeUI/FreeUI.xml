@@ -5,16 +5,21 @@
 	<Script file='locales\zhCN.lua'/>
 
 	<Script file='options.lua'/>
-	<Script file='core\constant.lua'/>
+	<Script file='core\constants.lua'/>
 	<Script file='profiles.lua'/>
 
-	<Script file='core\api.lua'/>
+	<Include file='libs\libs.xml'/>
+
+	<Script file='core\fonts.lua'/>
+	<Script file='core\uiscale.lua'/>
+	<Script file='core\colors.lua'/>
+	<Script file='core\functions.lua'/>
 	<Script file='core\gui.lua'/>
 	<Script file='core\install.lua'/>
 	<Script file='core\mover.lua'/>
 	<Script file='core\slash.lua'/>
 
-	<Include file='libs\libs.xml'/>
+	
 
 	<Include file='scripts\actionbar\actionbar.xml'/>
 	<Include file='scripts\aura\aura.xml'/>

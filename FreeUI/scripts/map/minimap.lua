@@ -11,7 +11,7 @@ local function TrackingIcon()
 	MiniMapTrackingFrame:SetPoint('TOPLEFT', Minimap, 4, -(cfg.miniMapSize/8+20))
 	MiniMapTrackingBorder:Hide()
 	MiniMapTrackingIcon:SetTexCoord(unpack(C.TexCoord))
-	local bg = F.CreateBDFrame(MiniMapTrackingIcon)
+	F.CreateBDFrame(MiniMapTrackingIcon)
 end
 
 local function NewMail()

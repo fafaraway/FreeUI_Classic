@@ -353,7 +353,8 @@ function ACTIONBAR:CreateLeaveVehicleBar()
 	button:RegisterForClicks('AnyUp')
 	F.PixelIcon(button, 'INTERFACE\\VEHICLES\\UI-Vehicles-Button-Exit-Up', true)
 	button.Icon:SetTexCoord(.216, .784, .216, .784)
-	F.CreateSD(button)
+	button.bg = F.CreateBDFrame(button)
+	F.CreateSD(button.bg)
 
 	local function updateVisibility()
 		if UnitOnTaxi('player') then

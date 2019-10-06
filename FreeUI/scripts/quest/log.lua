@@ -45,26 +45,25 @@ end
 
 -- Adds level badges to the quest log overview
 local function ShowQuestLevel(self)
-	local numEntries, numQuests = GetNumQuestLogEntries();
-	
-	if (numEntries == 0) then return end
-	
-	local questIndex, questLogTitle, title, level, _, isHeader, questTextFormatted, questCheck, questCheckXOfs
-	for i = 1, QUESTS_DISPLAYED, 1 do
-		questIndex = i + FauxScrollFrame_GetOffset(QuestLogListScrollFrame);
-		
-		if (questIndex <= numEntries) then
-			questLogTitle = _G['QuestLogTitle'..i]
-			questCheck = _G['QuestLogTitle'..i..'Check']
-			title, level, _, isHeader = GetQuestLogTitle(questIndex)
-			
-			if (not isHeader) then
-				questTextFormatted = format('  [%d] %s', level, title)
-				questLogTitle:SetText(questTextFormatted)
-				QuestLogDummyText:SetText(questTextFormatted)
-			end
+	local numEntries = GetNumQuestLogEntries()
 
-			questCheck:SetPoint('LEFT', questLogTitle, 'LEFT', QuestLogDummyText:GetWidth()+24, 0);
+	for i = 1, QUESTS_DISPLAYED, 1 do
+		local questIndex = i + FauxScrollFrame_GetOffset(QuestLogListScrollFrame)
+		local questLogTitle = _G['QuestLogTitle'..i]
+		local questCheck = _G['QuestLogTitle'..i..'Check']
+		local questTitleTag = _G['QuestLogTitle'..i..'Tag']
+		if questIndex <= numEntries then
+			local questLogTitleText, level, _, isHeader, _, isComplete = GetQuestLogTitle(questIndex)
+			if not isHeader then
+				questLogTitle:SetText('['..level..'] '..questLogTitleText)
+				questCheck:SetPoint('LEFT', questLogTitle, questLogTitle:GetWidth()-22, 0)
+				if isComplete then
+					questLogTitle.r = 1
+					questLogTitle.g = .5
+					questLogTitle.b = 1
+					questTitleTag:SetTextColor(1, .5, 1)
+				end
+			end
 		end
 	end
 end

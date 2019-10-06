@@ -8,41 +8,6 @@ local format, floor, abs, min = string.format, math.floor, math.abs, math.min
 local pairs, next = pairs, next
 local LCD = C.LibClassicDurations
 
-oUF.colors.power.MANA = {0.47, 0.83, 0.88}
-oUF.colors.power.ENERGY = {0.88, 0.79, 0.25}
-
-oUF.colors.debuffType = {
-	['Curse'] = {.8, 0, 1},
-	['Disease'] = {.8, .6, 0},
-	['Magic'] = {0, .8, 1},
-	['Poison'] = {0, .8, 0},
-	['none'] = {0, 0, 0}
-}
-
-oUF.colors.reaction = {
-	[1] = {255/255, 81/255, 74/255}, 	-- Exceptionally hostile
-	[2] = {255/255, 81/255, 74/255}, 	-- Very Hostile
-	[3] = {255/255, 81/255, 74/255}, 	-- Hostile
-	[4] = {255/255, 236/255, 121/255}, 	-- Neutral
-	[5] = {87/255, 255/255, 93/255}, 	-- Friendly
-	[6] = {87/255, 255/255, 93/255}, 	-- Very Friendly
-	[7] = {87/255, 255/255, 93/255}, 	-- Exceptionally friendly
-	[8] = {87/255, 255/255, 93/255}, 	-- Exalted
-}
-
-if cfg.adjustClassColors then
-	local RCC = RAID_CLASS_COLORS
-	oUF.colors.class.ROGUE = {RCC['ROGUE']['r'], RCC['ROGUE']['g'], RCC['ROGUE']['b']}
-	oUF.colors.class.DRUID = {RCC['DRUID']['r'], RCC['DRUID']['g'], RCC['DRUID']['b']}
-	oUF.colors.class.HUNTER = {RCC['HUNTER']['r'], RCC['HUNTER']['g'], RCC['HUNTER']['b']}
-	oUF.colors.class.MAGE = {RCC['MAGE']['r'], RCC['MAGE']['g'], RCC['MAGE']['b']}
-	oUF.colors.class.PALADIN = {RCC['PALADIN']['r'], RCC['PALADIN']['g'], RCC['PALADIN']['b']}
-	oUF.colors.class.PRIEST = {RCC['PRIEST']['r'], RCC['PRIEST']['g'], RCC['PRIEST']['b']}
-	oUF.colors.class.SHAMAN = {RCC['SHAMAN']['r'], RCC['SHAMAN']['g'], RCC['SHAMAN']['b']}
-	oUF.colors.class.WARLOCK = {RCC['WARLOCK']['r'], RCC['WARLOCK']['g'], RCC['WARLOCK']['b']}
-	oUF.colors.class.WARRIOR = {RCC['WARRIOR']['r'], RCC['WARRIOR']['g'], RCC['WARRIOR']['b']}
-end
-
 function UNITFRAME:createBarMover(bar, text, value, anchor)
 	local mover = F.Mover(bar, text, value, anchor, bar:GetHeight()+bar:GetWidth()+5, bar:GetHeight()+5)
 	bar:ClearAllPoints()
@@ -108,6 +73,7 @@ end
 
 function UNITFRAME:AddSelectedBorder(self)
 	local border = F.CreateBDFrame(self.Bg)
+	border:SetBackdropColor(0, 0, 0, 0)
 	border:SetBackdropBorderColor(1, 1, 1, 1)
 	border:Hide()
 

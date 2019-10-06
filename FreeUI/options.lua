@@ -199,10 +199,10 @@ C['unitframe'] = {
 		['rangeCheck'] = true,
 		['adjustClassColors'] = true,
 
-		['powerHeight'] = 4,
+		['powerHeight'] = 3,
 		['energyTicker'] = true,
 		['comboPoints'] = true,
-			['comboPointsHeight'] = 4,
+			['comboPointsHeight'] = 3,
 
 		['clickCast'] = true,
 			['clickCastfilter'] = false,
@@ -224,7 +224,7 @@ C['unitframe'] = {
 			['aurasClickThrough'] = true,
 			['debuffsWatch'] = true,
 
-		['player_pos'] = {'TOP', UIParent, 'CENTER', 0, -300},
+		['player_pos'] = {'TOP', UIParent, 'CENTER', 0, -220},
 		['player_pos_healer'] = {'RIGHT', UIParent, 'CENTER', -100, -200},
 		['player_width'] = 200,
 		['player_width_healer'] = 200,
