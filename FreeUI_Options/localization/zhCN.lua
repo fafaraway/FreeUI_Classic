@@ -147,7 +147,7 @@ L.infobar_usePixelFont_tooltip = "信息条使用像素字体。"
 
 L.actionbar = "动作条"
 L.actionbar_subText = "这些选项控制大部分和动作条相关的设置。"
-L.actionbar_subCategory_layout = "基本设定"
+L.actionbar_subCategory_basic = "基本设定"
 L.actionbar_enable = "启用动作条"
 L.actionbar_enable_tooltip = "禁用该项如果你想要使用其他的动作条类插件。"
 L.actionbar_layoutStyle = "动作条布局"
@@ -175,6 +175,7 @@ L.actionbar_classColor = "按钮职业染色"
 L.actionbar_subCategory_bind = "按键绑定"
 L.actionbar_hoverBind = "快速按键绑定"
 L.actionbar_hoverBind_tooltip = "输入 /hb 使用快速绑定快捷键功能，鼠标移到按钮上按下要绑定的快捷键。"
+L.actionbar_subCategory_size = "大小设定"
 
 
 

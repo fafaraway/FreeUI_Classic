@@ -163,7 +163,7 @@ L.infobar_usePixelFont_tooltip = "Use pixel font on infobar."
 
 L.actionbar = "Actionbar"
 L.actionbar_subText = "These options are specific to the action bars and their buttons."
-L.actionbar_subCategory_layout = "Basic"
+L.actionbar_subCategory_basic = "Basic"
 L.actionbar_enable = "Enable actionbars"
 L.actionbar_enable_tooltip = "Uncheck if you want to use another actionbars addon."
 L.actionbar_layoutStyle = "Bars layout"
@@ -191,7 +191,13 @@ L.actionbar_classColor = "Colored by class"
 L.actionbar_subCategory_bind = "Bind"
 L.actionbar_hoverBind = "Easy binding"
 L.actionbar_hoverBind_tooltip = "Type /hb then bind buttons on mouseover."
-
+L.actionbar_subCategory_size = "Size"
+L.actionbar_buttonSizeNormal = "main bars size"
+L.actionbar_buttonSizeNormal_tooltip = "bar1/bar2/bar3 buttons size."
+L.actionbar_buttonSizeSmall = "small bars size"
+L.actionbar_buttonSizeSmall_tooltip = "Side bars and pet bar buttons size."
+L.actionbar_buttonSizeBig = "big bars size"
+L.actionbar_buttonSizeBig_tooltip = "Stance bar buttons size."
 
 
 L.cooldown = "Cooldown"
@@ -375,7 +381,8 @@ L.unitframe_onlyShowPlayer = "Debuff filter"
 L.unitframe_onlyShowPlayer_tooltip = "Shows only debuffs created by player."
 L.unitframe_clickCast = "Click cast"
 L.unitframe_clickCast_tooltip = "Enable click cast."
-
+L.unitframe_adjustClassColors = "Adjust class colors"
+L.unitframe_adjustClassColors_tooltip = "Adjust default class colors."
 
 
 L.unitframe_subCategory_castbar = "Castbar"

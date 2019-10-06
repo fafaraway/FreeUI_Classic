@@ -195,10 +195,10 @@ do
 	enterCombat:SetPoint('TOPLEFT', lowHPSound, 'BOTTOMLEFT', 0, -8)
 
 	local lowHPThreshold = ns.CreateNumberSlider(notification, 'lowHPThreshold', 0.1, 1, 0.1, 1, 0.1, true)
-	lowHPThreshold:SetPoint('TOPLEFT', enterCombat, 'BOTTOMLEFT', 24, -24)
+	lowHPThreshold:SetPoint('TOPLEFT', enterCombat, 'BOTTOMLEFT', 8, -24)
 
 	local lowMPThreshold = ns.CreateNumberSlider(notification, 'lowMPThreshold', 0.1, 1, 0.1, 1, 0.1, true)
-	lowMPThreshold:SetPoint('TOPLEFT', lowHPThreshold, 'BOTTOMLEFT', 0, -32)
+	lowMPThreshold:SetPoint('LEFT', lowHPThreshold, 'RIGHT', 70, 0)
 
 	combatAlert.children = {interruptSound, interruptAnnounce, dispelSound, dispelAnnounce, lowHPSound, lowMPSound, enterCombat, lowHPThreshold, lowMPThreshold}
 end
@@ -232,7 +232,18 @@ do
 	local talent = ns.CreateCheckBox(infobar, 'talent')
 	talent:SetPoint('LEFT', friends, 'RIGHT', 160, 0)
 
-	enable.children = {mouseover, stats, gold, friends, durability, talent}
+	local function toggleInfobarOptions()
+		local shown = enable:GetChecked()
+		mouseover:SetShown(shown)
+		stats:SetShown(shown)
+		gold:SetShown(shown)
+		friends:SetShown(shown)
+		durability:SetShown(shown)
+		talent:SetShown(shown)
+	end
+
+	enable:HookScript('OnClick', toggleInfobarOptions)
+	infobar:HookScript('OnShow', toggleInfobarOptions)
 end
 
 -- Actionbar
@@ -240,11 +251,11 @@ do
 	local actionbar = FreeUIOptionsPanel.actionbar
 	actionbar.tab.Icon:SetTexture('Interface\\Icons\\Ability_DualWield')
 
-	local main = ns.addSubCategory(actionbar, ns.localization.actionbar_subCategory_layout)
-	main:SetPoint('TOPLEFT', actionbar.subText, 'BOTTOMLEFT', 0, -8)
+	local basic = ns.addSubCategory(actionbar, ns.localization.actionbar_subCategory_basic)
+	basic:SetPoint('TOPLEFT', actionbar.subText, 'BOTTOMLEFT', 0, -8)
 
 	local enable = ns.CreateCheckBox(actionbar, 'enable')
-	enable:SetPoint('TOPLEFT', main, 'BOTTOMLEFT', 0, -8)
+	enable:SetPoint('TOPLEFT', basic, 'BOTTOMLEFT', 0, -8)
 
 	local layoutStyle = ns.CreateRadioButtonGroup(actionbar, 'layoutStyle', 3, false, true)
 	layoutStyle.buttons[1]:SetPoint('TOPLEFT', enable, 'BOTTOMLEFT', 16, -24)
@@ -305,6 +316,17 @@ do
 	local hoverBind = ns.CreateCheckBox(actionbar, 'hoverBind')
 	hoverBind:SetPoint('TOPLEFT', bind, 'BOTTOMLEFT', 0, -8)
 
+	local size = ns.addSubCategory(actionbar, ns.localization.actionbar_subCategory_size)
+	size:SetPoint('TOPLEFT', hoverBind, 'BOTTOMLEFT', 0, -16)
+
+	local buttonSizeNormal = ns.CreateNumberSlider(actionbar, 'buttonSizeNormal', 20, 50, 20, 50, 1, true)
+	buttonSizeNormal:SetPoint('TOPLEFT', size, 'BOTTOMLEFT', 8, -32)
+
+	local buttonSizeSmall = ns.CreateNumberSlider(actionbar, 'buttonSizeSmall', 20, 50, 20, 50, 1, true)
+	buttonSizeSmall:SetPoint('LEFT', buttonSizeNormal, 'RIGHT', 70, 0)
+
+	local buttonSizeBig = ns.CreateNumberSlider(actionbar, 'buttonSizeBig', 20, 50, 20, 50, 1, true)
+	buttonSizeBig:SetPoint('TOPLEFT', buttonSizeNormal, 'BOTTOMLEFT', 0, -32)
 
 	local function toggleActionBarsOptions()
 		local shown = enable:GetChecked()
@@ -330,7 +352,11 @@ do
 		bar3Mouseover:SetShown(shown)
 		sideBar:SetShown(shown)
 		sideBarMouseover:SetShown(shown)
-		
+
+		size:SetShown(shown)
+		buttonSizeNormal:SetShown(shown)
+		buttonSizeSmall:SetShown(shown)
+		buttonSizeBig:SetShown(shown)
 	end
 
 	enable:HookScript('OnClick', toggleActionBarsOptions)
@@ -431,8 +457,11 @@ do
 	local onlyShowPlayer = ns.CreateCheckBox(unitframe, 'onlyShowPlayer')
 	onlyShowPlayer:SetPoint('LEFT', clickCast, 'RIGHT', 160, 0)
 
+	local adjustClassColors = ns.CreateCheckBox(unitframe, 'adjustClassColors')
+	adjustClassColors:SetPoint('TOPLEFT', clickCast, 'BOTTOMLEFT', 0, -8)
+
 	local castbar = ns.addSubCategory(unitframe, ns.localization.unitframe_subCategory_castbar)
-	castbar:SetPoint('TOPLEFT', clickCast, 'BOTTOMLEFT', 0, -16)
+	castbar:SetPoint('TOPLEFT', adjustClassColors, 'BOTTOMLEFT', 0, -16)
 
 	local enableCastbar = ns.CreateCheckBox(unitframe, 'enableCastbar')
 	enableCastbar:SetPoint('TOPLEFT', castbar, 'BOTTOMLEFT', 0, -8)
@@ -480,6 +509,7 @@ do
 		onlyShowPlayer:SetShown(shown)
 		clickCast:SetShown(shown)
 		comboPoints:SetShown(shown)
+		adjustClassColors:SetShown(shown)
 		
 		enableCastbar:SetShown(shown)
 		castbar_separatePlayer:SetShown(shown)
@@ -614,7 +644,7 @@ do
 	local expRepBar = ns.CreateCheckBox(map, 'expRepBar')
 	expRepBar:SetPoint('TOPLEFT', whoPings, 'BOTTOMLEFT', 0, -8)
 
-	local miniMapSize = ns.CreateNumberSlider(map, 'miniMapSize', 100, 300, 100, 300, 1, true)
+	local miniMapSize = ns.CreateNumberSlider(map, 'miniMapSize', 100, 400, 100, 400, 1, true)
 	miniMapSize:SetPoint('TOPLEFT', expRepBar, 'BOTTOMLEFT', 16, -32)
 end
 
