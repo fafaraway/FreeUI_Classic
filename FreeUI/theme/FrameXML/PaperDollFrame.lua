@@ -64,14 +64,14 @@ tinsert(C.themes["FreeUI"], function()
 		F.ReskinExpandOrCollapse(_G["SkillTypeLabel"..i])
 		F.CreateBDFrame(_G["SkillRankFrame"..i], .25)
 		_G["SkillRankFrame"..i.."Border"]:SetAlpha(0)
-		_G["SkillRankFrame"..i.."Bar"]:SetTexture(C.media.bdTex)
+		_G["SkillRankFrame"..i.."Bar"]:SetTexture(C.media.sbTex)
 	end
 
 	hooksecurefunc("SkillFrame_SetStatusBar", function(statusBarID, skillIndex)
 		local _, _, _, _, numTempPoints, _, _, _, stepCost, rankCost = GetSkillLineInfo(skillIndex)
 		local statusBar = _G["SkillRankFrame"..statusBarID]
 		if not stepCost and not (rankCost or (numTempPoints > 0)) then
-			statusBar:SetStatusBarColor(0, .6, 1, .5)
+			statusBar:SetStatusBarColor(0, .6, 1, .75)
 		end
 	end)
 

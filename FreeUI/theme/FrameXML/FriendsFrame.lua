@@ -182,6 +182,18 @@ tinsert(C.themes["FreeUI"], function()
 	WhoFrameAddFriendButton:SetPoint("RIGHT", WhoFrameGroupInviteButton, "LEFT", -1, 0)
 	FriendsFrameTitleText:SetPoint("TOP", FriendsFrame, "TOP", 0, -8)
 
+	-- WhoFrame LevelText
+	hooksecurefunc('WhoList_Update', function()
+		for i = 1, WHOS_TO_DISPLAY, 1 do
+			local level = _G['WhoFrameButton'..i..'Level']
+			if level and not level.fontStyled then
+				level:SetWidth(32)
+				level:SetJustifyH('LEFT')
+				level.fontStyled = true
+			end
+		end
+	end)
+
 	-- GuildFrame
 
 	F.StripTextures(GuildFrame)
