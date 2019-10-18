@@ -7,8 +7,6 @@ local min, max, abs, floor = math.min, math.max, math.abs, math.floor
 local r, g, b = C.ClassColors[C.Class].r, C.ClassColors[C.Class].g, C.ClassColors[C.Class].b
 
 
--- [[ Functions ]]
-
 function F:CreateFS(font, text, colour, shadow, anchor, x, y)
 	local fs = self:CreateFontString(nil, 'OVERLAY')
 	fs:SetWordWrap(false)
@@ -1145,7 +1143,10 @@ end
 
 -- Timer Format
 local day, hour, minute = 86400, 3600, 60
+local INFINITY = math.huge
 function F.FormatTime(s)
+	if s == INFINITY then s = 0 end -- Fix LCD
+	
 	if s >= day then
 		return format('|cffbebfb3%d|r', s/day), s % day -- grey
 	elseif s >= hour then
