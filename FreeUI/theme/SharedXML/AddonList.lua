@@ -6,7 +6,7 @@ tinsert(C.themes["FreeUI"], function()
 	F.Reskin(AddonListDisableAllButton)
 	F.Reskin(AddonListCancelButton)
 	F.Reskin(AddonListOkayButton)
-	F.ReskinCheck(AddonListForceLoad, true)
+	F.ReskinCheck(AddonListForceLoad)
 	F.ReskinDropDown(AddonCharacterDropDown)
 	F.ReskinScroll(AddonListScrollFrameScrollBar)
 

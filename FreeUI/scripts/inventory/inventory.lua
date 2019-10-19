@@ -263,8 +263,9 @@ function INVENTORY:ButtonOnClick(btn)
 end
 
 function INVENTORY:GetContainerEmptySlot(bagID)
+	local bagType = INVENTORY.BagsType[bagID]
 	for slotID = 1, GetContainerNumSlots(bagID) do
-		if not GetContainerItemID(bagID, slotID) then
+		if not GetContainerItemID(bagID, slotID) and bagType == 0 then
 			return slotID
 		end
 	end

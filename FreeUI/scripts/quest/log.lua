@@ -49,20 +49,37 @@ local function ShowQuestLevel(self)
 
 	for i = 1, QUESTS_DISPLAYED, 1 do
 		local questIndex = i + FauxScrollFrame_GetOffset(QuestLogListScrollFrame)
-		local questLogTitle = _G['QuestLogTitle'..i]
-		local questCheck = _G['QuestLogTitle'..i..'Check']
-		local questTitleTag = _G['QuestLogTitle'..i..'Tag']
 		if questIndex <= numEntries then
+			local questLogTitle = _G['QuestLogTitle'..i]
+			local questTitleTag = _G['QuestLogTitle'..i..'Tag']
 			local questLogTitleText, level, _, isHeader, _, isComplete = GetQuestLogTitle(questIndex)
 			if not isHeader then
 				questLogTitle:SetText('['..level..'] '..questLogTitleText)
-				questCheck:SetPoint('LEFT', questLogTitle, questLogTitle:GetWidth()-22, 0)
 				if isComplete then
 					questLogTitle.r = 1
 					questLogTitle.g = .5
 					questLogTitle.b = 1
 					questTitleTag:SetTextColor(1, .5, 1)
 				end
+			end
+
+			local questText = _G['QuestLogTitle'..i..'NormalText']
+			local questCheck = _G['QuestLogTitle'..i..'Check']
+			if questText then
+				local width = questText:GetStringWidth()
+				if width then
+					if width <= 210 then
+						questCheck:SetPoint('LEFT', questLogTitle, 'LEFT', width + 22, 0)
+					else
+						questCheck:SetPoint('LEFT', questLogTitle, 'LEFT', 210, 0)
+					end
+				end
+			end
+
+			local questNumGroupMates = _G['QuestLogTitle'..i..'GroupMates']
+			if not questNumGroupMates.anchored then
+				questNumGroupMates:SetPoint('LEFT')
+				questNumGroupMates.anchored = true
 			end
 		end
 	end

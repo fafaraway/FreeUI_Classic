@@ -433,7 +433,10 @@ function ACTIONBAR:RemoveBlizzArt()
 		else
 			local showgrid = tonumber(GetCVar('alwaysShowActionBars'))
 			buttonShowGrid('ActionButton', showgrid)
+			buttonShowGrid('MultiBarBottomLeftButton', showgrid)
 			buttonShowGrid('MultiBarBottomRightButton', showgrid)
+			buttonShowGrid('MultiBarRightButton', showgrid)
+			buttonShowGrid('MultiBarLeftButton', showgrid)
 			if updateAfterCombat then
 				F:UnregisterEvent('PLAYER_REGEN_ENABLED', ToggleButtonGrid)
 				updateAfterCombat = false
@@ -441,6 +444,7 @@ function ACTIONBAR:RemoveBlizzArt()
 		end
 	end
 	hooksecurefunc('MultiActionBar_UpdateGridVisibility', ToggleButtonGrid)
+	hooksecurefunc('MultiActionBar_HideAllGrids', ToggleButtonGrid)
 end
 
 
