@@ -17,7 +17,7 @@
 	<Script file='core\gui.lua'/>
 	<Script file='core\install.lua'/>
 	<Script file='core\mover.lua'/>
-	<Script file='core\slash.lua'/>
+	<Script file='core\commands.lua'/>
 
 	
 
