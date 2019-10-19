@@ -483,8 +483,14 @@ do
 	local groupColourSmooth = ns.CreateCheckBox(unitframe, 'groupColourSmooth')
 	groupColourSmooth:SetPoint('LEFT', groupNames, 'RIGHT', 160, 0)
 
+	local debuffsWatch = ns.CreateCheckBox(unitframe, 'debuffsWatch')
+	debuffsWatch:SetPoint('TOPLEFT', groupNames, 'BOTTOMLEFT', 0, -8)
+
+	local cornerBuffs = ns.CreateCheckBox(unitframe, 'cornerBuffs')
+	cornerBuffs:SetPoint('LEFT', debuffsWatch, 'RIGHT', 160, 0)
+
 	local groupFilter = ns.CreateNumberSlider(unitframe, 'groupFilter', 4, 8, 4, 8, 1, true)
-	groupFilter:SetPoint('TOPLEFT', groupNames, 'BOTTOMLEFT', 0, -30)
+	groupFilter:SetPoint('TOPLEFT', debuffsWatch, 'BOTTOMLEFT', 0, -30)
 
 	local function toggleUFOptions()
 		local shown = enable:GetChecked()
@@ -502,6 +508,8 @@ do
 		groupNames:SetShown(shown)
 		groupColourSmooth:SetShown(shown)
 		groupFilter:SetShown(shown)
+		debuffsWatch:SetShown(shown)
+		cornerBuffs:SetShown(shown)
 
 		dispellable:SetShown(shown)
 		rangeCheck:SetShown(shown)

@@ -28,13 +28,22 @@ local VitalBuffs = {
 
 local ClassBuffs = {
 	['PRIEST'] = {
-		[   139] = true,	-- 恢复
-		[    17] = true,	-- 真言术盾
+		[ 10901] = true,	-- Power Word: Shield
+		[ 10900] = true,	-- Power Word: Shield
+		[ 10899] = true,	-- Power Word: Shield
+		[ 10927] = true,	-- Renew
+		[ 10928] = true,	-- Renew
+		[ 10929] = true,	-- Renew
+		[ 25315] = true,	-- Renew
 		[  6788] = true,	-- 虚弱灵魂
 	},
 	['DRUID'] = {
-		[   774] = true,	-- 回春
-		[  8936] = true,	-- 愈合
+		[ 25299] = true,	-- Rejuvenation
+		[  9841] = true,	-- Rejuvenation
+		[  9840] = true,	-- Rejuvenation
+		[  9856] = true,	-- Regrowth
+		[  9857] = true,	-- Regrowth
+		[  9858] = true,	-- Regrowth
 	},
 	['PALADIN'] = {
 	},
@@ -50,6 +59,7 @@ local ClassBuffs = {
 		[ 20707] = true,	-- 灵魂石
 	},
 	['MAGE'] = {
+		[   130] = true,	-- 缓落
 	},
 }
 
@@ -60,6 +70,11 @@ local PlayerBuffs = {
 	['MAGE'] = {
 		[ 11958] = true,	-- 寒冰屏障
 		[ 12042] = true,	-- 奥术强化
+		[ 12536] = true,	-- 节能施法
+		[   130] = true,	-- 缓落
+		[ 13033] = true,	-- 寒冰护体
+		[ 10177] = true,	-- 防护冰霜结界
+		[ 10225] = true,	-- 防护火焰结界
 	},
 	['ROGUE'] = {
 		[  2983] = true,	-- 疾跑
@@ -85,10 +100,6 @@ local PlayerBuffs = {
 	},
 	['DRUID'] = {
 	},
-}
-
-local filteredUnits = {
-	['target'] = true,
 }
 
 local function PostCreateIcon(element, button)
@@ -166,7 +177,7 @@ local function PostUpdateIcon(element, unit, button, index, _, duration, expirat
 		end
 	end
 
-	if button.isDebuff and not button.isPlayer and filteredUnits[style] then
+	if button.isDebuff and not button.isPlayer and style == 'target' then
 		button.icon:SetDesaturated(true)
 	else
 		button.icon:SetDesaturated(false)
@@ -222,17 +233,10 @@ function UNITFRAME:AddAuras(self)
 	local num, perrow = 0, 0
 	local Auras = CreateFrame('Frame', nil, self)
 
-	if self.unitStyle == 'player' then
+	if self.unitStyle == 'player' or self.unitStyle == 'target' then
 		Auras.initialAnchor = 'BOTTOMLEFT'
 		Auras:SetPoint('BOTTOM', self, 'TOP', 0, 26)
 		Auras['growth-y'] = 'UP'
-		Auras['spacing-x'] = 5
-		num = 36
-		perrow = 6
-	elseif self.unitStyle == 'target' then
-		Auras.initialAnchor = 'TOPLEFT'
-		Auras:SetPoint('TOP', self, 'BOTTOM', 0, -7)
-		Auras['growth-y'] = 'DOWN'
 		Auras['spacing-x'] = 5
 		num = 36
 		perrow = 6

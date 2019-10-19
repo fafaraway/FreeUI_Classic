@@ -958,7 +958,7 @@ f:SetScript('OnEvent', function()
 	end
 
 	for _, box in pairs(checkboxes) do
-		F.ReskinCheck(box)
+		F.ReskinCheck(box, true)
 	end
 
 	for _, radio in pairs(radiobuttons) do

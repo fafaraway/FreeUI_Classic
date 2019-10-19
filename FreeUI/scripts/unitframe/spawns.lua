@@ -89,6 +89,7 @@ local function CreatePartyStyle(self)
 	UNITFRAME:AddReadyCheckIndicator(self)
 	UNITFRAME:AddSelectedBorder(self)
 	UNITFRAME:AddDebuffsWatch(self)
+	UNITFRAME:AddCornerBuff(self)
 end
 
 local function CreateRaidStyle(self)
@@ -108,6 +109,7 @@ local function CreateRaidStyle(self)
 	UNITFRAME:AddReadyCheckIndicator(self)
 	UNITFRAME:AddSelectedBorder(self)
 	UNITFRAME:AddDebuffsWatch(self)
+	--UNITFRAME:AddCornerBuff(self)
 end
 
 

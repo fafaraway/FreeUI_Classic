@@ -27,13 +27,6 @@
 	<Script file="elements\resurrectindicator.lua"/>
 	<Script file="elements\tags.lua"/>
 
-	<Script file="plugins\oUF_ComboPointsBar.lua"/>
-	<Script file="plugins\oUF_Dispellable.lua"/>
-	<Script file="plugins\oUF_EnergyTicker.lua"/>
-	<Script file="plugins\oUF_GCD.lua"/>
-	<Script file="plugins\oUF_RaidDebuffs.lua"/>
-	<Script file="plugins\oUF_SpellRange.lua"/>
-
 	<Script file="finalize.lua"/>
 
 	<!--

@@ -4,6 +4,7 @@ local UNITFRAME, cfg = F:GetModule('Unitframe'), C.unitframe
 
 function UNITFRAME:AddEnergyTicker(self)
 	if not cfg.energyTicker then return end
+	if C.Class == 'WARRIOR' then return end
 
 	local energyTicker = CreateFrame('Frame', nil, self)
 	energyTicker:SetFrameLevel(self.Power:GetFrameLevel() + 2)

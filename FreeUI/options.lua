@@ -198,6 +198,7 @@ C['unitframe'] = {
 		['debuffbyPlayer'] = false,
 		['rangeCheck'] = true,
 		['adjustClassColors'] = true,
+		
 
 		['powerHeight'] = 3,
 		['energyTicker'] = true,
@@ -223,6 +224,7 @@ C['unitframe'] = {
 			['groupFilter'] = 8,
 			['aurasClickThrough'] = true,
 			['debuffsWatch'] = true,
+			['cornerBuffs'] = true,
 
 		['player_pos'] = {'TOP', UIParent, 'CENTER', 0, -220},
 		['player_pos_healer'] = {'RIGHT', UIParent, 'CENTER', -100, -200},
