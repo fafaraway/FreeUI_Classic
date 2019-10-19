@@ -512,7 +512,7 @@ local function checkOnLeave(self)
 	self.bg:SetBackdropBorderColor(0, 0, 0, 1)
 end
 
-function F:ReskinCheck(default)
+function F:ReskinCheck(style)
 	self:SetNormalTexture('')
 	self:SetPushedTexture('')
 	self:SetHighlightTexture(C.media.bdTex)
@@ -537,7 +537,7 @@ function F:ReskinCheck(default)
 	tex:SetPoint('TOPLEFT', 7, -7)
 	tex:SetPoint('BOTTOMRIGHT', -7, 7)
 
-	if not default then
+	if style then
 		self:SetCheckedTexture(C.media.bdTex)
 
 		if self.SetCheckedTexture then
